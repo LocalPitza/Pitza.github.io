@@ -3,892 +3,649 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Citrus Portfolio</title>
+    <title>Pitza - Portfolio</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Montserrat:wght@400;600;800&family=Orbitron:wght@400;600;800&display=swap');
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
-        :root {
-            --primary: #FF8C42;
-            --primary-dark: #E67A2F;
-            --primary-light: #FFB574;
-            --accent: #FFA500;
-            --accent-2: #FFD700;
-            --bg-dark: #0f0f0f;
-            --bg-medium: #1a1a1a;
-            --bg-card: #252525;
-            --text-light: #f5f5f5;
-            --text-cream: #FFF5E6;
-            --shadow: rgba(255, 140, 66, 0.3);
-            --glow: rgba(255, 140, 66, 0.6);
-        }
-        
-        html {
-            scroll-behavior: smooth;
-        }
-        
+
         body {
-            font-family: 'Poppins', sans-serif;
-            background: var(--bg-dark);
-            color: var(--text-cream);
-            overflow-x: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+            transition: background-color 0.5s ease;
+            background: linear-gradient(to bottom, #ffffff 50%, #FFA500 50%);
+        }
+
+        body.dark-mode {
+            background: linear-gradient(to bottom, #1a1a2e 50%, #ff6b35 50%);
         }
         
-        /* Particles */
-        .particles {
+        body.dark-mode .center-text h1 {
+            color: #fff;
+        }
+        
+        body.dark-mode .center-text p {
+            color: #ccc;
+        }
+        
+        body.dark-mode .icon-label {
+            color: #fff;
+        }
+        
+        body.dark-mode .icon-image {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+        }
+        
+        body.dark-mode .social-icon {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+        }
+        
+        body.dark-mode .window {
+            background: #2d2d44;
+            color: #fff;
+        }
+        
+        body.dark-mode .window-content h2 {
+            color: #8b9eff;
+        }
+        
+        body.dark-mode .project-card {
+            background: #3a3a52;
+        }
+        
+        body.dark-mode .project-info h3 {
+            color: #fff;
+        }
+        
+        body.dark-mode .project-info p {
+            color: #aaa;
+        }
+        
+        body.dark-mode .projects-grid::-webkit-scrollbar-track {
+            background: #2d2d44;
+        }
+        
+        body.dark-mode .theme-toggle {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .theme-toggle {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-        }
-        
-        .particle {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background: var(--primary);
+            top: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
             border-radius: 50%;
-            opacity: 0.4;
-            animation: float linear infinite;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: all 0.3s ease;
+            z-index: 9999;
         }
-        
-        @keyframes float {
-            0% {
-                transform: translateY(100vh) translateX(0);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.4;
-            }
-            90% {
-                opacity: 0.4;
-            }
-            100% {
-                transform: translateY(-100px) translateX(100px);
-                opacity: 0;
-            }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.3);
         }
-        
-        /* Scanlines */
-        .scanlines {
+
+        .desktop-icons {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            background: repeating-linear-gradient(
-                0deg,
-                rgba(0, 0, 0, 0.05) 0px,
-                transparent 1px,
-                transparent 2px,
-                rgba(0, 0, 0, 0.05) 3px
-            );
-            z-index: 999;
-            opacity: 0.3;
-        }
-        
-        /* Spotlight */
-        .spotlight {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            background: radial-gradient(
-                circle 600px at var(--x, 50%) var(--y, 50%),
-                rgba(255, 140, 66, 0.15) 0%,
-                transparent 80%
-            );
-            z-index: 1;
-            opacity: 0.7;
-        }
-        
-        /* Navigation */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 1.5rem 5%;
-            background: rgba(26, 26, 26, 0.9);
-            backdrop-filter: blur(10px);
-            border-bottom: 2px solid var(--primary);
+            top: 100px;
+            left: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
             z-index: 100;
-            transition: transform 0.3s ease;
         }
-        
-        nav.hidden {
-            transform: translateY(-100%);
+
+        .desktop-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            width: 80px;
         }
-        
-        .nav-content {
-            max-width: 1400px;
-            margin: 0 auto;
+
+        .desktop-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .icon-image {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            margin-bottom: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.5s ease;
+        }
+
+        .icon-label {
+            font-size: 12px;
+            color: #333;
+            text-align: center;
+            font-weight: 500;
+            transition: all 0.5s ease;
+        }
+
+        .center-text {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 50;
+        }
+
+        .center-text h1 {
+            font-size: 48px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 10px;
+            transition: all 0.5s ease;
+        }
+
+        .center-text p {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #666;
+            transition: all 0.5s ease;
+        }
+
+        .social-links {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 100;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 20px;
+            color: #333;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .window {
+            position: fixed;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            min-width: 400px;
+            min-height: 300px;
+            display: none;
+            flex-direction: column;
+            transition: all 0.5s ease;
+            transform: translate3d(0, 0, 0); /* Hardware acceleration */
+            will-change: transform; /* Optimize for animations */
+        }
+
+        .window.active {
+            display: flex;
+        }
+
+        .window-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 12px 15px;
+            border-radius: 8px 8px 0 0;
+            cursor: move;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            user-select: none;
         }
-        
-        .logo {
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 800;
-            font-size: 1.8rem;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent-2) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            cursor: pointer;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            list-style: none;
-            align-items: center;
-        }
-        
-        .nav-links li {
-            position: relative;
-        }
-        
-        .nav-links a {
-            color: var(--text-cream);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.95rem;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            position: relative;
-            cursor: pointer;
-            display: block;
-            padding: 0.5rem 0;
-        }
-        
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--primary);
-            transition: width 0.3s ease;
-        }
-        
-        .nav-links a:hover::after,
-        .nav-links a.active::after {
-            width: 100%;
-        }
-        
-        .nav-links a:hover {
-            color: var(--primary);
-        }
-        
-        /* Dropdown Menu */
-        .dropdown {
-            position: relative;
-        }
-        
-        .dropdown-toggle {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .dropdown-toggle::before {
-            content: '▼';
-            font-size: 0.7rem;
-            transition: transform 0.3s ease;
-        }
-        
-        .dropdown.open .dropdown-toggle::before {
-            transform: rotate(180deg);
-        }
-        
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: rgba(26, 26, 26, 0.95);
-            backdrop-filter: blur(10px);
-            border: 2px solid var(--primary);
-            border-radius: 10px;
-            padding: 0.5rem 0;
-            min-width: 200px;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-            margin-top: 1rem;
-        }
-        
-        .dropdown.open .dropdown-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-        
-        .dropdown-menu a {
-            padding: 0.8rem 1.5rem;
-            display: block;
-            color: var(--text-cream);
-            transition: all 0.3s ease;
-        }
-        
-        .dropdown-menu a::after {
-            display: none;
-        }
-        
-        .dropdown-menu a:hover {
-            background: rgba(255, 140, 66, 0.1);
-            color: var(--primary);
-            padding-left: 2rem;
-        }
-        
-        /* Hamburger Menu */
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-            padding: 0.5rem;
-        }
-        
-        .hamburger span {
-            width: 25px;
-            height: 3px;
-            background: var(--primary);
-            transition: all 0.3s ease;
-        }
-        
-        .hamburger.active span:nth-child(1) {
-            transform: rotate(45deg) translate(8px, 8px);
-        }
-        
-        .hamburger.active span:nth-child(2) {
-            opacity: 0;
-        }
-        
-        .hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(7px, -7px);
-        }
-        
-        /* Sections */
-        section {
-            min-height: 100vh;
-            padding: 8rem 5%;
-            position: relative;
-            z-index: 2;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .section-content {
-            width: 100%;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        
-        /* Hero Section */
-        .hero {
-            text-align: center;
-        }
-        
-        .shuffle-wrapper {
-            position: relative;
-            display: inline-block;
-        }
-        
-        .hero h1 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(3rem, 8vw, 6rem);
-            font-weight: 800;
-            letter-spacing: 5px;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent-2) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            cursor: pointer;
-            position: relative;
-            display: inline-block;
-            transition: opacity 0.3s ease;
-        }
-        
-        .hero h1.shuffling {
-            opacity: 0.7;
-        }
-        
-        .hero p {
-            font-size: clamp(1.2rem, 2vw, 1.5rem);
-            color: var(--text-light);
-            margin-bottom: 2rem;
-            letter-spacing: 3px;
-            font-weight: 300;
-        }
-        
-        .scroll-indicator {
-            position: absolute;
-            bottom: 3rem;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 30px;
-            height: 50px;
-            border: 2px solid var(--primary);
-            border-radius: 25px;
-            cursor: pointer;
-        }
-        
-        .scroll-indicator::before {
-            content: '';
-            position: absolute;
-            top: 8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 6px;
-            height: 6px;
-            background: var(--primary);
-            border-radius: 50%;
-            animation: scroll 2s infinite;
-        }
-        
-        @keyframes scroll {
-            0%, 20% { transform: translate(-50%, 0); opacity: 1; }
-            100% { transform: translate(-50%, 20px); opacity: 0; }
-        }
-        
-        .section-title {
-            font-family: 'Montserrat', sans-serif;
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 800;
-            text-align: center;
-            margin-bottom: 4rem;
-            letter-spacing: 3px;
-            color: var(--primary);
-        }
-        
-        /* Grid Layout */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2rem;
-        }
-        
-        .card {
-            background: var(--bg-card);
-            border: 2px solid transparent;
-            border-radius: 20px;
-            padding: 0;
-            transition: all 0.4s ease;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            height: 100%;
-        }
-        
-        .card-image {
-            width: 100%;
-            height: 200px;
-            background: linear-gradient(135deg, var(--bg-medium) 0%, var(--bg-card) 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            border-bottom: 2px solid rgba(255, 140, 66, 0.2);
-            position: relative;
-        }
-        
-        .card-image::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-        
-        .card-content {
-            padding: 2rem;
-        }
-        
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            z-index: -1;
-        }
-        
-        .card:hover {
-            border-color: var(--primary);
-            transform: translateY(-10px);
-            box-shadow: 0 20px 60px var(--shadow), 0 0 40px var(--glow);
-        }
-        
-        .card:hover::before {
-            opacity: 0.1;
-        }
-        
-        .card:hover .card-image::before {
-            opacity: 0.3;
-        }
-        
-        .card h3 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
-            color: var(--primary-light);
-            margin-bottom: 1rem;
-            letter-spacing: 1px;
-        }
-        
-        .card p {
-            color: var(--text-light);
-            line-height: 1.6;
-            margin-bottom: 1rem;
-            font-size: 0.95rem;
-        }
-        
-        .tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 1rem;
-        }
-        
-        .tag {
-            background: rgba(255, 140, 66, 0.2);
-            color: var(--primary-light);
-            padding: 0.3rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-        
-        /* About Section */
-        .about-content {
-            text-align: center;
-        }
-        
-        .about-content p {
-            font-size: 1.2rem;
-            line-height: 1.8;
-            color: var(--text-light);
-            margin-bottom: 2rem;
-            max-width: 900px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        .skills {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 3rem;
-        }
-        
-        .skill {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            padding: 1rem 2rem;
-            border-radius: 30px;
-            font-weight: 600;
-            font-size: 1.1rem;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-            font-family: 'Orbitron', sans-serif;
-        }
-        
-        .skill:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 30px var(--glow);
-            border-color: var(--accent-2);
-        }
-        
-        /* Contact Form */
-        .contact-content {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: var(--primary-light);
-            font-weight: 600;
-            letter-spacing: 1px;
-        }
-        
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 1rem;
-            background: rgba(45, 45, 45, 0.6);
-            border: 2px solid transparent;
-            border-radius: 10px;
-            color: var(--text-cream);
-            font-family: 'Poppins', sans-serif;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-        
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: var(--primary);
-            background: rgba(45, 45, 45, 0.8);
-        }
-        
-        .form-group textarea {
-            min-height: 150px;
-            resize: vertical;
-        }
-        
-        .btn-primary {
-            width: 100%;
-            padding: 1.2rem;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-            border: none;
-            border-radius: 50px;
+
+        .window-title {
             color: white;
             font-weight: 600;
-            font-size: 1.1rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
+            font-size: 14px;
+        }
+
+        .window-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .window-btn {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: opacity 0.2s;
         }
-        
-        .btn-primary:hover {
+
+        .window-btn:hover {
+            opacity: 0.7;
+        }
+
+        .btn-close {
+            background: #ff5f56;
+        }
+
+        .window-content {
+            padding: 20px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .window-content h2 {
+            margin-bottom: 15px;
+            color: #667eea;
+            transition: all 0.5s ease;
+        }
+
+        .window-content p {
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .project-card {
+            background: #f5f5f5;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.5s ease;
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 120px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+        }
+
+        .project-info {
+            padding: 12px;
+        }
+
+        .project-info h3 {
+            font-size: 16px;
+            margin-bottom: 5px;
+            color: #333;
+            transition: all 0.5s ease;
+        }
+
+        .project-info p {
+            font-size: 13px;
+            color: #666;
+            margin: 0;
+            transition: all 0.5s ease;
+        }
+
+        /* Links Grid */
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .link-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            text-decoration: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .link-button:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 30px var(--shadow);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
-        
-        /* Mobile */
-        @media (max-width: 768px) {
-            .nav-links {
-                gap: 1rem;
-            }
-            
-            .nav-links a {
-                font-size: 0.85rem;
-            }
-            
-            .grid {
-                grid-template-columns: 1fr;
-            }
-            
-            section {
-                padding: 6rem 5%;
-            }
+
+        .link-button .icon {
+            font-size: 32px;
+        }
+
+        .link-button .label {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* Scrollbar styling */
+        .projects-grid::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .projects-grid::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        body.dark-mode .projects-grid::-webkit-scrollbar-track {
+            background: #2d2d44;
+        }
+
+        .projects-grid::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+
+        .projects-grid::-webkit-scrollbar-thumb:hover {
+            background: #555;
         }
     </style>
 </head>
 <body>
-    <div class="particles" id="particles"></div>
-    <div class="scanlines"></div>
-    <div class="spotlight"></div>
-    
-    <nav id="navbar">
-        <div class="nav-content">
-            <ul class="nav-links">
-                <li><a href="#home" class="active">Home</a></li>
-                <li><a href="#games">Games</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
+    <div class="theme-toggle" onclick="toggleTheme()">
+        <span id="themeIcon">🌙</span>
+    </div>
+
+    <div class="desktop-icons">
+        <div class="desktop-icon" onclick="openWindow('about')">
+            <div class="icon-image">👤</div>
+            <div class="icon-label">About</div>
         </div>
-    </nav>
-    
-    <!-- HOME SECTION -->
-    <section id="home" class="hero">
-        <div class="section-content">
-            <div class="shuffle-wrapper">
-                <h1 id="heroTitle">Janmar Cornejo</h1>
-            </div>
-            <p>Crafting Immersive Digital Worlds</p>
-            <div class="scroll-indicator"></div>
+        <div class="desktop-icon" onclick="openWindow('links')">
+            <div class="icon-image">🔗</div>
+            <div class="icon-label">Links</div>
         </div>
-    </section>
-    
-    <!-- GAMES SECTION -->
-    <section id="games">
-        <div class="section-content">
-            <h2 class="section-title">Featured Games</h2>
-            <div class="grid">
-                <div class="card">
-                    <div class="card-image">🎮</div>
-                    <div class="card-content">
-                        <h3>Neon Runner</h3>
-                        <p>Fast-paced endless runner with procedurally generated levels and dynamic lighting effects.</p>
-                        <div class="tags">
-                            <span class="tag">Unity</span>
-                            <span class="tag">C#</span>
-                            <span class="tag">Mobile</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-image">⚔️</div>
-                    <div class="card-content">
-                        <h3>Shadow Quest</h3>
-                        <p>Action RPG featuring real-time combat and immersive storytelling.</p>
-                        <div class="tags">
-                            <span class="tag">Unreal</span>
-                            <span class="tag">C++</span>
-                            <span class="tag">PC</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-image">🌌</div>
-                    <div class="card-content">
-                        <h3>Stellar Odyssey</h3>
-                        <p>Space exploration with procedural universe generation and multiplayer.</p>
-                        <div class="tags">
-                            <span class="tag">Unity</span>
-                            <span class="tag">Photon</span>
-                            <span class="tag">VR Ready</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-image">🧩</div>
-                    <div class="card-content">
-                        <h3>Puzzle Nexus</h3>
-                        <p>Mind-bending puzzle game with AR integration.</p>
-                        <div class="tags">
-                            <span class="tag">Unity</span>
-                            <span class="tag">AR Core</span>
-                            <span class="tag">iOS</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-image">🏎️</div>
-                    <div class="card-content">
-                        <h3>Turbo Drift</h3>
-                        <p>Arcade racing with realistic physics and online multiplayer.</p>
-                        <div class="tags">
-                            <span class="tag">Unity</span>
-                            <span class="tag">Mirror</span>
-                            <span class="tag">Cross-platform</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-image">👻</div>
-                    <div class="card-content">
-                        <h3>Haunted Halls</h3>
-                        <p>Psychological horror with adaptive AI and atmospheric design.</p>
-                        <div class="tags">
-                            <span class="tag">Unreal</span>
-                            <span class="tag">Blueprint</span>
-                            <span class="tag">PC</span>
-                        </div>
-                    </div>
-                </div>
+        <div class="desktop-icon" onclick="openWindow('projects')">
+            <div class="icon-image">🎮</div>
+            <div class="icon-label">Projects</div>
+        </div>
+        <div class="desktop-icon" onclick="openWindow('contacts')">
+            <div class="icon-image">📧</div>
+            <div class="icon-label">Contacts</div>
+        </div>
+    </div>
+
+    <div class="center-text">
+        <h1>Hello! I'm Pitza</h1>
+        <p>Game Developer and Designer</p>
+    </div>
+
+    <div class="social-links">
+        <a href="https://twitter.com" target="_blank" class="social-icon">𝕏</a>
+        <a href="https://youtube.com" target="_blank" class="social-icon">▶</a>
+        <a href="https://github.com" target="_blank" class="social-icon">⚙</a>
+    </div>
+
+    <!-- Windows -->
+    <div class="window" id="about-window">
+        <div class="window-header">
+            <div class="window-title">About Me</div>
+            <div class="window-controls">
+                <div class="window-btn btn-close" onclick="closeWindow('about')"></div>
             </div>
         </div>
-    </section>
-    
-    <!-- ABOUT SECTION -->
-    <section id="about">
-        <div class="section-content">
-            <h2 class="section-title">About Me</h2>
-            <div class="about-content">
-                <p>I'm a passionate game developer specializing in creating immersive experiences that push the boundaries of interactive entertainment.</p>
-                <p>From mobile indie titles to AAA-quality experiences, I've shipped games across multiple platforms.</p>
-                <div class="skills">
-                    <div class="skill">Unity</div>
-                    <div class="skill">Unreal Engine</div>
-                    <div class="skill">C#</div>
-                    <div class="skill">C++</div>
-                    <div class="skill">Game Design</div>
-                    <div class="skill">3D Modeling</div>
+        <div class="window-content">
+            <h2>About Me</h2>
+            <p>Hi! I'm Pitza, a passionate game developer and designer.</p>
+            <p>I love creating immersive gaming experiences and bringing creative ideas to life through code and design.</p>
+            <p>My journey in game development has been driven by curiosity and a love for interactive storytelling.</p>
+        </div>
+    </div>
+
+    <div class="window" id="links-window">
+        <div class="window-header">
+            <div class="window-title">Links</div>
+            <div class="window-controls">
+                <div class="window-btn btn-close" onclick="closeWindow('links')"></div>
+            </div>
+        </div>
+        <div class="window-content">
+            <h2>My Links</h2>
+            <div class="links-grid">
+                <a href="https://x.com/KingPItza" target="_blank" class="link-button">
+                    <div class="icon">🐦</div>
+                    <div class="label">Twitter</div>
+                </a>
+                <a href="https://www.youtube.com/@KingPitza" target="_blank" class="link-button">
+                    <div class="icon">📺</div>
+                    <div class="label">YouTube</div>
+                </a>
+                <a href="https://github.com/LocalPitza" target="_blank" class="link-button">
+                    <div class="icon">💻</div>
+                    <div class="label">GitHub</div>
+                </a>
+                <a href="https://pitza.itch.io/" target="_blank" class="link-button">
+                    <div class="icon">🎮</div>
+                    <div class="label">Itch.io</div>
+                </a>
+                <a href="https://www.linkedin.com/in/janmar-cornejo-61722b281/" target="_blank" class="link-button">
+                    <div class="icon">💼</div>
+                    <div class="label">LinkedIn</div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="window" id="projects-window">
+        <div class="window-header">
+            <div class="window-title">Projects</div>
+            <div class="window-controls">
+                <div class="window-btn btn-close" onclick="closeWindow('projects')"></div>
+            </div>
+        </div>
+        <div class="window-content">
+            <h2>My Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-image">🏰</div>
+                    <div class="project-info">
+                        <h3>RPG Adventure</h3>
+                        <p>An exciting role-playing game with epic quests</p>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">🧩</div>
+                    <div class="project-info">
+                        <h3>Puzzle Platformer</h3>
+                        <p>Mind-bending puzzles with unique mechanics</p>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">⚔️</div>
+                    <div class="project-info">
+                        <h3>Battle Arena</h3>
+                        <p>Multiplayer combat with strategic gameplay</p>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">🌌</div>
+                    <div class="project-info">
+                        <h3>Space Explorer</h3>
+                        <p>Journey through the cosmos in this adventure</p>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">🏃</div>
+                    <div class="project-info">
+                        <h3>Endless Runner</h3>
+                        <p>Fast-paced action with procedural generation</p>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">🎯</div>
+                    <div class="project-info">
+                        <h3>Arcade Shooter</h3>
+                        <p>Classic arcade action with modern graphics</p>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">🧙</div>
+                    <div class="project-info">
+                        <h3>Magic Simulator</h3>
+                        <p>Cast spells and master magical abilities</p>
+                    </div>
+                </div>
+                <div class="project-card">
+                    <div class="project-image">🚗</div>
+                    <div class="project-info">
+                        <h3>Racing Game</h3>
+                        <p>High-speed racing with customizable vehicles</p>
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
-    
-    <!-- CONTACT SECTION -->
-    <section id="contact">
-        <div class="section-content">
-            <h2 class="section-title">Get In Touch</h2>
-            <div class="contact-content">
-                <form id="contactForm">
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Message</label>
-                        <textarea id="message" required></textarea>
-                    </div>
-                    <button type="submit" class="btn-primary">Send Message</button>
-                </form>
+    </div>
+
+    <div class="window" id="contacts-window">
+        <div class="window-header">
+            <div class="window-title">Contact</div>
+            <div class="window-controls">
+                <div class="window-btn btn-close" onclick="closeWindow('contacts')"></div>
             </div>
         </div>
-    </section>
-    
+        <div class="window-content">
+            <h2>Get In Touch</h2>
+            <p>📧 Email: janmarfabilanecornejo@gmail.com</p>
+            <p>💼 LinkedIn: https://www.linkedin.com/in/janmar-cornejo-61722b281/</p>
+            <p>🎮 Discord: Pitza</p>
+            <p>Feel free to reach out for collaborations or just to chat about game dev!</p>
+        </div>
+    </div>
+
     <script>
-        // Create particles
-        function createParticles() {
-            const particles = document.getElementById('particles');
-            for (let i = 0; i < 30; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
-                particle.style.animationDelay = Math.random() * 5 + 's';
-                particles.appendChild(particle);
-            }
-        }
-        
-        createParticles();
-        
-        // Spotlight effect
-        const spotlight = document.querySelector('.spotlight');
-        document.addEventListener('mousemove', (e) => {
-            spotlight.style.setProperty('--x', `${e.clientX}px`);
-            spotlight.style.setProperty('--y', `${e.clientY}px`);
-        });
-        
-        // Shuffle text effect - Auto cycle every 5 seconds
-        const heroTitle = document.getElementById('heroTitle');
-        const originalText = 'PLACEHOLDER NAME';
-        const hoverText = 'GAME DEVELOPER';
-        let shuffleTimeout;
-        let cycleInterval;
-        let currentText = originalText;
-        
-        function shuffleText(element, targetText) {
-            const iterations = 8;
-            const delay = 150;
-            let iteration = 0;
+        let activeWindows = [];
+        let highestZIndex = 1000;
+        let draggedWindow = null;
+        let offsetX = 0;
+        let offsetY = 0;
+
+        // Initialize with light theme
+        document.body.classList.remove('dark-mode');
+        document.getElementById('themeIcon').textContent = '🌙';
+
+        function toggleTheme() {
+            const body = document.body;
+            const icon = document.getElementById('themeIcon');
             
-            element.classList.add('shuffling');
-            
-            function shuffle() {
-                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                let shuffled = '';
-                
-                for (let i = 0; i < targetText.length; i++) {
-                    if (iteration > 2 && Math.random() > 0.3) {
-                        shuffled += targetText[i];
-                    } else {
-                        shuffled += chars[Math.floor(Math.random() * chars.length)];
-                    }
-                }
-                
-                element.textContent = shuffled;
-                iteration++;
-                
-                if (iteration < iterations) {
-                    shuffleTimeout = setTimeout(shuffle, delay);
-                } else {
-                    element.textContent = targetText;
-                    element.classList.remove('shuffling');
-                    currentText = targetText;
-                }
-            }
-            
-            shuffle();
-        }
-        
-        // Auto cycle between texts
-        function startCycle() {
-            cycleInterval = setInterval(() => {
-                const nextText = currentText === originalText ? hoverText : originalText;
-                shuffleText(heroTitle, nextText);
-            }, 5000);
-        }
-        
-        startCycle();
-        
-        // Scroll indicator
-        document.querySelector('.scroll-indicator').addEventListener('click', () => {
-            document.querySelector('#games').scrollIntoView({ behavior: 'smooth' });
-        });
-        
-        // Update active nav link on scroll
-        const sections = document.querySelectorAll('section');
-        const navLinks = document.querySelectorAll('.nav-links a');
-        
-        window.addEventListener('scroll', () => {
-            let current = '';
-            
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                if (window.pageYOffset >= sectionTop - 200) {
-                    current = section.getAttribute('id');
-                }
-            });
-            
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === '#' + current) {
-                    link.classList.add('active');
-                }
-            });
-        });
-        
-        // Hide/show navbar on scroll
-        let lastScroll = 0;
-        const navbar = document.getElementById('navbar');
-        
-        window.addEventListener('scroll', () => {
-            const currentScroll = window.pageYOffset;
-            
-            if (currentScroll > lastScroll && currentScroll > 100) {
-                navbar.classList.add('hidden');
+            if (body.classList.contains('dark-mode')) {
+                body.classList.remove('dark-mode');
+                icon.textContent = '🌙';
             } else {
-                navbar.classList.remove('hidden');
+                body.classList.add('dark-mode');
+                icon.textContent = '☀️';
+            }
+        }
+
+        function openWindow(windowId) {
+            const window = document.getElementById(windowId + '-window');
+            
+            if (!window.classList.contains('active')) {
+                window.classList.add('active');
+                
+                // Position window randomly but visible
+                const x = 100 + Math.random() * 200;
+                const y = 100 + Math.random() * 150;
+                window.style.left = x + 'px';
+                window.style.top = y + 'px';
+                
+                activeWindows.push(windowId);
             }
             
-            lastScroll = currentScroll;
-        });
-        
-        // Form submission
-        document.getElementById('contactForm').addEventListener('submit', (e) => {
-            e.preventDefault();
-            alert('Thank you for your message! I\'ll get back to you soon.');
-            e.target.reset();
-        });
-        
-        // Smooth scroll for logo
-        function scrollToSection(id) {
-            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+            bringToFront(window);
         }
+
+        function closeWindow(windowId) {
+            const window = document.getElementById(windowId + '-window');
+            window.classList.remove('active');
+            activeWindows = activeWindows.filter(id => id !== windowId);
+        }
+
+        function bringToFront(window) {
+            highestZIndex++;
+            window.style.zIndex = highestZIndex;
+        }
+
+        // Improved dragging functionality
+        document.addEventListener('mousedown', function(e) {
+            const header = e.target.closest('.window-header');
+            if (header && !e.target.classList.contains('window-btn')) {
+                draggedWindow = header.parentElement;
+                bringToFront(draggedWindow);
+                
+                const rect = draggedWindow.getBoundingClientRect();
+                offsetX = e.clientX - rect.left;
+                offsetY = e.clientY - rect.top;
+                
+                // Add active class for visual feedback
+                draggedWindow.classList.add('dragging');
+                
+                e.preventDefault(); // Prevent text selection while dragging
+            }
+        });
+
+        document.addEventListener('mousemove', function(e) {
+            if (draggedWindow) {
+                const x = e.clientX - offsetX;
+                const y = e.clientY - offsetY;
+                
+                draggedWindow.style.left = x + 'px';
+                draggedWindow.style.top = y + 'px';
+            }
+        });
+
+        document.addEventListener('mouseup', function() {
+            if (draggedWindow) {
+                draggedWindow.classList.remove('dragging');
+                draggedWindow = null;
+            }
+        });
+
+        // Click window to bring to front
+        document.querySelectorAll('.window').forEach(window => {
+            window.addEventListener('mousedown', function() {
+                bringToFront(this);
+            });
+        });
     </script>
 </body>
 </html>
