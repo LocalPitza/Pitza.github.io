@@ -3,649 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pitza - Portfolio</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow: hidden;
-            transition: background-color 0.5s ease;
-            background: linear-gradient(to bottom, #ffffff 50%, #FFA500 50%);
-        }
-
-        body.dark-mode {
-            background: linear-gradient(to bottom, #1a1a2e 50%, #ff6b35 50%);
-        }
-        
-        body.dark-mode .center-text h1 {
-            color: #fff;
-        }
-        
-        body.dark-mode .center-text p {
-            color: #ccc;
-        }
-        
-        body.dark-mode .icon-label {
-            color: #fff;
-        }
-        
-        body.dark-mode .icon-image {
-            background: rgba(255, 255, 255, 0.15);
-            color: #fff;
-        }
-        
-        body.dark-mode .social-icon {
-            background: rgba(255, 255, 255, 0.15);
-            color: #fff;
-        }
-        
-        body.dark-mode .window {
-            background: #2d2d44;
-            color: #fff;
-        }
-        
-        body.dark-mode .window-content h2 {
-            color: #8b9eff;
-        }
-        
-        body.dark-mode .project-card {
-            background: #3a3a52;
-        }
-        
-        body.dark-mode .project-info h3 {
-            color: #fff;
-        }
-        
-        body.dark-mode .project-info p {
-            color: #aaa;
-        }
-        
-        body.dark-mode .projects-grid::-webkit-scrollbar-track {
-            background: #2d2d44;
-        }
-        
-        body.dark-mode .theme-toggle {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.25);
-        }
-
-        .theme-toggle {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            width: 50px;
-            height: 50px;
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            transition: all 0.3s ease;
-            z-index: 9999;
-        }
-
-        .theme-toggle:hover {
-            transform: scale(1.1);
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        .desktop-icons {
-            position: fixed;
-            top: 100px;
-            left: 30px;
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-            z-index: 100;
-        }
-
-        .desktop-icon {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-            transition: transform 0.2s ease;
-            width: 80px;
-        }
-
-        .desktop-icon:hover {
-            transform: scale(1.1);
-        }
-
-        .icon-image {
-            width: 60px;
-            height: 60px;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 30px;
-            margin-bottom: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: all 0.5s ease;
-        }
-
-        .icon-label {
-            font-size: 12px;
-            color: #333;
-            text-align: center;
-            font-weight: 500;
-            transition: all 0.5s ease;
-        }
-
-        .center-text {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            z-index: 50;
-        }
-
-        .center-text h1 {
-            font-size: 48px;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 10px;
-            transition: all 0.5s ease;
-        }
-
-        .center-text p {
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #666;
-            transition: all 0.5s ease;
-        }
-
-        .social-links {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 20px;
-            z-index: 100;
-        }
-
-        .social-icon {
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            font-size: 20px;
-            color: #333;
-        }
-
-        .social-icon:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .window {
-            position: fixed;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            min-width: 400px;
-            min-height: 300px;
-            display: none;
-            flex-direction: column;
-            transition: all 0.5s ease;
-            transform: translate3d(0, 0, 0); /* Hardware acceleration */
-            will-change: transform; /* Optimize for animations */
-        }
-
-        .window.active {
-            display: flex;
-        }
-
-        .window-header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 12px 15px;
-            border-radius: 8px 8px 0 0;
-            cursor: move;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            user-select: none;
-        }
-
-        .window-title {
-            color: white;
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .window-controls {
-            display: flex;
-            gap: 8px;
-        }
-
-        .window-btn {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: opacity 0.2s;
-        }
-
-        .window-btn:hover {
-            opacity: 0.7;
-        }
-
-        .btn-close {
-            background: #ff5f56;
-        }
-
-        .window-content {
-            padding: 20px;
-            overflow-y: auto;
-            flex: 1;
-        }
-
-        .window-content h2 {
-            margin-bottom: 15px;
-            color: #667eea;
-            transition: all 0.5s ease;
-        }
-
-        .window-content p {
-            line-height: 1.6;
-            margin-bottom: 10px;
-        }
-
-        /* Projects Grid */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            max-height: 400px;
-            overflow-y: auto;
-            padding-right: 10px;
-        }
-
-        .project-card {
-            background: #f5f5f5;
-            border-radius: 8px;
-            overflow: hidden;
-            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.5s ease;
-            cursor: pointer;
-        }
-
-        .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .project-image {
-            width: 100%;
-            height: 120px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
-        }
-
-        .project-info {
-            padding: 12px;
-        }
-
-        .project-info h3 {
-            font-size: 16px;
-            margin-bottom: 5px;
-            color: #333;
-            transition: all 0.5s ease;
-        }
-
-        .project-info p {
-            font-size: 13px;
-            color: #666;
-            margin: 0;
-            transition: all 0.5s ease;
-        }
-
-        /* Links Grid */
-        .links-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-        }
-
-        .link-button {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 8px;
-            text-align: center;
-            text-decoration: none;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .link-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .link-button .icon {
-            font-size: 32px;
-        }
-
-        .link-button .label {
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        /* Scrollbar styling */
-        .projects-grid::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .projects-grid::-webkit-scrollbar-track {
-            background: #f1f1f1;
-            border-radius: 4px;
-        }
-
-        body.dark-mode .projects-grid::-webkit-scrollbar-track {
-            background: #2d2d44;
-        }
-
-        .projects-grid::-webkit-scrollbar-thumb {
-            background: #888;
-            border-radius: 4px;
-        }
-
-        .projects-grid::-webkit-scrollbar-thumb:hover {
-            background: #555;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
+    <title>Game Developer Portfolio</title>
 </head>
 <body>
-    <div class="theme-toggle" onclick="toggleTheme()">
-        <span id="themeIcon">🌙</span>
-    </div>
-
-    <div class="desktop-icons">
-        <div class="desktop-icon" onclick="openWindow('about')">
-            <div class="icon-image">👤</div>
-            <div class="icon-label">About</div>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">GAMEDEV</a>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">HOME</a></li>
+                <li><a href="games.html">GAMES</a></li>
+                <li><a href="about.html">ABOUT</a></li>
+                <li><a href="contact.html">CONTACT</a></li>
+            </ul>
         </div>
-        <div class="desktop-icon" onclick="openWindow('links')">
-            <div class="icon-image">🔗</div>
-            <div class="icon-label">Links</div>
-        </div>
-        <div class="desktop-icon" onclick="openWindow('projects')">
-            <div class="icon-image">🎮</div>
-            <div class="icon-label">Projects</div>
-        </div>
-        <div class="desktop-icon" onclick="openWindow('contacts')">
-            <div class="icon-image">📧</div>
-            <div class="icon-label">Contacts</div>
-        </div>
-    </div>
+    </nav>
 
-    <div class="center-text">
-        <h1>Hello! I'm Pitza</h1>
-        <p>Game Developer and Designer</p>
-    </div>
-
-    <div class="social-links">
-        <a href="https://twitter.com" target="_blank" class="social-icon">𝕏</a>
-        <a href="https://youtube.com" target="_blank" class="social-icon">▶</a>
-        <a href="https://github.com" target="_blank" class="social-icon">⚙</a>
-    </div>
-
-    <!-- Windows -->
-    <div class="window" id="about-window">
-        <div class="window-header">
-            <div class="window-title">About Me</div>
-            <div class="window-controls">
-                <div class="window-btn btn-close" onclick="closeWindow('about')"></div>
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">GAME DEVELOPER</h1>
+            <p class="hero-subtitle">Creating Immersive Interactive Experiences</p>
+            <div class="hero-buttons">
+                <a href="games.html" class="btn btn-primary">View Projects</a>
+                <a href="contact.html" class="btn btn-secondary">Get In Touch</a>
             </div>
         </div>
-        <div class="window-content">
-            <h2>About Me</h2>
-            <p>Hi! I'm Pitza, a passionate game developer and designer.</p>
-            <p>I love creating immersive gaming experiences and bringing creative ideas to life through code and design.</p>
-            <p>My journey in game development has been driven by curiosity and a love for interactive storytelling.</p>
+        <div class="scroll-indicator">
+            <div class="scroll-arrow"></div>
         </div>
-    </div>
+    </section>
 
-    <div class="window" id="links-window">
-        <div class="window-header">
-            <div class="window-title">Links</div>
-            <div class="window-controls">
-                <div class="window-btn btn-close" onclick="closeWindow('links')"></div>
+    <section class="featured-section">
+        <div class="container">
+            <h2 class="section-title">FEATURED PROJECTS</h2>
+            <div class="featured-grid" id="featuredProjects"></div>
+            <div class="text-center">
+                <a href="games.html" class="btn btn-primary">View All Projects</a>
             </div>
         </div>
-        <div class="window-content">
-            <h2>My Links</h2>
-            <div class="links-grid">
-                <a href="https://x.com/KingPItza" target="_blank" class="link-button">
-                    <div class="icon">🐦</div>
-                    <div class="label">Twitter</div>
-                </a>
-                <a href="https://www.youtube.com/@KingPitza" target="_blank" class="link-button">
-                    <div class="icon">📺</div>
-                    <div class="label">YouTube</div>
-                </a>
-                <a href="https://github.com/LocalPitza" target="_blank" class="link-button">
-                    <div class="icon">💻</div>
-                    <div class="label">GitHub</div>
-                </a>
-                <a href="https://pitza.itch.io/" target="_blank" class="link-button">
-                    <div class="icon">🎮</div>
-                    <div class="label">Itch.io</div>
-                </a>
-                <a href="https://www.linkedin.com/in/janmar-cornejo-61722b281/" target="_blank" class="link-button">
-                    <div class="icon">💼</div>
-                    <div class="label">LinkedIn</div>
-                </a>
-            </div>
-        </div>
-    </div>
+    </section>
 
-    <div class="window" id="projects-window">
-        <div class="window-header">
-            <div class="window-title">Projects</div>
-            <div class="window-controls">
-                <div class="window-btn btn-close" onclick="closeWindow('projects')"></div>
-            </div>
-        </div>
-        <div class="window-content">
-            <h2>My Projects</h2>
-            <div class="projects-grid">
-                <div class="project-card">
-                    <div class="project-image">🏰</div>
-                    <div class="project-info">
-                        <h3>RPG Adventure</h3>
-                        <p>An exciting role-playing game with epic quests</p>
-                    </div>
+    <section class="skills-section">
+        <div class="container">
+            <h2 class="section-title">SKILLS & EXPERTISE</h2>
+            <div class="skills-grid">
+                <div class="skill-card">
+                    <div class="skill-icon">🎮</div>
+                    <h3>Game Development</h3>
+                    <p>Unity, C#, Game Design, Level Design</p>
                 </div>
-                <div class="project-card">
-                    <div class="project-image">🧩</div>
-                    <div class="project-info">
-                        <h3>Puzzle Platformer</h3>
-                        <p>Mind-bending puzzles with unique mechanics</p>
-                    </div>
+                <div class="skill-card">
+                    <div class="skill-icon">🎨</div>
+                    <h3>3D Art</h3>
+                    <p>Blender, Maya, 3D Modeling, Animation</p>
                 </div>
-                <div class="project-card">
-                    <div class="project-image">⚔️</div>
-                    <div class="project-info">
-                        <h3>Battle Arena</h3>
-                        <p>Multiplayer combat with strategic gameplay</p>
-                    </div>
+                <div class="skill-card">
+                    <div class="skill-icon">💻</div>
+                    <h3>Programming</h3>
+                    <p>C#, JavaScript, HTML/CSS, PHP</p>
                 </div>
-                <div class="project-card">
-                    <div class="project-image">🌌</div>
-                    <div class="project-info">
-                        <h3>Space Explorer</h3>
-                        <p>Journey through the cosmos in this adventure</p>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-image">🏃</div>
-                    <div class="project-info">
-                        <h3>Endless Runner</h3>
-                        <p>Fast-paced action with procedural generation</p>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-image">🎯</div>
-                    <div class="project-info">
-                        <h3>Arcade Shooter</h3>
-                        <p>Classic arcade action with modern graphics</p>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-image">🧙</div>
-                    <div class="project-info">
-                        <h3>Magic Simulator</h3>
-                        <p>Cast spells and master magical abilities</p>
-                    </div>
-                </div>
-                <div class="project-card">
-                    <div class="project-image">🚗</div>
-                    <div class="project-info">
-                        <h3>Racing Game</h3>
-                        <p>High-speed racing with customizable vehicles</p>
-                    </div>
+                <div class="skill-card">
+                    <div class="skill-icon">🔧</div>
+                    <h3>Tools</h3>
+                    <p>Git, Visual Studio, Photoshop, Illustrator</p>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <div class="window" id="contacts-window">
-        <div class="window-header">
-            <div class="window-title">Contact</div>
-            <div class="window-controls">
-                <div class="window-btn btn-close" onclick="closeWindow('contacts')"></div>
+    <footer class="footer">
+        <div class="container">
+            <div class="social-links">
+                <a href="#" class="social-icon">LinkedIn</a>
+                <a href="#" class="social-icon">GitHub</a>
+                <a href="#" class="social-icon">Itch.io</a>
+                <a href="#" class="social-icon">Twitter</a>
             </div>
+            <p>&copy; 2024 Game Developer Portfolio. All rights reserved.</p>
         </div>
-        <div class="window-content">
-            <h2>Get In Touch</h2>
-            <p>📧 Email: janmarfabilanecornejo@gmail.com</p>
-            <p>💼 LinkedIn: https://www.linkedin.com/in/janmar-cornejo-61722b281/</p>
-            <p>🎮 Discord: Pitza</p>
-            <p>Feel free to reach out for collaborations or just to chat about game dev!</p>
-        </div>
-    </div>
+    </footer>
 
+    <script src="script.js"></script>
     <script>
-        let activeWindows = [];
-        let highestZIndex = 1000;
-        let draggedWindow = null;
-        let offsetX = 0;
-        let offsetY = 0;
-
-        // Initialize with light theme
-        document.body.classList.remove('dark-mode');
-        document.getElementById('themeIcon').textContent = '🌙';
-
-        function toggleTheme() {
-            const body = document.body;
-            const icon = document.getElementById('themeIcon');
-            
-            if (body.classList.contains('dark-mode')) {
-                body.classList.remove('dark-mode');
-                icon.textContent = '🌙';
-            } else {
-                body.classList.add('dark-mode');
-                icon.textContent = '☀️';
-            }
-        }
-
-        function openWindow(windowId) {
-            const window = document.getElementById(windowId + '-window');
-            
-            if (!window.classList.contains('active')) {
-                window.classList.add('active');
-                
-                // Position window randomly but visible
-                const x = 100 + Math.random() * 200;
-                const y = 100 + Math.random() * 150;
-                window.style.left = x + 'px';
-                window.style.top = y + 'px';
-                
-                activeWindows.push(windowId);
-            }
-            
-            bringToFront(window);
-        }
-
-        function closeWindow(windowId) {
-            const window = document.getElementById(windowId + '-window');
-            window.classList.remove('active');
-            activeWindows = activeWindows.filter(id => id !== windowId);
-        }
-
-        function bringToFront(window) {
-            highestZIndex++;
-            window.style.zIndex = highestZIndex;
-        }
-
-        // Improved dragging functionality
-        document.addEventListener('mousedown', function(e) {
-            const header = e.target.closest('.window-header');
-            if (header && !e.target.classList.contains('window-btn')) {
-                draggedWindow = header.parentElement;
-                bringToFront(draggedWindow);
-                
-                const rect = draggedWindow.getBoundingClientRect();
-                offsetX = e.clientX - rect.left;
-                offsetY = e.clientY - rect.top;
-                
-                // Add active class for visual feedback
-                draggedWindow.classList.add('dragging');
-                
-                e.preventDefault(); // Prevent text selection while dragging
-            }
-        });
-
-        document.addEventListener('mousemove', function(e) {
-            if (draggedWindow) {
-                const x = e.clientX - offsetX;
-                const y = e.clientY - offsetY;
-                
-                draggedWindow.style.left = x + 'px';
-                draggedWindow.style.top = y + 'px';
-            }
-        });
-
-        document.addEventListener('mouseup', function() {
-            if (draggedWindow) {
-                draggedWindow.classList.remove('dragging');
-                draggedWindow = null;
-            }
-        });
-
-        // Click window to bring to front
-        document.querySelectorAll('.window').forEach(window => {
-            window.addEventListener('mousedown', function() {
-                bringToFront(this);
-            });
-        });
+        loadFeaturedProjects();
     </script>
 </body>
 </html>
