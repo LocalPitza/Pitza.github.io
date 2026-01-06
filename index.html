@@ -3,89 +3,653 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <title>Game Developer Portfolio</title>
+    <title>YOUR NAME - Game Designer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #1a1a1a url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="4" height="4"><rect width="4" height="4" fill="%23222"/><rect width="2" height="2" fill="%23111"/></svg>');
+            color: #e0e0e0;
+            font-family: 'Courier New', monospace;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 100%);
+            border: 3px solid #00ff00;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+            text-align: center;
+        }
+        
+        h1 {
+            color: #00ff00;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 255, 0, 0.5);
+            margin-bottom: 10px;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { text-shadow: 2px 2px 4px rgba(0, 255, 0, 0.5); }
+            to { text-shadow: 2px 2px 10px rgba(0, 255, 0, 0.8); }
+        }
+        
+        .tagline {
+            color: #ffaa00;
+            font-size: 1.2em;
+            font-style: italic;
+        }
+        
+        nav {
+            background: #2a2a2a;
+            border: 2px solid #00ff00;
+            padding: 15px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        
+        nav a {
+            color: #00ff00;
+            text-decoration: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border: 1px solid #00ff00;
+            background: #1a1a1a;
+            display: inline-block;
+            transition: all 0.3s;
+        }
+        
+        nav a:hover {
+            background: #00ff00;
+            color: #000;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+        }
+        
+        section {
+            background: #2a2a2a;
+            border: 2px solid #666;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        h2 {
+            color: #ffaa00;
+            font-size: 2em;
+            margin-bottom: 15px;
+            border-bottom: 2px dashed #666;
+            padding-bottom: 10px;
+        }
+        
+        .project {
+            background: #1a1a1a;
+            border: 1px solid #444;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        
+        .project:hover {
+            border-color: #00ff00;
+            box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+        }
+
+        .project a {
+            color: #00ff00;
+            text-decoration: none;
+        }
+        
+        .project h3 {
+            color: #00ddff;
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+        
+        .project-meta {
+            color: #999;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        
+        .media-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            margin: 15px 0;
+            background: #000;
+            border: 2px solid #444;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        
+        .slideshow {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        
+        .slide.active {
+            opacity: 1;
+        }
+        
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        .video-overlay.show {
+            opacity: 1;
+        }
+        
+        .video-overlay video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .slideshow-controls {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 5;
+        }
+        
+        .slideshow-controls button {
+            background: rgba(0, 255, 0, 0.3);
+            border: 1px solid #00ff00;
+            color: #00ff00;
+            padding: 5px 15px;
+            cursor: pointer;
+            font-family: 'Courier New', monospace;
+            transition: all 0.3s;
+        }
+        
+        .slideshow-controls button:hover {
+            background: rgba(0, 255, 0, 0.6);
+        }
+        
+        .slide-indicators {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 5px;
+            z-index: 5;
+        }
+        
+        .indicator {
+            width: 10px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .indicator.active {
+            background: #00ff00;
+            border-color: #00ff00;
+        }
+        
+        .hover-hint {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #00ff00;
+            font-size: 0.9em;
+            text-align: center;
+            opacity: 0.7;
+            pointer-events: none;
+            z-index: 3;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+        
+        .contact-info {
+            background: #1a1a1a;
+            border: 1px solid #444;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        
+        .contact-info a {
+            color: #00ff00;
+            text-decoration: none;
+        }
+        
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .blinking {
+            animation: blink 1s infinite;
+        }
+        
+        @keyframes blink {
+            0%, 50%, 100% { opacity: 1; }
+            25%, 75% { opacity: 0; }
+        }
+        
+        .pixel-art {
+            display: inline-block;
+            color: #00ff00;
+            font-size: 1.5em;
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="index.html" class="logo">GAMEDEV</a>
-            <ul class="nav-links">
-                <li><a href="index.html" class="active">HOME</a></li>
-                <li><a href="games.html">GAMES</a></li>
-                <li><a href="about.html">ABOUT</a></li>
-                <li><a href="contact.html">CONTACT</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <section class="hero">
-        <div class="hero-content">
-            <h1 class="hero-title">GAME DEVELOPER</h1>
-            <p class="hero-subtitle">Creating Immersive Interactive Experiences</p>
-            <div class="hero-buttons">
-                <a href="games.html" class="btn btn-primary">View Projects</a>
-                <a href="contact.html" class="btn btn-secondary">Get In Touch</a>
-            </div>
-        </div>
-        <div class="scroll-indicator">
-            <div class="scroll-arrow"></div>
-        </div>
-    </section>
-
-    <section class="featured-section">
-        <div class="container">
-            <h2 class="section-title">FEATURED PROJECTS</h2>
-            <div class="featured-grid" id="featuredProjects"></div>
-            <div class="text-center">
-                <a href="games.html" class="btn btn-primary">View All Projects</a>
-            </div>
-        </div>
-    </section>
-
-    <section class="skills-section">
-        <div class="container">
-            <h2 class="section-title">SKILLS & EXPERTISE</h2>
-            <div class="skills-grid">
-                <div class="skill-card">
-                    <div class="skill-icon">🎮</div>
-                    <h3>Game Development</h3>
-                    <p>Unity, C#, Game Design, Level Design</p>
+    <div class="container">
+        <header>
+            <div class="pixel-art">▓▒░ GAME DESIGNER ░▒▓</div>
+            <h1>Janmar Cornejo</h1>
+            <p class="tagline">// Crafting Interactive Experiences Since 2021 //</p>
+        </header>
+        
+        <nav>
+            <a href="#about">[ ABOUT ]</a>
+            <a href="#projects">[ PROJECTS ]</a>
+            <a href="#contact">[ CONTACT ]</a>
+        </nav>
+        
+        <section id="about">
+            <h2>▸ ABOUT ME</h2>
+            <p>
+                <span class="blinking">►</span> Welcome to my corner of the web! I'm a passionate game designer 
+                specializing in Game Design, Level Design and Game Programming.
+            </p>
+            <p style="margin-top: 15px;">
+                With a love for creating immersive worlds and engaging gameplay mechanics, I bring stories 
+                to life through interactive experiences. My design philosophy focuses on player enjoyment and freedom, 
+                meaningful choices, and emotional resonance.
+            </p>
+            <p style="margin-top: 15px;">
+                <strong>Skills:</strong> Game Design | Level Design | Level Design | Unity | C# | C++ |
+                Prototyping | Playtesting | Documentation
+            </p>
+        </section>
+        
+        <section id="projects">
+            <h2>▸ FEATURED PROJECTS</h2>
+            
+            <div class="project"> <a href="https://pitza.itch.io/lost-voices">
+                <h3>★ Lost Voices</h3>
+                <p class="project-meta">Role: Sole Developer | Engine: Unity | Year: 2024</p>
+                
+                <div class="media-container" data-project="1">
+                    <div class="slideshow">
+                        <div class="slide active">
+                            <img src="assets/images/project1-screenshot1.png" alt="Screenshot 1">
+                        </div>
+                        <div class="slide">
+                            <img src="assets/images/project1-screenshot2.png" alt="Screenshot 2">
+                        </div>
+                        <div class="slide">
+                            <img src="assets/images/project1-screenshot3.png" alt="Screenshot 3">
+                        </div>
+                    </div>
+                    
+                    <div class="video-overlay">
+                        <video loop muted>
+                            <source src="assets/video/project1-preview.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    
+                    <!-- <div class="hover-hint">Hover to see gameplay preview</div> -->
+                    
+                    <div class="slide-indicators">
+                        <div class="indicator active" data-slide="0"></div>
+                        <div class="indicator" data-slide="1"></div>
+                        <div class="indicator" data-slide="2"></div>
+                    </div>
+                    
+                    <div class="slideshow-controls">
+                        <button class="prev">◄ PREV</button>
+                        <button class="next">NEXT ►</button>
+                    </div>
+                    </a>
                 </div>
-                <div class="skill-card">
-                    <div class="skill-icon">🎨</div>
-                    <h3>3D Art</h3>
-                    <p>Blender, Maya, 3D Modeling, Animation</p>
-                </div>
-                <div class="skill-card">
-                    <div class="skill-icon">💻</div>
-                    <h3>Programming</h3>
-                    <p>C#, JavaScript, HTML/CSS, PHP</p>
-                </div>
-                <div class="skill-card">
-                    <div class="skill-icon">🔧</div>
-                    <h3>Tools</h3>
-                    <p>Git, Visual Studio, Photoshop, Illustrator</p>
-                </div>
+                
+                <p>
+                    Lost Voices is an aesthetical video game, inspired by alien isolation. You play as a space station engineer tasked to work on repairing an abandoned station.
+                </p>
             </div>
-        </div>
-    </section>
-
-    <footer class="footer">
-        <div class="container">
-            <div class="social-links">
-                <a href="#" class="social-icon">LinkedIn</a>
-                <a href="#" class="social-icon">GitHub</a>
-                <a href="#" class="social-icon">Itch.io</a>
-                <a href="#" class="social-icon">Twitter</a>
+            
+            <div class="project"> <a href="https://pitza.itch.io/mistake">
+                <h3>★ Mistake</h3>
+                <p class="project-meta">Role: Systems Designer | Engine: Unreal | Year: 2023</p>
+                
+                <div class="media-container" data-project="2">
+                    <div class="slideshow">
+                        <div class="slide active">
+                            <img src="assets/images/project2-screenshot1.jpg" alt="Screenshot 1">
+                        </div>
+                        <div class="slide">
+                            <img src="assets/images/project2-screenshot2.jpg" alt="Screenshot 2">
+                        </div>
+                        <div class="slide">
+                            <img src="assets/images/project2-screenshot3.jpg" alt="Screenshot 3">
+                        </div>
+                    </div>
+                    
+                    <div class="video-overlay">
+                        <video loop muted>
+                            <source src="assets/video/project2-preview.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    
+                    <div class="hover-hint">Hover to see gameplay preview</div>
+                    
+                    <div class="slide-indicators">
+                        <div class="indicator active" data-slide="0"></div>
+                        <div class="indicator" data-slide="1"></div>
+                        <div class="indicator" data-slide="2"></div>
+                    </div>
+                    
+                    <div class="slideshow-controls">
+                        <button class="prev">◄ PREV</button>
+                        <button class="next">NEXT ►</button>
+                    </div>
+                </div>
+                
+                <p>
+                    Is a short first person story game about the effect of a single choice, and its ethical dillema. Your choice decides the end.
+                </p>
+                </a>
             </div>
-            <p>&copy; 2024 Game Developer Portfolio. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
+            
+            <div class="project">
+                <h3>★ Kitty Kultivation</h3> <a href="https://pitza.itch.io/kitty-kultivation">
+                <p class="project-meta">Role: Narrative Designer | Team Size: 5 | Year: 2023</p>
+                
+                <div class="media-container" data-project="3">
+                    <div class="slideshow">
+                        <div class="slide active">
+                            <img src="assets/images/project3-screenshot1.jpg" alt="Screenshot 1">
+                        </div>
+                        <div class="slide">
+                            <img src="assets/images/project3-screenshot2.jpg" alt="Screenshot 2">
+                        </div>
+                        <div class="slide">
+                            <img src="assets/images/project3-screenshot3.jpg" alt="Screenshot 3">
+                        </div>
+                    </div>
+                    
+                    <div class="video-overlay">
+                        <video loop muted>
+                            <source src="assets/video/project3-preview.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    
+                    <!-- <div class="hover-hint">Hover to see gameplay preview</div> -->
+                    
+                    <div class="slide-indicators">
+                        <div class="indicator active" data-slide="0"></div>
+                        <div class="indicator" data-slide="1"></div>
+                        <div class="indicator" data-slide="2"></div>
+                    </div>
+                    
+                    <div class="slideshow-controls">
+                        <button class="prev">◄ PREV</button>
+                        <button class="next">NEXT ►</button>
+                    </div>
+                </div>
+                
+                <p>
+                    Kitty Kultivation is a capstone project about urban gardening and how it can benefit self sustainance on a world plagued by pollution.
+                </p>
+                </a>
+            </div>
+            <div class="project"> <a href="https://pitza.itch.io/cuboids-revolt">
+                <h3>★ Cuboids Revolt</h3>
+                <p class="project-meta">Role: Systems Designer | Engine: Unreal | Year: 2023</p>
+                
+                <div class="media-container" data-project="2">
+                    <div class="slideshow">
+                        <div class="slide active">
+                            <img src="assets/images/project4-screenshot1.jpg" alt="Screenshot 1">
+                        </div>
+                        <div class="slide">
+                            <img src="assets/images/project4-screenshot2.jpg" alt="Screenshot 2">
+                        </div>
+                        <div class="slide">
+                            <img src="assets/images/project4-screenshot3.jpg" alt="Screenshot 3">
+                        </div>
+                    </div>
+                    
+                    <div class="video-overlay">
+                        <video loop muted>
+                            <source src="assets/video/project4-preview.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    
+                    <!-- <div class="hover-hint">Hover to see gameplay preview</div> -->
+                    
+                    <div class="slide-indicators">
+                        <div class="indicator active" data-slide="0"></div>
+                        <div class="indicator" data-slide="1"></div>
+                        <div class="indicator" data-slide="2"></div>
+                    </div>
+                    
+                    <div class="slideshow-controls">
+                        <button class="prev">◄ PREV</button>
+                        <button class="next">NEXT ►</button>
+                    </div>
+                </div>
+                
+                <p>
+                    Another project description showcasing your versatility and problem-solving skills. 
+                    Mention specific mechanics you designed, tools you created, or innovative solutions 
+                    you implemented.
+                </p>
+                </a>
+            </div>
+            <div class="project"> <a href="">
+                <h3>★ GremBox</h3>
+                <p class="project-meta">Role: Systems Designer | Engine: Unreal | Year: 2023</p>
+                
+                <div class="media-container" data-project="2">
+                    <div class="slideshow">
+                        <div class="slide active">
+                            <img src="assets/images/project5-screenshot1.jpg" alt="Screenshot 1">
+                        </div>
+                        <div class="slide">
+                            <img src="assets/images/project5-screenshot2.jpg" alt="Screenshot 2">
+                        </div>
+                        <div class="slide">
+                            <img src="assets/images/project5-screenshot3.jpg" alt="Screenshot 3">
+                        </div>
+                    </div>
+                    
+                    <div class="video-overlay">
+                        <video loop muted>
+                            <source src="assets/video/project5-preview.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    
+                    <!-- <div class="hover-hint">Hover to see gameplay preview</div> -->
+                    
+                    <div class="slide-indicators">
+                        <div class="indicator active" data-slide="0"></div>
+                        <div class="indicator" data-slide="1"></div>
+                        <div class="indicator" data-slide="2"></div>
+                    </div>
+                    
+                    <div class="slideshow-controls">
+                        <button class="prev">◄ PREV</button>
+                        <button class="next">NEXT ►</button>
+                    </div>
+                </div>
+                
+                <p>
+                    Another project description showcasing your versatility and problem-solving skills. 
+                    Mention specific mechanics you designed, tools you created, or innovative solutions 
+                    you implemented.
+                </p>
+                </a>
+            </div>
+            
+        </section>
+        
+        <section id="contact">
+            <h2>▸ GET IN TOUCH</h2>
+            <div class="contact-info">
+                <p><strong>Email:</strong> <a href="mailto:janmarfabilanecornejo@gmail.com">janmarfabilanecornejo@gmail.com</a></p>
+                <!-- <p><strong>Portfolio:</strong> <a href="#" target="_blank">portfolio-site.com</a></p> -->
+                <p><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/janmar-cornejo-61722b281/" target="_blank">linkedin profile</a></p>
+                <!-- <p><strong>Twitter:</strong> <a href="#" target="_blank">@yourgamedev</a></p> -->
+                <p><strong>Itch.io:</strong> <a href="https://pitza.itch.io/" target="_blank">My Itch.io Page</a></p>
+                <p><strong>Github:</strong> <a href="https://github.com/LocalPitza" target="_blank">Github</a></p>
+                <p style="margin-top: 15px; color: #999;">
+                    <span class="blinking">►</span> Always open to collaboration and new opportunities!
+                </p>
+            </div>
+        </section>
+        
+        <footer>
+            <p>▓▒░ Site best viewed in any browser that supports CSS ░▒▓</p>
+            <p>© 2026 JANMAR CORNEJO | Bring back indie websites <span style="color: #ff0000;">♥</span></p>
+        </footer>
+    </div>
+    
     <script>
-        loadFeaturedProjects();
+        class ProjectSlideshow {
+            constructor(container) {
+                this.container = container;
+                this.slideshow = container.querySelector('.slideshow');
+                this.slides = container.querySelectorAll('.slide');
+                this.videoOverlay = container.querySelector('.video-overlay');
+                this.video = this.videoOverlay.querySelector('video');
+                this.indicators = container.querySelectorAll('.indicator');
+                this.prevBtn = container.querySelector('.prev');
+                this.nextBtn = container.querySelector('.next');
+                this.currentSlide = 0;
+                this.isHovering = false;
+                
+                this.init();
+            }
+            
+            init() {
+                // Navigation buttons
+                this.prevBtn.addEventListener('click', () => this.changeSlide(-1));
+                this.nextBtn.addEventListener('click', () => this.changeSlide(1));
+                
+                // Indicators
+                this.indicators.forEach((indicator, index) => {
+                    indicator.addEventListener('click', () => this.goToSlide(index));
+                });
+                
+                // Hover for video
+                this.container.addEventListener('mouseenter', () => this.showVideo());
+                this.container.addEventListener('mouseleave', () => this.hideVideo());
+                
+                // Auto-advance slideshow
+                this.startAutoAdvance();
+            }
+            
+            changeSlide(direction) {
+                this.currentSlide += direction;
+                
+                if (this.currentSlide < 0) {
+                    this.currentSlide = this.slides.length - 1;
+                } else if (this.currentSlide >= this.slides.length) {
+                    this.currentSlide = 0;
+                }
+                
+                this.updateSlideshow();
+            }
+            
+            goToSlide(index) {
+                this.currentSlide = index;
+                this.updateSlideshow();
+            }
+            
+            updateSlideshow() {
+                this.slides.forEach((slide, index) => {
+                    slide.classList.toggle('active', index === this.currentSlide);
+                });
+                
+                this.indicators.forEach((indicator, index) => {
+                    indicator.classList.toggle('active', index === this.currentSlide);
+                });
+            }
+            
+            showVideo() {
+                this.isHovering = true;
+                setTimeout(() => {
+                    if (this.isHovering) {
+                        this.videoOverlay.classList.add('show');
+                        this.video.play();
+                    }
+                }, 300); // Fade delay
+            }
+            
+            hideVideo() {
+                this.isHovering = false;
+                this.videoOverlay.classList.remove('show');
+                this.video.pause();
+                this.video.currentTime = 0;
+            }
+            
+            startAutoAdvance() {
+                setInterval(() => {
+                    if (!this.isHovering) {
+                        this.changeSlide(1);
+                    }
+                }, 4000);
+            }
+        }
+        
+        // Initialize all project slideshows
+        document.querySelectorAll('.media-container').forEach(container => {
+            new ProjectSlideshow(container);
+        });
     </script>
 </body>
 </html>
