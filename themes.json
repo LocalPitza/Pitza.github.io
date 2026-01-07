@@ -1,0 +1,14 @@
+{
+  "pastelOrange": {
+    "bgMain": "#f4efe9",
+    "bgSecondary": "#e9e2d8",
+    "bgCard": "#ded6cb",
+
+    "accentMain": "#d08c60",
+    "accentSoft": "#e0b089",
+    "accentStrong": "#b36a3c",
+
+    "textMain": "#2e2420",
+    "textMuted": "#6b5c55"
+  }
+}

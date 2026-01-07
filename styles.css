@@ -1,0 +1,395 @@
+/* ==============================
+   CSS VARIABLES (THEMES)
+================================ */
+
+:root {
+    --bg-main: #1c1c1c;
+    --bg-secondary: #242424;
+
+    --text-main: #e6e6e6;
+    --text-muted: #b5b5b5;
+
+    --accent-main: #f4b183;      /* pastel orange */
+    --accent-strong: #ffb070;
+    --accent-soft: #f6c7a1;
+
+    --border-main: #333;
+    --shadow-soft: rgba(0, 0, 0, 0.4);
+}
+
+body.light {
+    --bg-main: #f7f3ef;
+    --bg-secondary: #ffffff;
+
+    --text-main: #2a2a2a;
+    --text-muted: #555;
+
+    --accent-main: #e39a63;
+    --accent-strong: #d9834a;
+    --accent-soft: #f3c09a;
+
+    --border-main: #ddd;
+    --shadow-soft: rgba(0, 0, 0, 0.12);
+}
+
+/* ==============================
+   BASE STYLES
+================================ */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--bg-main);
+    color: var(--text-main);
+    font-family: "Courier New", monospace;
+    transition: background 0.3s, color 0.3s;
+}
+
+a {
+    color: var(--accent-main);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--accent-strong);
+}
+
+.container {
+    max-width: 1000px;
+    margin: auto;
+    padding: 25px;
+}
+
+/* ==============================
+   HEADER
+================================ */
+
+header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.pixel-art {
+    color: var(--accent-soft);
+    font-size: 0.9em;
+}
+
+h1 {
+    margin: 10px 0 5px;
+}
+
+.tagline {
+    color: var(--text-muted);
+}
+
+/* ==============================
+   NAVIGATION
+================================ */
+
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+}
+
+nav a,
+nav button {
+    background: none;
+    border: 1px solid var(--border-main);
+    color: var(--text-main);
+    padding: 6px 12px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+nav a:hover,
+nav button:hover {
+    border-color: var(--accent-main);
+    color: var(--accent-main);
+}
+
+/* ==============================
+   SECTIONS
+================================ */
+
+section {
+    margin-bottom: 45px;
+}
+
+h2 {
+    color: var(--accent-main);
+    margin-bottom: 15px;
+}
+
+/* ==============================
+   BLINKING CARET
+================================ */
+
+.blinking {
+    animation: blink 1s steps(2, start) infinite;
+}
+
+@keyframes blink {
+    to {
+        visibility: hidden;
+    }
+}
+
+/* ==============================
+   SLIDESHOW / VIDEO SYSTEM
+================================ */
+
+.media-container {
+    position: relative;
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-main);
+    border-radius: 8px;
+    overflow: hidden;
+    height: 100%;
+    min-height: 300px;
+}
+
+/* --- VIDEO --- */
+.video-slide {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+}
+
+.video-slide video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: var(--bg-secondary);
+}
+
+.video-slide.active {
+    z-index: 3;
+}
+
+/* --- SLIDES --- */
+.slideshow {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+}
+
+.slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.4s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-secondary);
+}
+
+.slide.active {
+    opacity: 1;
+}
+
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background: var(--bg-secondary);
+}
+
+/* Fallback for broken images */
+.slide img::before {
+    content: '🎮 Image Preview';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-secondary);
+    color: var(--text-muted);
+    font-size: 1.2em;
+}
+
+/* --- CONTROLS --- */
+.slideshow-controls {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    display: flex;
+    gap: 6px;
+    z-index: 4;
+}
+
+.slideshow-controls button {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-main);
+    color: var(--text-main);
+    cursor: pointer;
+    padding: 5px 10px;
+    font-family: inherit;
+}
+
+.slideshow-controls button:hover {
+    background: var(--accent-main);
+    color: var(--bg-main);
+}
+
+/* --- INDICATORS --- */
+.slide-indicators {
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    display: flex;
+    gap: 5px;
+    z-index: 4;
+}
+
+.indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--border-main);
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.indicator:hover {
+    background: var(--accent-soft);
+}
+
+.indicator.active {
+    background: var(--accent-main);
+}
+
+/* ==============================
+   FEATURED PROJECTS (ABOUT)
+================================ */
+
+.featured-project {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    align-items: center;
+    margin-bottom: 50px;
+}
+
+.featured-project.left {
+    grid-template-areas: "media content";
+}
+
+.featured-project.right {
+    grid-template-areas: "content media";
+}
+
+.featured-media {
+    grid-area: media;
+    height: 320px;
+}
+
+.featured-content {
+    grid-area: content;
+    background: var(--bg-secondary);
+    padding: 25px;
+    border-radius: 10px;
+    border: 1px solid var(--border-main);
+    box-shadow: 0 8px 25px var(--shadow-soft);
+}
+
+.featured-content h3 {
+    margin-top: 0;
+    color: var(--accent-strong);
+}
+
+.featured-meta {
+    color: var(--text-muted);
+    font-size: 0.9em;
+    margin-bottom: 10px;
+}
+
+/* ==============================
+   PROJECTS PAGE CARDS
+================================ */
+
+.project {
+    margin-bottom: 40px;
+}
+
+.project h3 {
+    color: var(--accent-main);
+}
+
+.project-meta {
+    color: var(--text-muted);
+    font-size: 0.9em;
+    margin-bottom: 15px;
+}
+
+.project .media-container {
+    margin: 15px 0;
+    height: 400px;
+}
+
+/* ==============================
+   CONTACT
+================================ */
+
+.contact-info p {
+    margin: 6px 0;
+}
+
+.contact-note {
+    margin-top: 15px;
+    color: var(--text-muted);
+}
+
+/* ==============================
+   FOOTER
+================================ */
+
+footer {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.8em;
+    margin-top: 40px;
+}
+
+/* ==============================
+   CLICK COUNTER
+================================ */
+
+.click-counter {
+    position: fixed;
+    bottom: 12px;
+    right: 12px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-main);
+    padding: 6px 10px;
+    font-size: 0.85em;
+    box-shadow: 0 5px 15px var(--shadow-soft);
+    border-radius: 4px;
+}
+
+/* ==============================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 768px) {
+    .featured-project {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "media"
+            "content";
+    }
+
+    .featured-media {
+        height: 260px;
+    }
+    
+    .project .media-container {
+        height: 300px;
+    }
+}
