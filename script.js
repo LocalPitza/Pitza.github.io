@@ -14,15 +14,16 @@ fetch("themes.json")
     });
 
 /* ==============================
-   LIGHT / DARK MODE - FIXED
+   LIGHT / DARK MODE - FIXED (DEFAULT: DARK)
 ================================ */
 const toggle = document.getElementById("themeToggle");
 const saved = localStorage.getItem("theme");
 
-// Apply saved theme on load
+// Apply saved theme on load, default to dark mode
 if (saved === "light") {
     document.body.classList.add("light");
 } else {
+    // Explicitly remove light class to ensure dark mode is default
     document.body.classList.remove("light");
 }
 
