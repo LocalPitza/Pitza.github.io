@@ -1,14 +1,22 @@
+/* ==============================
+   DEBUG & PATH FIX FOR GITHUB PAGES
+================================ */
+
 console.log("=== THEME DEBUG ===");
 console.log("LocalStorage theme:", localStorage.getItem("theme"));
 console.log("Body has 'light' class?", document.body.classList.contains("light"));
 
+// Fix for GitHub Pages path issues
 function getBasePath() {
+    // If we're on GitHub Pages (github.io domain)
     if (window.location.hostname.includes('github.io')) {
         const pathParts = window.location.pathname.split('/');
+        // Usually pattern is: /username/repo-name/
         if (pathParts.length > 2 && pathParts[1] && pathParts[2]) {
             return '/' + pathParts[1] + '/' + pathParts[2];
         }
     }
+    // Local development or root domain
     return '';
 }
 
@@ -16,7 +24,7 @@ const basePath = getBasePath();
 console.log("Base path for assets:", basePath || '(root)');
 
 /* ==============================
-   THEME FROM JSON
+   THEME SYSTEM - COMPLETE FIX
 ================================ */
 
 function loadThemeFromJSON() {
@@ -31,80 +39,135 @@ function loadThemeFromJSON() {
         })
         .then(data => {
             console.log("Theme JSON loaded successfully");
-            applyTheme(data.pastelOrange);
+            // Store both themes globally
+            window.themes = data;
+            
+            // Apply initial theme based on saved preference
+            applyInitialTheme();
         })
         .catch(err => {
             console.warn("Failed to load themes.json, using fallback:", err.message);
-            // FALLBACK THEME (matches your JSON)
-            const fallbackTheme = {
-                'bg-main': '#f4efe9',
-                'bg-secondary': '#e9e2d8',
-                'bg-card': '#ded6cb',
-                'accent-main': '#d08c60',
-                'accent-soft': '#e0b089',
-                'accent-strong': '#b36a3c',
-                'text-main': '#2e2420',
-                'text-muted': '#6b5c55'
-            };
-            applyTheme(fallbackTheme);
+            useFallbackThemes();
         });
 }
 
-function applyTheme(themeData) {
-    console.log("Applying theme:", themeData);
+function applyInitialTheme() {
+    const savedTheme = localStorage.getItem("theme");
+    console.log("Saved theme preference:", savedTheme || "none (using default)");
+    
+    // Default to DARK mode if not saved
+    const themeToApply = savedTheme === "light" ? "light" : "dark";
+    
+    console.log("Applying initial theme:", themeToApply);
+    applyThemeVars(themeToApply);
+    
+    // Set body class - REMOVE light class for dark mode
+    if (themeToApply === "light") {
+        document.body.classList.add("light");
+    } else {
+        document.body.classList.remove("light"); // Ensure light class is removed
+    }
+    
+    // Update button text
+    updateThemeButton();
+}
+
+function applyThemeVars(themeKey) {
+    if (!window.themes || !window.themes[themeKey]) {
+        console.error("Theme not found:", themeKey);
+        return;
+    }
+    
+    const themeData = window.themes[themeKey];
+    console.log("Applying theme variables for:", themeKey, themeData);
+    
     Object.entries(themeData).forEach(([key, value]) => {
-        // Convert camelCase to kebab-case for CSS variables
         const cssVar = key.replace(/[A-Z]/g, m => "-" + m.toLowerCase());
         document.documentElement.style.setProperty(`--${cssVar}`, value);
     });
-    console.log("Theme variables applied");
+}
+
+function useFallbackThemes() {
+    console.log("Using fallback themes");
+    
+    // Hardcoded fallback themes (same as JSON structure)
+    window.themes = {
+        light: {
+            'bgMain': '#f4efe9',
+            'bgSecondary': '#e9e2d8',
+            'bgCard': '#ded6cb',
+            'accentMain': '#d08c60',
+            'accentSoft': '#e0b089',
+            'accentStrong': '#b36a3c',
+            'textMain': '#2e2420',
+            'textMuted': '#6b5c55'
+        },
+        dark: {
+            'bgMain': '#1c1c1c',
+            'bgSecondary': '#242424',
+            'bgCard': '#2a2a2a',
+            'accentMain': '#f4b183',
+            'accentSoft': '#f6c7a1',
+            'accentStrong': '#ffb070',
+            'textMain': '#e6e6e6',
+            'textMuted': '#b5b5b5'
+        }
+    };
+    
+    applyInitialTheme();
+}
+
+function updateThemeButton() {
+    const themeToggle = document.getElementById("themeToggle");
+    if (!themeToggle) return;
+    
+    const isLight = document.body.classList.contains("light");
+    themeToggle.textContent = isLight ? "☾" : "☀";
+    console.log("Theme button updated to:", themeToggle.textContent);
 }
 
 // Load theme immediately
 loadThemeFromJSON();
 
 /* ==============================
-   LIGHT / DARK MODE TOGGLE
+   LIGHT / DARK MODE TOGGLE - FIXED
 ================================ */
 
 const themeToggle = document.getElementById("themeToggle");
-const savedTheme = localStorage.getItem("theme");
 
-console.log("Initial saved theme:", savedTheme);
-
-// Apply saved theme on load
-if (savedTheme === "light") {
-    document.body.classList.add("light");
-    console.log("Applied light theme from localStorage");
-} else {
-    document.body.classList.remove("light");
-    console.log("Applied dark theme (default)");
-}
-
-// Toggle functionality
 if (themeToggle) {
     console.log("Theme toggle button found");
     
+    // Set initial button text after a short delay
+    setTimeout(() => {
+        updateThemeButton();
+    }, 100);
+    
     themeToggle.addEventListener("click", () => {
-        console.log("Toggle clicked!");
+        console.log("Theme toggle clicked!");
         
-        // Toggle the class
+        // Toggle the light class
         document.body.classList.toggle("light");
         
-        // Save preference
+        // Get current mode
         const isLight = document.body.classList.contains("light");
-        localStorage.setItem("theme", isLight ? "light" : "dark");
+        const themeKey = isLight ? "light" : "dark";
         
-        console.log("Theme toggled to:", isLight ? "light" : "dark");
-        console.log("Body classes:", document.body.className);
+        console.log("Switching to theme:", themeKey);
         
-        // Optional: Visual feedback
-        themeToggle.textContent = isLight ? "☾" : "☀";
+        // Save preference to localStorage
+        localStorage.setItem("theme", themeKey);
+        
+        // Apply the correct theme variables
+        applyThemeVars(themeKey);
+        
+        // Update button text
+        updateThemeButton();
+        
+        // Log final state
+        console.log("Theme switched successfully to:", themeKey);
+        console.log("Body classes now:", document.body.className);
     });
-    
-    // Set initial button text
-    const isLightInitially = document.body.classList.contains("light");
-    themeToggle.textContent = isLightInitially ? "☾" : "☀";
 } else {
     console.error("Theme toggle button NOT found!");
 }
@@ -117,23 +180,18 @@ let clickCount = 0;
 const clickCounterElement = document.getElementById("clickCounter");
 const clickCountElement = document.getElementById("clickCount");
 
-console.log("Click counter elements:", {
-    counter: clickCounterElement,
-    count: clickCountElement
-});
-
 if (clickCounterElement && clickCountElement) {
+    console.log("Click counter initialized");
+    
     document.body.addEventListener("click", (event) => {
         // Don't count clicks on theme toggle
-        if (event.target === themeToggle || themeToggle.contains(event.target)) {
+        if (event.target === themeToggle || themeToggle?.contains(event.target)) {
             return;
         }
         
         clickCount++;
         clickCountElement.textContent = clickCount;
         clickCounterElement.classList.add("show");
-        
-        console.log("Click registered, total:", clickCount);
         
         setTimeout(() => {
             clickCounterElement.classList.remove("show");
@@ -152,12 +210,10 @@ const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.classList.add("reveal");
-            console.log("Element revealed:", entry.target);
         }
     });
 }, { threshold: 0.15 });
 
-// Observe all sections and projects
 document.querySelectorAll("section, .project").forEach(el => {
     observer.observe(el);
 });
@@ -182,42 +238,19 @@ class ProjectSlideshow {
         this.currentIndex = 0;
         this.hasVideo = false;
         
-        console.log(`Slideshow initialized for ${this.mode} mode`);
-        
         // Check video
         if (this.video) {
             const source = this.video.querySelector('source');
             if (source && source.src) {
-                // Check if video exists by trying to load it
-                this.checkVideoExists(source.src).then(exists => {
-                    this.hasVideo = exists;
-                    this.init();
-                }).catch(() => {
-                    this.hasVideo = false;
-                    this.init();
-                });
-            } else {
-                this.hasVideo = false;
-                this.init();
+                this.hasVideo = true;
             }
-        } else {
-            this.init();
         }
-    }
-
-    async checkVideoExists(url) {
-        try {
-            const response = await fetch(url, { method: 'HEAD' });
-            return response.ok;
-        } catch {
-            return false;
-        }
+        
+        this.init();
     }
 
     init() {
-        console.log(`Slideshow init - Has video: ${this.hasVideo}`);
-        
-        // Always start with first image
+        // Start with first image
         this.showSlide(0);
         
         // Hide video if not available
@@ -227,37 +260,28 @@ class ProjectSlideshow {
         
         // Setup video if available
         if (this.video && this.hasVideo) {
-            this.video.load(); // Preload
+            this.video.load();
             this.video.onended = () => {
-                console.log("Video ended, showing first slide");
                 this.showSlide(0);
             };
         }
 
         // Event listeners
         if (this.prevBtn) {
-            this.prevBtn.addEventListener('click', () => {
-                console.log("Previous button clicked");
-                this.changeSlide(-1);
-            });
+            this.prevBtn.addEventListener('click', () => this.changeSlide(-1));
         }
         
         if (this.nextBtn) {
-            this.nextBtn.addEventListener('click', () => {
-                console.log("Next button clicked");
-                this.changeSlide(1);
-            });
+            this.nextBtn.addEventListener('click', () => this.changeSlide(1));
         }
 
         this.indicators.forEach(indicator => {
             indicator.addEventListener('click', () => {
                 if (indicator.dataset.slide === 'video' && this.hasVideo) {
-                    console.log("Video indicator clicked");
                     this.currentIndex = -1;
                     this.showVideo();
                 } else if (indicator.dataset.slide !== 'video') {
                     const slideNum = parseInt(indicator.dataset.slide);
-                    console.log(`Slide ${slideNum} indicator clicked`);
                     this.goToSlide(slideNum);
                 }
             });
@@ -265,18 +289,13 @@ class ProjectSlideshow {
     }
 
     showVideo() {
-        if (!this.hasVideo) {
-            console.warn("showVideo called but hasVideo is false");
-            return;
-        }
+        if (!this.hasVideo) return;
         
-        console.log("Showing video");
         this.videoSlide.classList.add('active');
         this.slides.forEach(s => s.classList.remove('active'));
         
         this.video.currentTime = 0;
-        this.video.play().catch(err => {
-            console.warn("Video play failed:", err);
+        this.video.play().catch(() => {
             this.showSlide(0);
         });
         
@@ -299,8 +318,6 @@ class ProjectSlideshow {
         if (this.currentIndex < min) this.currentIndex = total - 1;
         if (this.currentIndex >= total) this.currentIndex = min;
 
-        console.log(`Changing slide to index: ${this.currentIndex}`);
-
         if (this.currentIndex === -1 && this.hasVideo) {
             this.showVideo();
         } else {
@@ -310,14 +327,12 @@ class ProjectSlideshow {
     }
 
     goToSlide(i) {
-        console.log(`Going directly to slide ${i}`);
         this.currentIndex = i;
         this.hideVideo();
         this.showSlide(i);
     }
 
     showSlide(i) {
-        console.log(`Showing slide ${i}`);
         this.slides.forEach((s, idx) => {
             s.classList.toggle('active', idx === i);
         });
@@ -347,11 +362,4 @@ document.querySelectorAll('.media-container').forEach(container => {
 });
 
 console.log("All slideshows initialized");
-
-/* ==============================
-   FINAL INIT LOG
-================================ */
-
-console.log("=== SCRIPT LOADED SUCCESSFULLY ===");
-console.log("Page URL:", window.location.href);
-console.log("User agent:", navigator.userAgent);
+console.log("=== SCRIPT LOADED COMPLETELY ===");

@@ -1,14 +1,22 @@
 {
-  "pastelOrange": {
+  "light": {
     "bgMain": "#f4efe9",
     "bgSecondary": "#e9e2d8",
     "bgCard": "#ded6cb",
-
     "accentMain": "#d08c60",
     "accentSoft": "#e0b089",
     "accentStrong": "#b36a3c",
-
     "textMain": "#2e2420",
     "textMuted": "#6b5c55"
+  },
+  "dark": {
+    "bgMain": "#1c1c1c",
+    "bgSecondary": "#242424",
+    "bgCard": "#2a2a2a",
+    "accentMain": "#f4b183",
+    "accentSoft": "#f6c7a1",
+    "accentStrong": "#ffb070",
+    "textMain": "#e6e6e6",
+    "textMuted": "#b5b5b5"
   }
 }

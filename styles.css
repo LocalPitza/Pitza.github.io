@@ -3,31 +3,36 @@
 ================================ */
 
 :root {
+    /* Default fallback colors in case JS fails */
     --bg-main: #1c1c1c;
     --bg-secondary: #242424;
-
+    --bg-card: #2a2a2a;
+    
     --text-main: #e6e6e6;
     --text-muted: #b5b5b5;
-
-    --accent-main: #f4b183;      /* pastel orange */
+    
+    --accent-main: #f4b183;
     --accent-strong: #ffb070;
     --accent-soft: #f6c7a1;
-
+    
     --border-main: #333;
     --shadow-soft: rgba(0, 0, 0, 0.4);
 }
 
 body.light {
+    /* Light mode will be applied via JavaScript */
+    /* These are just fallbacks */
     --bg-main: #f7f3ef;
     --bg-secondary: #ffffff;
-
+    --bg-card: #f0e9df;
+    
     --text-main: #2a2a2a;
     --text-muted: #555;
-
+    
     --accent-main: #e39a63;
     --accent-strong: #d9834a;
     --accent-soft: #f3c09a;
-
+    
     --border-main: #ddd;
     --shadow-soft: rgba(0, 0, 0, 0.12);
 }
