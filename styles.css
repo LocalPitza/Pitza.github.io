@@ -56,11 +56,17 @@ body {
     overflow-x: hidden;
 }
 
+/* ==============================
+   LINKS - FIXED
+================================ */
+
 a {
     color: var(--accent-main);
     text-decoration: none;
     transition: all var(--transition-speed) ease;
     position: relative;
+    display: inline-block;
+    z-index: 2;
 }
 
 a:hover {
@@ -78,6 +84,7 @@ a::after {
     height: 2px;
     background: var(--accent-main);
     transition: width var(--transition-speed) ease;
+    z-index: 1;
 }
 
 a:hover::after {
@@ -154,7 +161,7 @@ h1:hover {
 }
 
 /* ==============================
-   NAVIGATION - ENHANCED
+   NAVIGATION - ENHANCED & FIXED
 ================================ */
 
 nav {
@@ -176,6 +183,7 @@ nav button {
     position: relative;
     overflow: hidden;
     transition: all var(--transition-speed) ease;
+    z-index: 10;
 }
 
 nav a::before,
@@ -188,6 +196,7 @@ nav button::before {
     height: 100%;
     background: linear-gradient(90deg, transparent, var(--glow-color), transparent);
     transition: left 0.5s ease;
+    z-index: -1;
 }
 
 nav a:hover::before,
@@ -272,7 +281,7 @@ h2:hover {
 }
 
 /* ==============================
-   SLIDESHOW / VIDEO SYSTEM - ENHANCED
+   SLIDESHOW / VIDEO SYSTEM - FIXED
 ================================ */
 
 .media-container {
@@ -285,6 +294,7 @@ h2:hover {
     min-height: 300px;
     transition: all var(--transition-speed) ease;
     box-shadow: 0 4px 15px var(--shadow-soft);
+    /* REMOVED: pointer-events: none; */
 }
 
 .media-container:hover {
@@ -348,15 +358,15 @@ h2:hover {
     transform: scale(1.05);
 }
 
-/* CONTROLS - ENHANCED */
+/* CONTROLS - ENHANCED & FIXED */
 .slideshow-controls {
     position: absolute;
     bottom: 12px;
     right: 12px;
     display: flex;
     gap: 8px;
-    z-index: 4;
-    opacity: 0;
+    z-index: 100;
+    opacity: 0.7;
     transition: opacity var(--transition-speed) ease;
 }
 
@@ -375,6 +385,7 @@ h2:hover {
     border-radius: 6px;
     transition: all var(--transition-speed) ease;
     backdrop-filter: blur(10px);
+    z-index: 101;
 }
 
 .slideshow-controls button:hover {
@@ -395,7 +406,7 @@ h2:hover {
     left: 12px;
     display: flex;
     gap: 8px;
-    z-index: 4;
+    z-index: 100;
 }
 
 .indicator {
@@ -406,6 +417,7 @@ h2:hover {
     cursor: pointer;
     transition: all var(--transition-speed) ease;
     border: 2px solid transparent;
+    z-index: 101;
 }
 
 .indicator:hover {
@@ -422,7 +434,7 @@ h2:hover {
 }
 
 /* ==============================
-   FEATURED PROJECTS - ENHANCED
+   FEATURED PROJECTS - ENHANCED & FIXED
 ================================ */
 
 .featured-project {
@@ -473,6 +485,7 @@ h2:hover {
     transition: all var(--transition-speed) ease;
     position: relative;
     overflow: hidden;
+    z-index: 1;
 }
 
 .featured-content::before {
@@ -484,6 +497,7 @@ h2:hover {
     height: 100%;
     background: linear-gradient(90deg, transparent, var(--glow-color), transparent);
     transition: left 0.6s ease;
+    z-index: -1;
 }
 
 .featured-content:hover::before {
@@ -494,6 +508,11 @@ h2:hover {
     transform: translateY(-5px);
     box-shadow: 0 12px 35px var(--shadow-soft), 0 0 20px var(--glow-color);
     border-color: var(--accent-main);
+}
+
+.featured-content * {
+    position: relative;
+    z-index: 2;
 }
 
 .featured-content h3 {
@@ -514,7 +533,7 @@ h2:hover {
 }
 
 /* ==============================
-   PROJECTS PAGE CARDS - ENHANCED
+   PROJECTS PAGE CARDS - ENHANCED & FIXED
 ================================ */
 
 .project {
@@ -525,6 +544,8 @@ h2:hover {
     border: 2px solid var(--border-main);
     transition: all var(--transition-speed) ease;
     box-shadow: 0 4px 15px var(--shadow-soft);
+    position: relative;
+    z-index: 1;
 }
 
 .project:hover {
@@ -536,6 +557,8 @@ h2:hover {
 .project h3 {
     color: var(--accent-main);
     transition: all var(--transition-speed) ease;
+    position: relative;
+    z-index: 2;
 }
 
 .project h3:hover {
@@ -555,7 +578,7 @@ h2:hover {
 }
 
 /* ==============================
-   CONTACT - ENHANCED
+   CONTACT - ENHANCED & FIXED
 ================================ */
 
 .contact-info p {
@@ -563,12 +586,17 @@ h2:hover {
     transition: all var(--transition-speed) ease;
     padding: 5px;
     border-radius: 4px;
+    position: relative;
 }
 
 .contact-info p:hover {
     background: var(--bg-secondary);
     transform: translateX(10px);
     padding-left: 15px;
+}
+
+.contact-info p a {
+    z-index: 10;
 }
 
 .contact-note {
@@ -592,7 +620,7 @@ footer {
 }
 
 /* ==============================
-   CLICK COUNTER - ENHANCED
+   CLICK COUNTER - ENHANCED & FIXED
 ================================ */
 
 .click-counter {
@@ -607,6 +635,7 @@ footer {
     border-radius: 8px;
     transition: all var(--transition-speed) ease;
     backdrop-filter: blur(10px);
+    z-index: 1000;
 }
 
 .click-counter:hover {
@@ -628,7 +657,7 @@ footer {
 }
 
 /* ==============================
-   RESUME PAGE - ENHANCED
+   RESUME PAGE - ENHANCED & FIXED
 ================================ */
 
 .resume-download {
@@ -639,6 +668,8 @@ footer {
     border-radius: 12px;
     border: 2px solid var(--border-main);
     transition: all var(--transition-speed) ease;
+    position: relative;
+    z-index: 1;
 }
 
 .resume-download:hover {
@@ -657,6 +688,8 @@ footer {
     border: 2px solid transparent;
     position: relative;
     overflow: hidden;
+    z-index: 10;
+    cursor: pointer;
 }
 
 .download-btn::before {
@@ -670,6 +703,7 @@ footer {
     background: rgba(255, 255, 255, 0.3);
     transform: translate(-50%, -50%);
     transition: width 0.5s ease, height 0.5s ease;
+    z-index: -1;
 }
 
 .download-btn:hover::before {
@@ -720,18 +754,24 @@ footer {
     border: 2px solid var(--border-main);
     transition: all var(--transition-speed) ease;
     box-shadow: 0 4px 15px var(--shadow-soft);
+    position: relative;
+    overflow: visible;
+    z-index: 1;
 }
 
 .resume-section:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 25px var(--shadow-soft), 0 0 20px var(--glow-color);
     border-color: var(--accent-soft);
+    z-index: 2;
 }
 
 .resume-section h3 {
     color: var(--accent-main);
     margin-top: 0;
     margin-bottom: 15px;
+    position: relative;
+    z-index: 2;
 }
 
 .skills-grid {
@@ -747,12 +787,15 @@ footer {
     border-radius: 10px;
     border: 2px solid var(--border-main);
     transition: all var(--transition-speed) ease;
+    position: relative;
+    z-index: 1;
 }
 
 .skill-category:hover {
     transform: translateY(-5px) scale(1.02);
     border-color: var(--accent-main);
     box-shadow: 0 8px 20px var(--shadow-soft), 0 0 15px var(--glow-color);
+    z-index: 2;
 }
 
 .skill-category h4 {
@@ -761,6 +804,8 @@ footer {
     margin-bottom: 12px;
     font-size: 1em;
     transition: color var(--transition-speed) ease;
+    position: relative;
+    z-index: 2;
 }
 
 .skill-category:hover h4 {
@@ -776,6 +821,8 @@ footer {
     margin-bottom: 6px;
     color: var(--text-main);
     transition: all var(--transition-speed) ease;
+    position: relative;
+    z-index: 2;
 }
 
 .skill-category li:hover {
@@ -790,11 +837,14 @@ footer {
     border-bottom: 1px solid var(--border-main);
     transition: all var(--transition-speed) ease;
     border-radius: 8px;
+    position: relative;
+    z-index: 1;
 }
 
 .experience-item:hover {
     background: var(--bg-main);
     transform: translateX(5px);
+    z-index: 2;
 }
 
 .experience-item:last-child {
@@ -805,6 +855,8 @@ footer {
     color: var(--accent-strong);
     margin-bottom: 5px;
     transition: color var(--transition-speed) ease;
+    position: relative;
+    z-index: 2;
 }
 
 .experience-item:hover h4 {
@@ -827,6 +879,8 @@ footer {
     margin-bottom: 6px;
     color: var(--text-main);
     transition: all var(--transition-speed) ease;
+    position: relative;
+    z-index: 2;
 }
 
 .experience-item li:hover {
@@ -839,17 +893,22 @@ footer {
     padding: 15px;
     transition: all var(--transition-speed) ease;
     border-radius: 8px;
+    position: relative;
+    z-index: 1;
 }
 
 .education-item:hover {
     background: var(--bg-main);
     transform: translateX(5px);
+    z-index: 2;
 }
 
 .education-item h4 {
     color: var(--accent-strong);
     margin-bottom: 5px;
     transition: color var(--transition-speed) ease;
+    position: relative;
+    z-index: 2;
 }
 
 .education-item:hover h4 {
@@ -926,10 +985,44 @@ footer {
 }
 
 /* ==============================
-   RESPONSIVE
+   FIXES FOR INTERACTIVE ELEMENTS
 ================================ */
 
+/* Force interactive elements to be clickable */
+button, 
+a, 
+[role="button"],
+.slideshow-controls button,
+.indicator,
+#themeToggle,
+.download-btn {
+    cursor: pointer !important;
+}
+
+/* Ensure text elements don't block interactions */
+h1, h2, h3, h4, h5, h6, p, li, span, div {
+    pointer-events: auto;
+}
+
+/* But ensure links inside work properly */
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a, p a, li a, span a, div a {
+    pointer-events: auto;
+    position: relative;
+    z-index: 10;
+}
+
+/* Fix for navigation to ensure hovers work */
+nav a:hover::after,
+nav button:hover::after {
+    width: 100%;
+}
+
+/* Fix for mobile slideshow controls */
 @media (max-width: 768px) {
+    .slideshow-controls {
+        opacity: 1;
+    }
+    
     .featured-project {
         grid-template-columns: 1fr;
         grid-template-areas:
@@ -969,4 +1062,23 @@ footer {
     .pdf-container iframe {
         height: 100%;
     }
+}
+
+/* Ensure all interactive elements have proper layering */
+nav,
+nav a,
+nav button,
+.slideshow-controls,
+.slide-indicators,
+.indicator,
+.click-counter,
+.download-btn,
+.resume-section,
+.skill-category,
+.experience-item,
+.education-item,
+.project,
+.featured-content {
+    transform: translateZ(0); /* Force hardware acceleration */
+    will-change: transform, opacity, box-shadow;
 }

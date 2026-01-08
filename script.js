@@ -2,9 +2,9 @@
    DEBUG & PATH FIX FOR GITHUB PAGES
 ================================ */
 
-console.log("=== THEME DEBUG ===");
-console.log("LocalStorage theme:", localStorage.getItem("theme"));
-console.log("Body has 'light' class?", document.body.classList.contains("light"));
+console.log("=== THEME PERSISTENCE DEBUG ===");
+console.log("Page URL:", window.location.href);
+console.log("Previous theme from localStorage:", localStorage.getItem("theme"));
 
 // Fix for GitHub Pages path issues
 function getBasePath() {
@@ -24,9 +24,37 @@ const basePath = getBasePath();
 console.log("Base path for assets:", basePath || '(root)');
 
 /* ==============================
-   THEME SYSTEM - COMPLETE FIX
+   THEME SYSTEM - PERSISTENT ACROSS PAGES
 ================================ */
 
+// Function to apply theme consistently
+function applyTheme(themeKey) {
+    console.log("Applying theme:", themeKey);
+    
+    // Apply CSS variables
+    applyThemeVars(themeKey);
+    
+    // Set body class correctly
+    if (themeKey === "light") {
+        document.body.classList.add("light");
+    } else {
+        document.body.classList.remove("light");
+    }
+    
+    // Update theme button text
+    updateThemeButton();
+    
+    // Save to localStorage
+    localStorage.setItem("theme", themeKey);
+    
+    // Update audio system if it exists
+    if (typeof audioSystem !== 'undefined' && audioSystem.switchTheme) {
+        console.log("Updating audio system theme to:", themeKey);
+        audioSystem.switchTheme(themeKey);
+    }
+}
+
+// Load theme from JSON with persistence
 function loadThemeFromJSON() {
     const jsonPath = basePath ? `${basePath}/themes.json` : 'themes.json';
     console.log("Loading theme from:", jsonPath);
@@ -52,24 +80,15 @@ function loadThemeFromJSON() {
 }
 
 function applyInitialTheme() {
+    // Get saved theme from localStorage
     const savedTheme = localStorage.getItem("theme");
-    console.log("Saved theme preference:", savedTheme || "none (using default)");
+    console.log("Saved theme preference from localStorage:", savedTheme || "none");
     
-    // Default to DARK mode if not saved
+    // Default to dark mode if not saved
     const themeToApply = savedTheme === "light" ? "light" : "dark";
     
     console.log("Applying initial theme:", themeToApply);
-    applyThemeVars(themeToApply);
-    
-    // Set body class - REMOVE light class for dark mode
-    if (themeToApply === "light") {
-        document.body.classList.add("light");
-    } else {
-        document.body.classList.remove("light"); // Ensure light class is removed
-    }
-    
-    // Update button text
-    updateThemeButton();
+    applyTheme(themeToApply);
 }
 
 function applyThemeVars(themeKey) {
@@ -79,7 +98,7 @@ function applyThemeVars(themeKey) {
     }
     
     const themeData = window.themes[themeKey];
-    console.log("Applying theme variables for:", themeKey, themeData);
+    console.log("Applying theme variables for:", themeKey);
     
     Object.entries(themeData).forEach(([key, value]) => {
         const cssVar = key.replace(/[A-Z]/g, m => "-" + m.toLowerCase());
@@ -122,108 +141,116 @@ function updateThemeButton() {
     if (!themeToggle) return;
     
     const isLight = document.body.classList.contains("light");
-    // Set correct symbol for opposite mode (button shows what you'll switch TO)
+    // Button shows what you'll switch TO
     themeToggle.textContent = isLight ? "☾" : "☀";
-    console.log("Theme button updated. Current mode:", isLight ? "light" : "dark", "Button shows:", themeToggle.textContent);
-}
-
-// Load theme immediately
-loadThemeFromJSON();
-
-/* ==============================
-   LIGHT / DARK MODE TOGGLE - FIXED
-================================ */
-
-const themeToggle = document.getElementById("themeToggle");
-
-if (themeToggle) {
-    console.log("Theme toggle button found");
-    
-    // Set initial button text after a short delay
-    setTimeout(() => {
-        updateThemeButton();
-    }, 100);
-    
-    themeToggle.addEventListener("click", () => {
-        console.log("Theme toggle clicked!");
-        
-        // Get current mode BEFORE toggling
-        const isCurrentlyLight = document.body.classList.contains("light");
-        const newTheme = isCurrentlyLight ? "dark" : "light";
-        
-        console.log("Switching from", isCurrentlyLight ? "light" : "dark", "to", newTheme);
-        
-        // Toggle the light class
-        if (newTheme === "light") {
-            document.body.classList.add("light");
-        } else {
-            document.body.classList.remove("light");
-        }
-        
-        // Save preference to localStorage
-        localStorage.setItem("theme", newTheme);
-        
-        // Apply the correct theme variables
-        applyThemeVars(newTheme);
-        
-        // Update button text
-        updateThemeButton();
-        
-        // Log final state
-        console.log("Theme switched successfully to:", newTheme);
-        console.log("Body classes now:", document.body.className);
-    });
-} else {
-    console.error("Theme toggle button NOT found!");
+    console.log("Theme button updated. Current mode:", isLight ? "light" : "dark");
 }
 
 /* ==============================
-   CLICK COUNTER
+   THEME TOGGLE - FIXED FOR ALL PAGES
 ================================ */
 
-let clickCount = 0;
-const clickCounterElement = document.getElementById("clickCounter");
-const clickCountElement = document.getElementById("clickCount");
-
-if (clickCounterElement && clickCountElement) {
-    console.log("Click counter initialized");
+function initializeThemeToggle() {
+    const themeToggle = document.getElementById("themeToggle");
     
-    document.body.addEventListener("click", (event) => {
-        // Don't count clicks on theme toggle
-        if (event.target === themeToggle || themeToggle?.contains(event.target)) {
-            return;
-        }
+    if (themeToggle) {
+        console.log("Theme toggle button found on this page");
         
-        clickCount++;
-        clickCountElement.textContent = clickCount;
-        clickCounterElement.classList.add("show");
-        
+        // Set initial button text
         setTimeout(() => {
-            clickCounterElement.classList.remove("show");
-        }, 1200);
-    });
-    
-    // Initialize display
-    clickCountElement.textContent = clickCount;
+            updateThemeButton();
+        }, 100);
+        
+        themeToggle.addEventListener("click", () => {
+            console.log("Theme toggle clicked!");
+            
+            // Get current mode
+            const isCurrentlyLight = document.body.classList.contains("light");
+            const newTheme = isCurrentlyLight ? "dark" : "light";
+            
+            console.log("Switching from", isCurrentlyLight ? "light" : "dark", "to", newTheme);
+            
+            // Apply the new theme
+            applyTheme(newTheme);
+            
+            console.log("Theme switched successfully to:", newTheme);
+        });
+    } else {
+        console.warn("Theme toggle button NOT found on this page!");
+    }
 }
 
 /* ==============================
-   SCROLL REVEAL ANIMATION
+   CLICK COUNTER - PERSISTENT
 ================================ */
 
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add("reveal");
-        }
-    });
-}, { threshold: 0.15 });
+function initializeClickCounter() {
+    let clickCount = 0;
+    const clickCounterElement = document.getElementById("clickCounter");
+    const clickCountElement = document.getElementById("clickCount");
+    const themeToggle = document.getElementById("themeToggle");
 
-document.querySelectorAll("section, .project").forEach(el => {
-    observer.observe(el);
-});
+    // Try to get saved click count
+    const savedClicks = localStorage.getItem("totalClicks");
+    if (savedClicks) {
+        clickCount = parseInt(savedClicks);
+        console.log("Loaded saved click count:", clickCount);
+    } else {
+        console.log("No saved click count found, starting from 0");
+    }
 
-console.log("Scroll observer initialized");
+    if (clickCounterElement && clickCountElement) {
+        console.log("Click counter initialized");
+        
+        // Initialize display
+        clickCountElement.textContent = clickCount;
+        
+        document.body.addEventListener("click", (event) => {
+            // Don't count clicks on theme toggle
+            if (event.target === themeToggle || themeToggle?.contains(event.target)) {
+                return;
+            }
+            
+            clickCount++;
+            clickCountElement.textContent = clickCount;
+            
+            // Save to localStorage
+            localStorage.setItem("totalClicks", clickCount.toString());
+            
+            clickCounterElement.classList.add("show");
+            
+            setTimeout(() => {
+                clickCounterElement.classList.remove("show");
+            }, 1200);
+        });
+    } else {
+        console.log("Click counter elements not found on this page");
+    }
+}
+
+/* ==============================
+   SCROLL REVEAL ANIMATIONS
+================================ */
+
+function initializeScrollAnimations() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("reveal");
+            }
+        });
+    }, { threshold: 0.15 });
+
+    const elementsToObserve = document.querySelectorAll("section, .project, .featured-project");
+    if (elementsToObserve.length > 0) {
+        elementsToObserve.forEach(el => {
+            observer.observe(el);
+        });
+        console.log("Scroll observer initialized for", elementsToObserve.length, "elements");
+    } else {
+        console.log("No elements found for scroll animation");
+    }
+}
 
 /* ==============================
    PROJECT SLIDESHOW SYSTEM
@@ -361,10 +388,91 @@ class ProjectSlideshow {
     }
 }
 
-// Initialize all slideshows
-document.querySelectorAll('.media-container').forEach(container => {
-    new ProjectSlideshow(container);
+function initializeSlideshows() {
+    const slideshowContainers = document.querySelectorAll('.media-container');
+    if (slideshowContainers.length > 0) {
+        slideshowContainers.forEach(container => {
+            new ProjectSlideshow(container);
+        });
+        console.log("Slideshows initialized for", slideshowContainers.length, "containers");
+    } else {
+        console.log("No slideshow containers found on this page");
+    }
+}
+
+/* ==============================
+   HOVER DEBUG (Temporary - remove after fixing)
+================================ */
+
+function initializeHoverDebug() {
+    console.log("=== HOVER DEBUG ===");
+    
+    // Check which elements have pointer-events: none
+    setTimeout(() => {
+        const allElements = document.querySelectorAll('*');
+        const problematic = [];
+        
+        allElements.forEach(el => {
+            const style = window.getComputedStyle(el);
+            if (style.pointerEvents === 'none' && 
+                (el.tagName === 'A' || el.tagName === 'BUTTON' || 
+                 el.classList.contains('clickable') || 
+                 el.hasAttribute('onclick'))) {
+                problematic.push(el);
+                console.warn("Element with pointer-events: none that should be clickable:", el);
+            }
+        });
+        
+        if (problematic.length > 0) {
+            console.warn(`Found ${problematic.length} problematic elements`);
+            // Temporarily fix them
+            problematic.forEach(el => {
+                el.style.pointerEvents = 'auto';
+                el.style.zIndex = '100';
+            });
+        }
+    }, 1000);
+}
+
+/* ==============================
+   INITIALIZE EVERYTHING ON PAGE LOAD
+================================ */
+
+document.addEventListener('DOMContentLoaded', () => {
+    console.log("=== INITIALIZING PAGE ===");
+    console.log("Current page:", window.location.pathname);
+    
+    // Load and apply theme first (this is most important)
+    loadThemeFromJSON();
+    
+    // Initialize theme toggle
+    initializeThemeToggle();
+    
+    // Initialize click counter (if exists on this page)
+    initializeClickCounter();
+    
+    // Initialize scroll animations
+    initializeScrollAnimations();
+    
+    // Initialize slideshows (if exists on this page)
+    initializeSlideshows();
+    
+    // Temporary hover debug
+    initializeHoverDebug();
+    
+    console.log("=== PAGE INITIALIZATION COMPLETE ===");
 });
 
-console.log("All slideshows initialized");
-console.log("=== SCRIPT LOADED COMPLETELY ===");
+/* ==============================
+   FALLBACK: If DOMContentLoaded already fired
+================================ */
+
+// Check if document is already loaded
+if (document.readyState === 'loading') {
+    // Loading, wait for DOMContentLoaded
+    console.log("Document still loading, waiting for DOMContentLoaded");
+} else {
+    // DOM already loaded, initialize immediately
+    console.log("DOM already loaded, initializing immediately");
+    document.dispatchEvent(new Event('DOMContentLoaded'));
+}
