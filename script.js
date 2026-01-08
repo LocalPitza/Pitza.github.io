@@ -122,8 +122,9 @@ function updateThemeButton() {
     if (!themeToggle) return;
     
     const isLight = document.body.classList.contains("light");
+    // Set correct symbol for opposite mode (button shows what you'll switch TO)
     themeToggle.textContent = isLight ? "☾" : "☀";
-    console.log("Theme button updated to:", themeToggle.textContent);
+    console.log("Theme button updated. Current mode:", isLight ? "light" : "dark", "Button shows:", themeToggle.textContent);
 }
 
 // Load theme immediately
@@ -146,26 +147,30 @@ if (themeToggle) {
     themeToggle.addEventListener("click", () => {
         console.log("Theme toggle clicked!");
         
+        // Get current mode BEFORE toggling
+        const isCurrentlyLight = document.body.classList.contains("light");
+        const newTheme = isCurrentlyLight ? "dark" : "light";
+        
+        console.log("Switching from", isCurrentlyLight ? "light" : "dark", "to", newTheme);
+        
         // Toggle the light class
-        document.body.classList.toggle("light");
-        
-        // Get current mode
-        const isLight = document.body.classList.contains("light");
-        const themeKey = isLight ? "light" : "dark";
-        
-        console.log("Switching to theme:", themeKey);
+        if (newTheme === "light") {
+            document.body.classList.add("light");
+        } else {
+            document.body.classList.remove("light");
+        }
         
         // Save preference to localStorage
-        localStorage.setItem("theme", themeKey);
+        localStorage.setItem("theme", newTheme);
         
         // Apply the correct theme variables
-        applyThemeVars(themeKey);
+        applyThemeVars(newTheme);
         
         // Update button text
         updateThemeButton();
         
         // Log final state
-        console.log("Theme switched successfully to:", themeKey);
+        console.log("Theme switched successfully to:", newTheme);
         console.log("Body classes now:", document.body.className);
     });
 } else {

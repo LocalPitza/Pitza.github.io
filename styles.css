@@ -3,7 +3,6 @@
 ================================ */
 
 :root {
-    /* Default fallback colors in case JS fails */
     --bg-main: #1c1c1c;
     --bg-secondary: #242424;
     --bg-card: #2a2a2a;
@@ -17,11 +16,13 @@
     
     --border-main: #333;
     --shadow-soft: rgba(0, 0, 0, 0.4);
+    
+    /* New variables for enhanced effects */
+    --glow-color: rgba(244, 177, 131, 0.4);
+    --transition-speed: 0.3s;
 }
 
 body.light {
-    /* Light mode will be applied via JavaScript */
-    /* These are just fallbacks */
     --bg-main: #f7f3ef;
     --bg-secondary: #ffffff;
     --bg-card: #f0e9df;
@@ -35,6 +36,7 @@ body.light {
     
     --border-main: #ddd;
     --shadow-soft: rgba(0, 0, 0, 0.12);
+    --glow-color: rgba(227, 154, 99, 0.3);
 }
 
 /* ==============================
@@ -50,22 +52,54 @@ body {
     background: var(--bg-main);
     color: var(--text-main);
     font-family: "Courier New", monospace;
-    transition: background 0.3s, color 0.3s;
+    transition: background 0.4s ease, color 0.4s ease;
+    overflow-x: hidden;
 }
 
 a {
     color: var(--accent-main);
     text-decoration: none;
+    transition: all var(--transition-speed) ease;
+    position: relative;
 }
 
 a:hover {
     color: var(--accent-strong);
+    text-shadow: 0 0 8px var(--glow-color);
+}
+
+/* Animated underline for links */
+a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--accent-main);
+    transition: width var(--transition-speed) ease;
+}
+
+a:hover::after {
+    width: 100%;
 }
 
 .container {
     max-width: 1000px;
     margin: auto;
     padding: 25px;
+    animation: fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* ==============================
@@ -75,23 +109,52 @@ a:hover {
 header {
     text-align: center;
     margin-bottom: 25px;
+    animation: slideDown 0.8s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .pixel-art {
     color: var(--accent-soft);
     font-size: 0.9em;
+    animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
 }
 
 h1 {
     margin: 10px 0 5px;
+    transition: transform var(--transition-speed) ease, text-shadow var(--transition-speed) ease;
+}
+
+h1:hover {
+    transform: scale(1.05);
+    text-shadow: 0 0 20px var(--glow-color);
 }
 
 .tagline {
     color: var(--text-muted);
+    transition: color var(--transition-speed) ease;
 }
 
 /* ==============================
-   NAVIGATION
+   NAVIGATION - ENHANCED
 ================================ */
 
 nav {
@@ -104,31 +167,94 @@ nav {
 
 nav a,
 nav button {
-    background: none;
-    border: 1px solid var(--border-main);
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-main);
     color: var(--text-main);
-    padding: 6px 12px;
+    padding: 8px 16px;
     cursor: pointer;
     font-family: inherit;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--transition-speed) ease;
+}
+
+nav a::before,
+nav button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, var(--glow-color), transparent);
+    transition: left 0.5s ease;
+}
+
+nav a:hover::before,
+nav button:hover::before {
+    left: 100%;
 }
 
 nav a:hover,
 nav button:hover {
     border-color: var(--accent-main);
     color: var(--accent-main);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px var(--shadow-soft);
+}
+
+nav a:active,
+nav button:active {
+    transform: translateY(0);
 }
 
 /* ==============================
-   SECTIONS
+   SECTIONS - ENHANCED
 ================================ */
 
 section {
     margin-bottom: 45px;
+    animation: fadeInUp 0.8s ease;
+    animation-fill-mode: both;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 h2 {
     color: var(--accent-main);
     margin-bottom: 15px;
+    position: relative;
+    display: inline-block;
+    transition: all var(--transition-speed) ease;
+}
+
+h2::before {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 3px;
+    background: var(--accent-main);
+    transition: width 0.5s ease;
+}
+
+h2:hover::before {
+    width: 100%;
+}
+
+h2:hover {
+    transform: translateX(10px);
+    text-shadow: 0 0 15px var(--glow-color);
 }
 
 /* ==============================
@@ -146,20 +272,28 @@ h2 {
 }
 
 /* ==============================
-   SLIDESHOW / VIDEO SYSTEM
+   SLIDESHOW / VIDEO SYSTEM - ENHANCED
 ================================ */
 
 .media-container {
     position: relative;
     background: var(--bg-secondary);
     border: 2px solid var(--border-main);
-    border-radius: 8px;
+    border-radius: 12px;
     overflow: hidden;
     height: 100%;
     min-height: 300px;
+    transition: all var(--transition-speed) ease;
+    box-shadow: 0 4px 15px var(--shadow-soft);
 }
 
-/* --- VIDEO --- */
+.media-container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px var(--shadow-soft), 0 0 30px var(--glow-color);
+    border-color: var(--accent-main);
+}
+
+/* VIDEO */
 .video-slide {
     position: absolute;
     inset: 0;
@@ -171,13 +305,14 @@ h2 {
     height: 100%;
     object-fit: cover;
     background: var(--bg-secondary);
+    transition: filter var(--transition-speed) ease;
 }
 
 .video-slide.active {
     z-index: 3;
 }
 
-/* --- SLIDES --- */
+/* SLIDES */
 .slideshow {
     position: absolute;
     inset: 0;
@@ -188,15 +323,17 @@ h2 {
     position: absolute;
     inset: 0;
     opacity: 0;
-    transition: opacity 0.4s;
+    transition: opacity 0.6s ease, transform 0.6s ease;
     display: flex;
     align-items: center;
     justify-content: center;
     background: var(--bg-secondary);
+    transform: scale(0.95);
 }
 
 .slide.active {
     opacity: 1;
+    transform: scale(1);
 }
 
 .slide img {
@@ -204,74 +341,88 @@ h2 {
     height: 100%;
     object-fit: cover;
     background: var(--bg-secondary);
+    transition: transform 0.5s ease;
 }
 
-/* Fallback for broken images */
-.slide img::before {
-    content: '🎮 Image Preview';
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    background: var(--bg-secondary);
-    color: var(--text-muted);
-    font-size: 1.2em;
+.media-container:hover .slide.active img {
+    transform: scale(1.05);
 }
 
-/* --- CONTROLS --- */
+/* CONTROLS - ENHANCED */
 .slideshow-controls {
     position: absolute;
-    bottom: 8px;
-    right: 8px;
+    bottom: 12px;
+    right: 12px;
     display: flex;
-    gap: 6px;
+    gap: 8px;
     z-index: 4;
+    opacity: 0;
+    transition: opacity var(--transition-speed) ease;
+}
+
+.media-container:hover .slideshow-controls {
+    opacity: 1;
 }
 
 .slideshow-controls button {
     background: var(--bg-secondary);
-    border: 1px solid var(--border-main);
+    border: 2px solid var(--border-main);
     color: var(--text-main);
     cursor: pointer;
-    padding: 5px 10px;
+    padding: 8px 14px;
     font-family: inherit;
+    font-weight: bold;
+    border-radius: 6px;
+    transition: all var(--transition-speed) ease;
+    backdrop-filter: blur(10px);
 }
 
 .slideshow-controls button:hover {
     background: var(--accent-main);
     color: var(--bg-main);
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px var(--glow-color);
 }
 
-/* --- INDICATORS --- */
+.slideshow-controls button:active {
+    transform: scale(0.95);
+}
+
+/* INDICATORS - ENHANCED */
 .slide-indicators {
     position: absolute;
-    bottom: 8px;
-    left: 8px;
+    bottom: 12px;
+    left: 12px;
     display: flex;
-    gap: 5px;
+    gap: 8px;
     z-index: 4;
 }
 
 .indicator {
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     background: var(--border-main);
     cursor: pointer;
-    transition: background 0.3s;
+    transition: all var(--transition-speed) ease;
+    border: 2px solid transparent;
 }
 
 .indicator:hover {
     background: var(--accent-soft);
+    transform: scale(1.3);
+    box-shadow: 0 0 10px var(--glow-color);
 }
 
 .indicator.active {
     background: var(--accent-main);
+    transform: scale(1.2);
+    box-shadow: 0 0 15px var(--glow-color);
+    border-color: var(--accent-strong);
 }
 
 /* ==============================
-   FEATURED PROJECTS (ABOUT)
+   FEATURED PROJECTS - ENHANCED
 ================================ */
 
 .featured-project {
@@ -280,6 +431,23 @@ h2 {
     gap: 30px;
     align-items: center;
     margin-bottom: 50px;
+    opacity: 0;
+    animation: slideInStagger 0.8s ease forwards;
+}
+
+.featured-project:nth-child(1) { animation-delay: 0.1s; }
+.featured-project:nth-child(2) { animation-delay: 0.2s; }
+.featured-project:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes slideInStagger {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 .featured-project.left {
@@ -299,14 +467,44 @@ h2 {
     grid-area: content;
     background: var(--bg-secondary);
     padding: 25px;
-    border-radius: 10px;
-    border: 1px solid var(--border-main);
+    border-radius: 12px;
+    border: 2px solid var(--border-main);
     box-shadow: 0 8px 25px var(--shadow-soft);
+    transition: all var(--transition-speed) ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.featured-content::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, var(--glow-color), transparent);
+    transition: left 0.6s ease;
+}
+
+.featured-content:hover::before {
+    left: 100%;
+}
+
+.featured-content:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 35px var(--shadow-soft), 0 0 20px var(--glow-color);
+    border-color: var(--accent-main);
 }
 
 .featured-content h3 {
     margin-top: 0;
     color: var(--accent-strong);
+    transition: all var(--transition-speed) ease;
+}
+
+.featured-content:hover h3 {
+    color: var(--accent-main);
+    transform: translateX(5px);
 }
 
 .featured-meta {
@@ -316,15 +514,33 @@ h2 {
 }
 
 /* ==============================
-   PROJECTS PAGE CARDS
+   PROJECTS PAGE CARDS - ENHANCED
 ================================ */
 
 .project {
-    margin-bottom: 40px;
+    margin-bottom: 50px;
+    padding: 20px;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    border: 2px solid var(--border-main);
+    transition: all var(--transition-speed) ease;
+    box-shadow: 0 4px 15px var(--shadow-soft);
+}
+
+.project:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px var(--shadow-soft), 0 0 25px var(--glow-color);
+    border-color: var(--accent-main);
 }
 
 .project h3 {
     color: var(--accent-main);
+    transition: all var(--transition-speed) ease;
+}
+
+.project h3:hover {
+    transform: translateX(5px);
+    text-shadow: 0 0 10px var(--glow-color);
 }
 
 .project-meta {
@@ -339,16 +555,26 @@ h2 {
 }
 
 /* ==============================
-   CONTACT
+   CONTACT - ENHANCED
 ================================ */
 
 .contact-info p {
-    margin: 6px 0;
+    margin: 10px 0;
+    transition: all var(--transition-speed) ease;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.contact-info p:hover {
+    background: var(--bg-secondary);
+    transform: translateX(10px);
+    padding-left: 15px;
 }
 
 .contact-note {
-    margin-top: 15px;
+    margin-top: 20px;
     color: var(--text-muted);
+    animation: pulse 3s ease-in-out infinite;
 }
 
 /* ==============================
@@ -360,10 +586,13 @@ footer {
     color: var(--text-muted);
     font-size: 0.8em;
     margin-top: 40px;
+    padding: 20px;
+    border-top: 2px solid var(--border-main);
+    animation: fadeIn 1s ease;
 }
 
 /* ==============================
-   CLICK COUNTER
+   CLICK COUNTER - ENHANCED
 ================================ */
 
 .click-counter {
@@ -371,11 +600,329 @@ footer {
     bottom: 12px;
     right: 12px;
     background: var(--bg-secondary);
-    border: 1px solid var(--border-main);
-    padding: 6px 10px;
+    border: 2px solid var(--accent-main);
+    padding: 8px 14px;
     font-size: 0.85em;
-    box-shadow: 0 5px 15px var(--shadow-soft);
-    border-radius: 4px;
+    box-shadow: 0 5px 20px var(--shadow-soft), 0 0 15px var(--glow-color);
+    border-radius: 8px;
+    transition: all var(--transition-speed) ease;
+    backdrop-filter: blur(10px);
+}
+
+.click-counter:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 30px var(--shadow-soft), 0 0 25px var(--glow-color);
+}
+
+.click-counter.show {
+    animation: counterPop 0.6s ease;
+}
+
+@keyframes counterPop {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.3) rotate(5deg);
+    }
+}
+
+/* ==============================
+   RESUME PAGE - ENHANCED
+================================ */
+
+.resume-download {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    border: 2px solid var(--border-main);
+    transition: all var(--transition-speed) ease;
+}
+
+.resume-download:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px var(--shadow-soft), 0 0 20px var(--glow-color);
+}
+
+.download-btn {
+    display: inline-block;
+    background: var(--accent-main);
+    color: var(--bg-main);
+    padding: 14px 28px;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: all var(--transition-speed) ease;
+    border: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+}
+
+.download-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.5s ease, height 0.5s ease;
+}
+
+.download-btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.download-btn:hover {
+    background: var(--accent-strong);
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px var(--glow-color);
+}
+
+.download-btn:active {
+    transform: translateY(0) scale(1);
+}
+
+.download-note {
+    color: var(--text-muted);
+    font-size: 0.9em;
+    margin-top: 10px;
+}
+
+.resume-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--border-main);
+}
+
+.resume-header h2 {
+    color: var(--accent-main);
+    margin-bottom: 5px;
+    font-size: 2em;
+}
+
+.resume-title {
+    color: var(--text-muted);
+    font-size: 1.2em;
+    margin-bottom: 15px;
+}
+
+.resume-section {
+    margin-bottom: 30px;
+    padding: 25px;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    border: 2px solid var(--border-main);
+    transition: all var(--transition-speed) ease;
+    box-shadow: 0 4px 15px var(--shadow-soft);
+}
+
+.resume-section:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px var(--shadow-soft), 0 0 20px var(--glow-color);
+    border-color: var(--accent-soft);
+}
+
+.resume-section h3 {
+    color: var(--accent-main);
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 15px;
+}
+
+.skill-category {
+    background: var(--bg-main);
+    padding: 18px;
+    border-radius: 10px;
+    border: 2px solid var(--border-main);
+    transition: all var(--transition-speed) ease;
+}
+
+.skill-category:hover {
+    transform: translateY(-5px) scale(1.02);
+    border-color: var(--accent-main);
+    box-shadow: 0 8px 20px var(--shadow-soft), 0 0 15px var(--glow-color);
+}
+
+.skill-category h4 {
+    color: var(--accent-soft);
+    margin-top: 0;
+    margin-bottom: 12px;
+    font-size: 1em;
+    transition: color var(--transition-speed) ease;
+}
+
+.skill-category:hover h4 {
+    color: var(--accent-main);
+}
+
+.skill-category ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.skill-category li {
+    margin-bottom: 6px;
+    color: var(--text-main);
+    transition: all var(--transition-speed) ease;
+}
+
+.skill-category li:hover {
+    color: var(--accent-main);
+    transform: translateX(5px);
+}
+
+.experience-item {
+    margin-bottom: 25px;
+    padding: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border-main);
+    transition: all var(--transition-speed) ease;
+    border-radius: 8px;
+}
+
+.experience-item:hover {
+    background: var(--bg-main);
+    transform: translateX(5px);
+}
+
+.experience-item:last-child {
+    border-bottom: none;
+}
+
+.experience-item h4 {
+    color: var(--accent-strong);
+    margin-bottom: 5px;
+    transition: color var(--transition-speed) ease;
+}
+
+.experience-item:hover h4 {
+    color: var(--accent-main);
+}
+
+.experience-meta {
+    color: var(--text-muted);
+    font-style: italic;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+}
+
+.experience-item ul {
+    padding-left: 20px;
+    margin-top: 10px;
+}
+
+.experience-item li {
+    margin-bottom: 6px;
+    color: var(--text-main);
+    transition: all var(--transition-speed) ease;
+}
+
+.experience-item li:hover {
+    color: var(--accent-main);
+    transform: translateX(3px);
+}
+
+.education-item {
+    margin-bottom: 25px;
+    padding: 15px;
+    transition: all var(--transition-speed) ease;
+    border-radius: 8px;
+}
+
+.education-item:hover {
+    background: var(--bg-main);
+    transform: translateX(5px);
+}
+
+.education-item h4 {
+    color: var(--accent-strong);
+    margin-bottom: 5px;
+    transition: color var(--transition-speed) ease;
+}
+
+.education-item:hover h4 {
+    color: var(--accent-main);
+}
+
+.education-meta {
+    color: var(--text-muted);
+    font-style: italic;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+}
+
+.pdf-viewer {
+    margin-top: 40px;
+}
+
+.pdf-container {
+    background: var(--bg-main);
+    border: 2px solid var(--border-main);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 15px 0;
+    transition: all var(--transition-speed) ease;
+    box-shadow: 0 4px 15px var(--shadow-soft);
+}
+
+.pdf-container:hover {
+    box-shadow: 0 8px 25px var(--shadow-soft), 0 0 20px var(--glow-color);
+    border-color: var(--accent-main);
+}
+
+.pdf-container iframe {
+    border: none;
+}
+
+.viewer-note {
+    color: var(--text-muted);
+    font-size: 0.85em;
+    text-align: center;
+    margin-top: 10px;
+}
+
+/* ==============================
+   SCROLL ANIMATIONS
+================================ */
+
+.reveal {
+    animation: revealElement 0.8s ease forwards;
+}
+
+@keyframes revealElement {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==============================
+   LOADING ANIMATION
+================================ */
+
+@keyframes shimmer {
+    0% {
+        background-position: -1000px 0;
+    }
+    100% {
+        background-position: 1000px 0;
+    }
 }
 
 /* ==============================
@@ -397,191 +944,7 @@ footer {
     .project .media-container {
         height: 300px;
     }
-}
-
-/* ==============================
-   RESUME PAGE STYLES
-================================ */
-
-/* Download Button */
-.resume-download {
-    text-align: center;
-    margin-bottom: 30px;
-    padding: 15px;
-    background: var(--bg-secondary);
-    border-radius: 10px;
-    border: 2px solid var(--border-main);
-}
-
-.download-btn {
-    display: inline-block;
-    background: var(--accent-main);
-    color: var(--text-main);
-    padding: 12px 24px;
-    border-radius: 6px;
-    font-weight: bold;
-    transition: all 0.3s;
-    border: 2px solid transparent;
-}
-
-.download-btn:hover {
-    background: var(--accent-strong);
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px var(--shadow-soft);
-}
-
-.download-note {
-    color: var(--text-muted);
-    font-size: 0.9em;
-    margin-top: 8px;
-}
-
-/* Resume Header */
-.resume-header {
-    text-align: center;
-    margin-bottom: 30px;
-    padding-bottom: 20px;
-    border-bottom: 2px solid var(--border-main);
-}
-
-.resume-header h2 {
-    color: var(--accent-main);
-    margin-bottom: 5px;
-    font-size: 2em;
-}
-
-.resume-title {
-    color: var(--text-muted);
-    font-size: 1.2em;
-    margin-bottom: 15px;
-}
-
-/* Resume Sections */
-.resume-section {
-    margin-bottom: 30px;
-    padding: 20px;
-    background: var(--bg-secondary);
-    border-radius: 10px;
-    border: 1px solid var(--border-main);
-}
-
-.resume-section h3 {
-    color: var(--accent-main);
-    margin-top: 0;
-    margin-bottom: 15px;
-}
-
-/* Skills Grid */
-.skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    margin-top: 15px;
-}
-
-.skill-category {
-    background: var(--bg-main);
-    padding: 15px;
-    border-radius: 8px;
-    border: 1px solid var(--border-main);
-}
-
-.skill-category h4 {
-    color: var(--accent-soft);
-    margin-top: 0;
-    margin-bottom: 10px;
-    font-size: 1em;
-}
-
-.skill-category ul {
-    margin: 0;
-    padding-left: 20px;
-}
-
-.skill-category li {
-    margin-bottom: 5px;
-    color: var(--text-main);
-}
-
-/* Experience Items */
-.experience-item {
-    margin-bottom: 25px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid var(--border-main);
-}
-
-.experience-item:last-child {
-    border-bottom: none;
-}
-
-.experience-item h4 {
-    color: var(--accent-strong);
-    margin-bottom: 5px;
-}
-
-.experience-meta {
-    color: var(--text-muted);
-    font-style: italic;
-    margin-bottom: 10px;
-    font-size: 0.9em;
-}
-
-.experience-item ul {
-    padding-left: 20px;
-    margin-top: 10px;
-}
-
-.experience-item li {
-    margin-bottom: 5px;
-    color: var(--text-main);
-}
-
-/* Education Items */
-.education-item {
-    margin-bottom: 25px;
-}
-
-.education-item h4 {
-    color: var(--accent-strong);
-    margin-bottom: 5px;
-}
-
-.education-meta {
-    color: var(--text-muted);
-    font-style: italic;
-    margin-bottom: 10px;
-    font-size: 0.9em;
-}
-
-/* PDF Viewer */
-.pdf-viewer {
-    margin-top: 40px;
-}
-
-.pdf-container {
-    background: var(--bg-main);
-    border: 2px solid var(--border-main);
-    border-radius: 8px;
-    overflow: hidden;
-    margin: 15px 0;
-}
-
-.pdf-container iframe {
-    border: none;
-}
-
-.viewer-note {
-    color: var(--text-muted);
-    font-size: 0.85em;
-    text-align: center;
-    margin-top: 10px;
-}
-
-/* ==============================
-   RESPONSIVE: RESUME PAGE
-================================ */
-
-@media (max-width: 768px) {
+    
     .skills-grid {
         grid-template-columns: 1fr;
     }
