@@ -1288,12 +1288,15 @@ function initializeDropdowns() {
     // Close dropdowns when scrolling (optional)
     let scrollTimer;
     window.addEventListener('scroll', () => {
-        clearTimeout(scrollTimer);
-        scrollTimer = setTimeout(() => {
-            document.querySelectorAll('.dropdown-menu').forEach(menu => {
-                closeDropdown(menu);
-            });
-        }, 100);
+        // Only close on mobile where dropdowns are click-based
+        if (window.innerWidth <= 768) {
+            clearTimeout(scrollTimer);
+            scrollTimer = setTimeout(() => {
+                document.querySelectorAll('.dropdown-menu').forEach(menu => {
+                    closeDropdown(menu);
+                });
+            }, 100);
+        }
     });
 }
 
