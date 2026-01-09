@@ -643,9 +643,7 @@ function renderDevlogs() {
         container.innerHTML = `
             <div class="empty-devlogs-message">
                 <h3>🚀 Welcome to DevLogs!</h3>
-                <p>No devlogs have been created yet.</p>
-                <p>As an admin, you can login and create your first devlog using the editor above!</p>
-                <p class="hint">💡 This is your space to document your game development journey, share insights, and track progress.</p>
+                <p>No devlogs have been created yet or they've all been removed!.</p>
             </div>
         `;
         return;
