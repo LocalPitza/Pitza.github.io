@@ -280,7 +280,8 @@ nav button:active {
     transition: all 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
     z-index: 1003; /* Highest z-index */
     overflow: visible;
-    margin-top: 5px;
+    margin-top: 0px; /* Remove gap */
+    padding-top: 5px; /* Add padding instead */
     pointer-events: auto !important;
 }
 
