@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DevLogs – Janmar Cornejo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+<script src="audio-system.js"></script>
+<script src="script.js"></script>
+
+<!-- Auth Modal -->
+<div id="authModal" class="auth-modal">
+    <div class="auth-modal-content">
+        <span class="close-modal">&times;</span>
+        <h3>🔒 Admin Login</h3>
+        <p style="color: var(--text-muted); font-size: 0.9em; margin-bottom: 20px;">
+            Enter master password to manage devlogs
+        </p>
+        <form id="loginForm">
+            <input type="password" 
+                   id="masterPassword" 
+                   placeholder="Enter Master Password" 
+                   required
+                   autocomplete="current-password"
+                   autofocus>
+            <button type="submit">Login</button>
+        </form>
+        <button id="logoutBtn" style="display: none;">Logout</button>
+    </div>
+</div>
+
+<div class="container">
+    <header>
+        <h1>DEVELOPMENT LOGS</h1>
+        <p>// Behind the Scenes //</p>
+    </header>
+
+    <nav>
+        <a href="index.html">[ ABOUT ]</a>
+        
+        <!-- Projects Dropdown -->
+        <div class="dropdown">
+            <button class="dropdown-toggle" id="projectsDropdown">
+                [ PROJECTS ▼ ]
+            </button>
+            <div class="dropdown-menu">
+                <a href="projects.html">All Projects</a>
+                <a href="devlogs.html">DevLogs</a>
+                <a href="gdd.html">Game Design Docs</a>
+            </div>
+        </div>
+        
+        <a href="resume.html">[ RESUME ]</a>
+        <a href="#contact">[ CONTACT ]</a>
+        <button id="themeToggle">☀ / ☾</button>
+        <button id="authToggle">[ LOGIN ]</button>
+    </nav>
+
+    <!-- DevLogs CMS Editor (Admin Only) -->
+    <section id="devlogEditor" class="admin-only">
+        <h2>🔧 DevLog Management</h2>
+        <p style="color: var(--text-muted); margin-bottom: 20px;">
+            Create, edit, and manage your development logs here.
+        </p>
+        
+        <button id="newDevlogBtn" class="download-btn" style="width: 100%; max-width: 300px; margin: 0 auto 30px; display: block;">
+            ✨ Create New DevLog
+        </button>
+        
+        <!-- DevLog Form -->
+        <form id="devlogForm" class="devlog-form">
+            <h3>📝 DevLog Details</h3>
+            
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="devlogTitle">Title *</label>
+                    <input type="text" id="devlogTitle" placeholder="e.g., Lost Voices - Development Journey" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="devlogDate">Date *</label>
+                    <input type="text" id="devlogDate" placeholder="e.g., March 2024" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="devlogCategory">Category *</label>
+                    <select id="devlogCategory" required>
+                        <option value="Game Development">Game Development</option>
+                        <option value="Horror">Horror Game</option>
+                        <option value="Cozy Game">Cozy Game</option>
+                        <option value="Game Jam">Game Jam</option>
+                        <option value="Prototype">Prototype</option>
+                        <option value="Learning">Learning Journey</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="devlogStatus">Status *</label>
+                    <select id="devlogStatus" required>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Completed">Completed</option>
+                        <option value="On Hold">On Hold</option>
+                        <option value="Planning">Planning</option>
+                        <option value="Released">Released</option>
+                    </select>
+                </div>
+            </div>
+            
+            <h3>📖 Content</h3>
+            
+            <div class="form-group">
+                <label for="devlogVision">Project Vision / Goals</label>
+                <textarea id="devlogVision" placeholder="Describe the vision and goals for this project..."></textarea>
+            </div>
+            
+            <details class="content-section-toggle">
+                <summary>Challenges & Solutions (Optional)</summary>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label for="devlogChallenges">One challenge per line (Format: "Challenge: Solution")</label>
+                    <textarea id="devlogChallenges" placeholder="Sound System: Implementing 3D spatial audio in Unity
+AI Behavior: Creating enemy that responds to player noise
+Atmosphere: Balancing lighting for tension..."></textarea>
+                </div>
+            </details>
+            
+            <details class="content-section-toggle">
+                <summary>Development Milestones (Optional)</summary>
+                <div class="form-group" style="margin-top: 15px;">
+                    <label for="devlogMilestones">One milestone per line (Format: "Timeframe: Description")</label>
+                    <textarea id="devlogMilestones" placeholder="Week 1-2: Core mechanics prototype
+Week 3-4: Art style and UI design
+Week 5-6: Plant growth system implementation..."></textarea>
+                </div>
+            </details>
+            
+            <div class="form-group">
+                <label for="devlogCurrent">Current Focus / Progress</label>
+                <textarea id="devlogCurrent" placeholder="What are you currently working on? What's next?"></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="devlogTakeaways">Key Takeaways / Lessons Learned</label>
+                <textarea id="devlogTakeaways" placeholder="What did you learn from this project?"></textarea>
+            </div>
+            
+            <h3>🖼️ Images (Optional)</h3>
+            <div class="image-upload">
+                <label for="devlogImages">Upload Screenshots / Concept Art</label>
+                <input type="file" id="devlogImages" accept="image/*" multiple>
+                <div id="imagePreview" class="image-preview"></div>
+                <p style="font-size: 0.85em; color: var(--text-muted); margin-top: 10px;">
+                    Note: Images are stored locally. For production, you'd want to upload to a server.
+                </p>
+            </div>
+            
+            <div class="form-actions">
+                <button type="button" id="cancelDevlog">Cancel</button>
+                <button type="submit" id="submitDevlog">Save DevLog</button>
+            </div>
+        </form>
+        
+        <!-- Existing DevLogs Management -->
+        <div class="devlog-management">
+            <h3>📋 Existing DevLogs</h3>
+            <div id="devlogList">
+                <!-- Devlogs will be loaded here -->
+            </div>
+        </div>
+        
+        <!-- Import/Export -->
+        <div class="devlog-management">
+            <h3>🔄 Backup & Restore</h3>
+            <p style="color: var(--text-muted); margin-bottom: 15px;">
+                Export your devlogs as a backup or import from a previous export.
+            </p>
+            <div class="management-actions">
+                <button id="exportDevlogs">📥 Export DevLogs (JSON)</button>
+                <button id="importDevlogs">📤 Import DevLogs</button>
+                <input type="file" id="importFile" accept=".json" style="display: none;">
+            </div>
+        </div>
+    </section>
+
+    <!-- Public DevLogs Display -->
+    <section id="devlogs">
+        <h2>▸ DEVELOPMENT JOURNEY</h2>
+        
+        <div id="devlogs-container">
+            <!-- Devlogs will be rendered here -->
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact">
+        <h2>▸ GET IN TOUCH</h2>
+        <div class="contact-info">
+            <p><strong>Email:</strong>
+                <a href="mailto:janmarfabilanecornejo@gmail.com">
+                    janmarfabilanecornejo@gmail.com
+                </a>
+            </p>
+            <p><strong>LinkedIn:</strong>
+                <a href="https://www.linkedin.com/in/janmar-cornejo-61722b281/" target="_blank">
+                    linkedin profile
+                </a>
+            </p>
+            <p><strong>Itch.io:</strong>
+                <a href="https://pitza.itch.io/" target="_blank">
+                    My Itch.io Page
+                </a>
+            </p>
+            <p><strong>Github:</strong>
+                <a href="https://github.com/LocalPitza" target="_blank">
+                    Github
+                </a>
+            </p>
+        </div>
+    </section>
+
+    <footer>
+        <p>▓▒░ Development Thoughts & Process ░▒▓</p>
+        <p>© 2026 JANMAR CORNEJO</p>
+    </footer>
+</div>
+
+<!-- CLICK COUNTER -->
+<div class="click-counter" id="clickCounter">
+    Clicks: <span id="clickCount">0</span> 🎮
+</div>
+
+<!-- Instructions Modal (First-time users) -->
+<div id="instructionsModal" class="auth-modal" style="display: none;">
+    <div class="auth-modal-content">
+        <span class="close-modal" onclick="document.getElementById('instructionsModal').style.display='none'">&times;</span>
+        <h3>🎮 Welcome to DevLogs CMS!</h3>
+        <div style="color: var(--text-main); margin: 20px 0; line-height: 1.6;">
+            <p><strong>How to use:</strong></p>
+            <ol style="text-align: left; padding-left: 20px;">
+                <li>Click <strong>[LOGIN]</strong> in the navigation (top-right)</li>
+                <li>Enter the master password (set in script.js)</li>
+                <li>Click <strong>"Create New DevLog"</strong> to add your first devlog</li>
+                <li>Fill in the form with your development updates</li>
+                <li>Upload screenshots if you have them</li>
+                <li>Click <strong>"Save DevLog"</strong> to publish</li>
+            </ol>
+            <p style="margin-top: 20px; font-size: 0.9em; color: var(--text-muted);">
+                Your devlogs are stored locally in your browser. Use the Export feature to backup!
+            </p>
+        </div>
+        <button onclick="document.getElementById('instructionsModal').style.display='none'" 
+                style="background: var(--accent-main); color: var(--bg-main); border: none; padding: 12px 30px; border-radius: 6px; cursor: pointer; font-weight: bold; width: 100%;">
+            Got it!
+        </button>
+    </div>
+</div>
+
+<script>
+    // Show instructions on first visit
+    if (!localStorage.getItem('devlogs_instructions_shown')) {
+        setTimeout(() => {
+            document.getElementById('instructionsModal').style.display = 'block';
+            localStorage.setItem('devlogs_instructions_shown', 'true');
+        }, 1000);
+    }
+</script>
+</body>
+</html>

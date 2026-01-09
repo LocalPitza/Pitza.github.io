@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Game Design Documents – Janmar Cornejo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+<script src="audio-system.js"></script>
+<script src="script.js"></script>
+<div class="container">
+    <header>
+        <h1>GAME DESIGN DOCUMENTS</h1>
+        <p>// Design Process & Documentation //</p>
+    </header>
+
+    <nav>
+        <a href="index.html">[ ABOUT ]</a>
+        
+        <!-- Projects Dropdown -->
+        <div class="dropdown">
+            <button class="dropdown-toggle" id="projectsDropdown">
+                [ PROJECTS ]
+            </button>
+            <div class="dropdown-menu">
+                <a href="projects.html">Projects</a>
+                <a href="devlogs.html">DevLogs</a>
+                <a href="gdd.html">Game Design Docs</a>
+            </div>
+        </div>
+        
+        <a href="resume.html">[ RESUME ]</a>
+        <a href="#contact">[ CONTACT ]</a>
+        <button id="themeToggle">☀ / ☾</button>
+    </nav>
+
+    <section id="gdd-content">
+        <h2>▸ DESIGN DOCUMENTATION</h2>
+        
+        <p class="intro-note">
+            This section contains detailed design documents, process breakdowns, and technical specifications
+            for various projects. These documents showcase the planning and thought process behind each game.
+        </p>
+
+        <!-- GDD 1: Lost Voices -->
+        <div class="project">
+            <h3>Lost Voices - Complete Game Design Document</h3>
+            <p class="project-meta">Document Version: 2.1 • Last Updated: October 2024 • Pages: 24</p>
+            
+            <div class="gdd-download-section">
+                <a href="assets/documents/LostVoices_GDD.pdf" download class="download-btn gdd-btn">
+                    📋 DOWNLOAD FULL GDD (PDF)
+                </a>
+                <!-- <a href="assets/documents/LostVoices_OnePager.pdf" download class="download-btn gdd-btn secondary">
+                    📄 ONE-PAGER SUMMARY
+                </a> -->
+            </div>
+            
+            <div class="gdd-preview">
+                <h4>Document Highlights:</h4>
+                
+                <div class="gdd-grid">
+                    <div class="gdd-card">
+                        <h5>Core Concept</h5>
+                        <p>A first-person horror experience where sound is both your greatest enemy and only ally.</p>
+                    </div>
+                    
+                    <div class="gdd-card">
+                        <h5>Target Audience</h5>
+                        <p>Horror enthusiasts, fans of atmospheric games, players aged 18-35.</p>
+                    </div>
+                    
+                    <div class="gdd-card">
+                        <h5>Platform</h5>
+                        <p>PC Windows</p>
+                    </div>
+                    
+                    <div class="gdd-card">
+                        <h5>Competition</h5>
+                        <p>Lists potential competition in the market</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GDD 2: Kitty Kultivation -->
+        <div class="project">
+            <h3>Kitty Kultivation - Capstone Project Documentation</h3>
+            <p class="project-meta">Document Version: 3.0 • Last Updated: April 2025 • Pages: 32</p>
+            
+            <div class="gdd-download-section">
+                <a href="assets/documents/KittyKultivation_GDD.pdf" download class="download-btn gdd-btn">
+                    📋 DOWNLOAD FULL GDD (PDF)
+                </a>
+                <!-- <a href="assets/documents/KittyKultivation_DesignDoc.pdf" download class="download-btn gdd-btn secondary">
+                    🎨 DESIGN DOCUMENT
+                </a> -->
+            </div>
+            
+            <div class="gdd-preview">
+                <h4>Educational Objectives:</h4>
+                <p>
+                    This document outlines how gameplay mechanics teach real-world gardening concepts through simplified gameplay:
+                    plant life cycles, soil management, sustainable practices, and urban farming techniques.
+                </p>
+                
+                <h4>Design Philosophy:</h4>
+                <ul>
+                    <li><strong>Accessibility First:</strong> Simple controls with deep mechanics</li>
+                    <li><strong>Positive Reinforcement:</strong> Reward system for learning</li>
+                    <li><strong>Progressive Complexity:</strong> Gradual introduction of systems</li>
+                    <li><strong>Educational Learning:</strong> Creating a gateway to educational knowledge through the game</li>
+                </ul>
+                
+                <h4>Document Includes:</h4>
+                <div class="gdd-grid">
+                    <div class="gdd-card">
+                        <h5>Plant Database</h5>
+                        <p>Detailed specs for 10 plant types with real-world counterparts.</p>
+                    </div>
+                    
+                    <div class="gdd-card">
+                        <h5>UI/UX</h5>
+                        <p>Complete user interface design and navigation paths.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Template Section -->
+        <!-- <div class="project">
+            <h3>Game Design Document Templates</h3>
+            <p class="project-meta">For aspiring designers and students</p>
+            
+            <div class="gdd-download-section">
+                <a href="assets/templates/GDD_Template_Basic.docx" download class="download-btn gdd-btn">
+                    📝 BASIC TEMPLATE (DOCX)
+                </a>
+                <a href="assets/templates/GDD_Template_Advanced.pdf" download class="download-btn gdd-btn secondary">
+                    📊 ADVANCED TEMPLATE (PDF)
+                </a>
+            </div>
+            
+            <div class="gdd-preview">
+                <h4>Template Features:</h4>
+                <div class="gdd-grid">
+                    <div class="gdd-card">
+                        <h5>Basic Template</h5>
+                        <ul>
+                            <li>Simple structure for beginners</li>
+                            <li>Essential sections only</li>
+                            <li>Example content included</li>
+                            <li>Editable Word document</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="gdd-card">
+                        <h5>Advanced Template</h5>
+                        <ul>
+                            <li>Comprehensive structure</li>
+                            <li>Industry-standard format</li>
+                            <li>Team collaboration ready</li>
+                            <li>Version tracking included</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <h4>How to Use:</h4>
+                <p>
+                    These templates are designed to help organize your game ideas into a professional
+                    document. Start with the basic template and graduate to the advanced version as
+                    your project grows in complexity.
+                </p>
+            </div>
+        </div> -->
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact">
+        <h2>▸ GET IN TOUCH</h2>
+        <div class="contact-info">
+            <p><strong>Email:</strong>
+                <a href="mailto:janmarfabilanecornejo@gmail.com">
+                    janmarfabilanecornejo@gmail.com
+                </a>
+            </p>
+            <p><strong>LinkedIn:</strong>
+                <a href="https://www.linkedin.com/in/janmar-cornejo-61722b281/" target="_blank">
+                    linkedin profile
+                </a>
+            </p>
+            <p><strong>Itch.io:</strong>
+                <a href="https://pitza.itch.io/" target="_blank">
+                    My Itch.io Page
+                </a>
+            </p>
+            <p><strong>Github:</strong>
+                <a href="https://github.com/LocalPitza" target="_blank">
+                    Github
+                </a>
+            </p>
+        </div>
+    </section>
+
+    <footer>
+        <p>▓▒░ Design Documentation & Process ░▒▓</p>
+        <p>© 2026 JANMAR CORNEJO</p>
+    </footer>
+</div>
+
+<!-- CLICK COUNTER -->
+<div class="click-counter" id="clickCounter">
+    Clicks: <span id="clickCount">0</span> 🎮
+</div>
+
+
+</body>
+</html>
