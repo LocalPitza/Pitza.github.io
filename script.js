@@ -90,77 +90,9 @@ function initializeAuthSystem() {
             authModal.style.display = 'none';
         }
     });
-    
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            authModal.style.display = 'none';
-        }
-    });
 }
 
-function updateAuthButton() {
-    const authToggle = document.getElementById('authToggle');
-    if (authToggle) {
-        if (isAuthenticated) {
-            authToggle.textContent = '[ LOGOUT ]';
-            authToggle.classList.add('authenticated');
-            authToggle.title = 'Click to logout';
-        } else {
-            authToggle.textContent = '[ LOGIN ]';
-            authToggle.classList.remove('authenticated');
-            authToggle.title = 'Click to login (Admin access)';
-        }
-    }
     
-    const adminSections = document.querySelectorAll('.admin-only');
-    adminSections.forEach(section => {
-        section.style.display = isAuthenticated ? 'block' : 'none';
-    });
-}
-
-function login() {
-    isAuthenticated = true;
-    localStorage.setItem('devlog_auth', 'true');
-    updateAuthButton();
-    console.log('Admin logged in');
-    
-    if (window.location.pathname.includes('devlogs.html')) {
-        initializeDevlogEditor();
-    }
-}
-
-function logout() {
-    isAuthenticated = false;
-    localStorage.removeItem('devlog_auth');
-    updateAuthButton();
-    showNotification('Logged out successfully', 'success');
-    console.log('Admin logged out');
-}
-
-function showNotification(message, type = 'info') {
-    const existing = document.getElementById('cms-notification');
-    if (existing) existing.remove();
-    
-    const notification = document.createElement('div');
-    notification.id = 'cms-notification';
-    notification.className = `cms-notification ${type}`;
-    notification.textContent = message;
-    
-    document.body.appendChild(notification);
-    
-    setTimeout(() => {
-        notification.style.opacity = '0';
-        notification.style.transform = 'translateY(-20px)';
-        setTimeout(() => notification.remove(), 300);
-    }, 3000);
-}
-
-/* ==============================
-   DEVLOG DATA MANAGEMENT
-================================ */
-
-const defaultDevlogs = [];
-
 function getDevlogs() {
     try {
         const stored = localStorage.getItem(DEVLOGS_STORAGE_KEY);
@@ -1298,6 +1230,200 @@ function initializeDropdowns() {
     });
 }
 
+function initializeProjectShowcase() {
+    const showcase = document.querySelector('.project-showcase');
+    if (!showcase) return;
+
+    const projects = [
+        {
+            title: 'Lost Voices',
+            role: 'Sole Developer',
+            software: 'Unity • C#',
+            date: '2024',
+            image: 'assets/images/project1-screenshot1.png',
+            link: 'https://pitza.itch.io/lost-voices',
+            description: 'Atmospheric sci-fi horror inspired by Alien Isolation, built around sound, tension, and environmental storytelling.'
+        },
+        {
+            title: 'MISTAKE',
+            role: 'Game Designer & Programmer',
+            software: 'Unity • C#',
+            date: '2024',
+            image: 'assets/images/project2-screenshot1.jpg',
+            link: 'https://pitza.itch.io/mistake',
+            description: 'A short first-person story experience about ethical choice, consequence, and the weight of a single decision.'
+        },
+        {
+            title: 'Kitty Kultivation',
+            role: 'Game Designer • Level Designer • Programmer',
+            software: 'Unity • C#',
+            date: '2025',
+            image: 'assets/images/project3-screenshot1.png',
+            link: 'https://pitza.itch.io/kitty-kultivation',
+            description: 'A capstone project exploring urban gardening, sustainability, and the quiet joy of growing something in a polluted world.'
+        },
+        {
+            title: 'CUBOIDS REVOLT',
+            role: 'Sole Developer',
+            software: 'Unity • C#',
+            date: '2023',
+            image: 'assets/images/project4-screenshot1.PNG',
+            link: 'https://pitza.itch.io/cuboids-revolt',
+            description: 'A top-down survival shooter where the player protects small cubes while fighting off waves of enemies in a simple, chaotic arcade loop.'
+        },
+        {
+            title: 'GremBox',
+            role: 'Sole Developer',
+            software: 'Unity • C#',
+            date: '2025',
+            image: 'assets/images/project5-screenshot1.png',
+            link: 'https://pitza.itch.io/grembox',
+            description: 'A playful sandbox project centered on gathering mascots, exploration, and a lighthearted fan-game approach built around a personal favorite character.'
+        }
+    ];
+
+    const track = document.getElementById('projectTrack');
+    const detailTitle = document.getElementById('projectDetailTitle');
+    const detailRole = document.getElementById('projectDetailRole');
+    const detailSoftware = document.getElementById('projectDetailSoftware');
+    const detailDate = document.getElementById('projectDetailDate');
+    const detailDescription = document.getElementById('projectDetailDescription');
+    const detailLink = document.getElementById('projectDetailLink');
+    const detailCard = document.querySelector('.project-detail-box');
+    const prevButton = document.querySelector('.project-arrow.prev');
+    const nextButton = document.querySelector('.project-arrow.next');
+
+    if (!track || !detailTitle || !detailRole || !detailSoftware || !detailDate || !detailDescription || !detailLink || !prevButton || !nextButton) {
+        return;
+    }
+
+    let currentIndex = 0;
+    let isAnimating = false;
+    let trackIndex = projects.length;
+
+    function getTrackOffset(index) {
+        const slide = track.children[index];
+        if (!slide) return 0;
+
+        const laneWidth = track.parentElement.clientWidth;
+        return (laneWidth - slide.offsetWidth) / 2 - slide.offsetLeft;
+    }
+
+    function updateTrackPosition(offset) {
+        gsap.set(track, { x: offset });
+    }
+
+    function triggerLaneMotion(direction, onComplete) {
+        if (typeof gsap === 'undefined') {
+            if (typeof onComplete === 'function') onComplete();
+            return;
+        }
+
+        const targetIndex = direction === 'next' ? trackIndex + 1 : trackIndex - 1;
+        const targetProjectIndex = ((targetIndex % projects.length) + projects.length) % projects.length;
+
+        Array.from(track.children).forEach((slide, index) => {
+            slide.classList.toggle('is-active', index === targetIndex);
+        });
+
+        gsap.killTweensOf(track);
+        gsap.to(track, {
+            x: getTrackOffset(targetIndex),
+            duration: 0.46,
+            ease: 'power3.inOut',
+            onComplete: () => {
+                trackIndex = targetIndex;
+                currentIndex = targetProjectIndex;
+                renderProject();
+                trackIndex = projects.length + currentIndex;
+                gsap.set(track, { x: getTrackOffset(trackIndex) });
+                if (typeof onComplete === 'function') onComplete();
+            }
+        });
+    }
+
+    function goToPrevious() {
+        if (isAnimating) return;
+        isAnimating = true;
+
+        triggerLaneMotion('prev', () => { isAnimating = false; });
+    }
+
+    function goToNext() {
+        if (isAnimating) return;
+        isAnimating = true;
+
+        triggerLaneMotion('next', () => { isAnimating = false; });
+    }
+
+    function renderProject() {
+        const project = projects[currentIndex];
+
+        if (!project) return;
+
+        if (!track.children.length) {
+            for (let copy = 0; copy < 3; copy += 1) {
+                projects.forEach((item, index) => {
+                    const slide = document.createElement('article');
+                    slide.className = 'project-slide';
+                    slide.dataset.index = index;
+                    slide.innerHTML = `<img src="${item.image}" alt="${item.title} preview image"><span>${item.title}</span>`;
+                    track.appendChild(slide);
+                });
+            }
+        }
+
+        Array.from(track.children).forEach((slide, index) => {
+            slide.classList.toggle('is-active', Number(slide.dataset.index) === currentIndex && index === trackIndex);
+        });
+        updateTrackPosition(getTrackOffset(trackIndex));
+
+        detailTitle.textContent = project.title;
+        detailRole.textContent = project.role;
+        detailSoftware.textContent = project.software;
+        detailDate.textContent = project.date;
+        detailDescription.textContent = project.description;
+        detailLink.href = project.link;
+
+        if (detailCard) {
+            detailCard.classList.remove('animate');
+            void detailCard.offsetWidth;
+            detailCard.classList.add('animate');
+        }
+    }
+
+    prevButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+        goToPrevious();
+    });
+    nextButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+        goToNext();
+    });
+
+    const lane = document.querySelector('.project-lane');
+    if (lane) {
+        const proximity = 115;
+
+        lane.addEventListener('mousemove', (event) => {
+            const previousBounds = prevButton.getBoundingClientRect();
+            const nextBounds = nextButton.getBoundingClientRect();
+            const nearPrevious = Math.abs(event.clientX - (previousBounds.left + previousBounds.width / 2)) < proximity;
+            const nearNext = Math.abs(event.clientX - (nextBounds.left + nextBounds.width / 2)) < proximity;
+
+            prevButton.classList.toggle('visible', nearPrevious);
+            nextButton.classList.toggle('visible', nearNext);
+        });
+
+        lane.addEventListener('mouseleave', () => {
+            prevButton.classList.remove('visible');
+            nextButton.classList.remove('visible');
+        });
+    }
+
+    renderProject();
+}
+
 /* ==============================
    UPDATED INITIALIZATION
 ================================ */
@@ -1323,6 +1449,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initialize dropdowns
     initializeDropdowns();
+
+    // Initialize project showcase (if exists on this page)
+    initializeProjectShowcase();
     
     // Initialize authentication system
     initializeAuthSystem();

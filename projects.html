@@ -8,6 +8,7 @@
 </head>
 <body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 <script src="audio-system.js"></script>
 <script src="script.js"></script>
 <div class="container">
@@ -19,212 +20,46 @@
     <nav>
     <a href="index.html">[ ABOUT ]</a>
     
-    <!-- Projects Dropdown -->
-    <div class="dropdown">
-        <button class="dropdown-toggle" id="projectsDropdown">
-            [ PROJECTS ]
-        </button>
-        <div class="dropdown-menu">
-            <a href="projects.html">Projects</a>
-            <a href="devlogs.html">DevLogs</a>
-            <a href="gdd.html">Game Design Docs</a>
-        </div>
-    </div>
+    <a href="projects.html">[ PROJECTS ]</a>
     
     <a href="resume.html">[ RESUME ]</a>
     <a href="#contact">[ CONTACT ]</a>
     <button id="themeToggle">☀ / ☾</button>
 </nav>
 
-    <section>
+    <section class="project-showcase" aria-label="Project showcase">
+        <div class="project-lane">
+            <button class="project-arrow prev" type="button" aria-label="Previous project">◀</button>
+            <div class="project-track" id="projectTrack" aria-live="polite"></div>
+            <button class="project-arrow next" type="button" aria-label="Next project">▶</button>
+        </div>
 
-        <!-- LOST VOICES -->
-        <div class="project">
-            <h3><a href="https://pitza.itch.io/lost-voices">Lost Voices</a></h3>
-            <p class="project-meta">Sole Developer • Unity • 2024</p>
+        <div class="project-detail-box" aria-live="polite">
+            <h3 id="projectDetailTitle">Lost Voices</h3>
 
-            <div class="media-container" data-mode="project">
-                <div class="video-slide">
-                    <video muted loop>
-                        <source src="assets/video/project1-preview.mp4" type="video/mp4">
-                    </video>
+            <div class="project-meta-grid">
+                <div class="meta-block">
+                    <span class="meta-label">My Role</span>
+                    <p id="projectDetailRole">Sole Developer</p>
                 </div>
-
-                <div class="slideshow">
-                    <div class="slide"><img src="assets/images/project1-screenshot1.png"></div>
-                    <div class="slide"><img src="assets/images/project1-screenshot2.png"></div>
-                    <div class="slide"><img src="assets/images/project1-screenshot3.png"></div>
+                <div class="meta-block">
+                    <span class="meta-label">Software</span>
+                    <p id="projectDetailSoftware">Unity • C#</p>
                 </div>
-
-                <div class="slide-indicators">
-                    <div class="indicator" data-slide="video"></div>
-                    <div class="indicator" data-slide="0"></div>
-                    <div class="indicator" data-slide="1"></div>
-                    <div class="indicator" data-slide="2"></div>
-                </div>
-
-                <div class="slideshow-controls">
-                    <button class="prev">◄ PREV</button>
-                    <button class="next">NEXT ►</button>
+                <div class="meta-block">
+                    <span class="meta-label">Date</span>
+                    <p id="projectDetailDate">2024</p>
                 </div>
             </div>
 
-            <p>
-                Atmospheric sci-fi horror inspired by Alien Isolation.
-            </p>
-        </div>
-
-        <!-- MISTAKE -->
-        <div class="project">
-            <h3><a href="https://pitza.itch.io/mistake">MISTAKE</a></h3>
-            <p class="project-meta">Game Designer and Programmer • Unity • 2024</p>
-
-            <div class="media-container" data-mode="project">
-                <div class="video-slide">
-                    <video muted loop>
-                        <source src="assets/video/project2-preview.mp4" type="video/mp4">
-                    </video>
-                </div>
-
-                <div class="slideshow">
-                    <div class="slide"><img src="assets/images/project2-screenshot1.jpg"></div>
-                    <div class="slide"><img src="assets/images/project2-screenshot2.jpg"></div>
-                    <div class="slide"><img src="assets/images/project2-screenshot3.jpg"></div>
-                </div>
-
-                <div class="slide-indicators">
-                    <div class="indicator" data-slide="video"></div>
-                    <div class="indicator" data-slide="0"></div>
-                    <div class="indicator" data-slide="1"></div>
-                    <div class="indicator" data-slide="2"></div>
-                </div>
-
-                <div class="slideshow-controls">
-                    <button class="prev">◄ PREV</button>
-                    <button class="next">NEXT ►</button>
-                </div>
+            <div class="project-detail-description">
+                <p id="projectDetailDescription">Atmospheric sci-fi horror inspired by Alien Isolation, built around sound, tension, and environmental storytelling.</p>
             </div>
 
-            <p>
-                Is a short first person story game about the effect of a single choice, and its ethical dillema. Your choice decides the end.
-            </p>
-        </div>
-
-        <!-- KITTY KULTIVATION -->
-
-        <div class="project">
-            <h3><a href="https://pitza.itch.io/kitty-kultivation">Kitty Kultivation</a></h3>
-            <p class="project-meta">Game Designer, Level Designer, and Programmer • Unity • 2025</p>
-
-            <div class="media-container" data-mode="project">
-                <div class="video-slide">
-                    <video muted loop>
-                        <source src="assets/video/project3-preview.mp4" type="video/mp4">
-                    </video>
-                </div>
-
-                <div class="slideshow">
-                    <div class="slide"><img src="assets/images/project3-screenshot1.png"></div>
-                    <div class="slide"><img src="assets/images/project3-screenshot2.png"></div>
-                    <div class="slide"><img src="assets/images/project3-screenshot3.jpg"></div>
-                </div>
-
-                <div class="slide-indicators">
-                    <div class="indicator" data-slide="video"></div>
-                    <div class="indicator" data-slide="0"></div>
-                    <div class="indicator" data-slide="1"></div>
-                    <div class="indicator" data-slide="2"></div>
-                </div>
-
-                <div class="slideshow-controls">
-                    <button class="prev">◄ PREV</button>
-                    <button class="next">NEXT ►</button>
-                </div>
+            <div class="project-detail-link-row">
+                <a id="projectDetailLink" href="https://pitza.itch.io/lost-voices" target="_blank" rel="noreferrer">View Project</a>
             </div>
-
-            <p>
-                Kitty Kultivation is a capstone project about urban gardening and how it can benefit self sustainance on a world plagued by pollution.
-            </p>
         </div>
-
-        <!-- CUBOIDS REVOLT -->
-
-        <div class="project">
-            <h3><a href="https://pitza.itch.io/cuboids-revolt">CUBOIDS REVOLT</a></h3>
-            <p class="project-meta">Sole Developer • Unity • 2023</p>
-
-            <div class="media-container" data-mode="project">
-                <div class="video-slide">
-                    <video muted loop>
-                        <source src="assets/video/project4-preview.mp4" type="video/mp4">
-                    </video>
-                </div>
-
-                <div class="slideshow">
-                    <div class="slide"><img src="assets/images/project4-screenshot1.PNG"></div>
-                    <div class="slide"><img src="assets/images/project4-screenshot2.PNG"></div>
-                    <div class="slide"><img src="assets/images/project4-screenshot3.png"></div>
-                </div>
-
-                <div class="slide-indicators">
-                    <div class="indicator" data-slide="video"></div>
-                    <div class="indicator" data-slide="0"></div>
-                    <div class="indicator" data-slide="1"></div>
-                    <div class="indicator" data-slide="2"></div>
-                </div>
-
-                <div class="slideshow-controls">
-                    <button class="prev">◄ PREV</button>
-                    <button class="next">NEXT ►</button>
-                </div>
-            </div>
-
-            <p>
-                Cuboids Revolt was my very first game created in Unity, although not much to it, 
-                I showcase it here to show where I began in the field of Game Development. 
-                Cuboids Revolt in a Top Down Shooter where the simple goal is to survive for how long as possible. 
-                You protect smaller cubes that follow you while the enemies do their best to destroy them.
-            </p>
-        </div>
-
-        <!-- GREMBOX -->
-
-        <div class="project">
-            <h3><a href="https://pitza.itch.io/grembox">GremBox</a></h3>
-            <p class="project-meta">Sole Developer • Unity • 2025</p>
-
-            <div class="media-container" data-mode="project">
-                <div class="video-slide">
-                    <video muted loop>
-                        <source src="assets/video/project4-preview.mp4" type="video/mp4">
-                    </video>
-                </div>
-
-                <div class="slideshow">
-                    <div class="slide"><img src="assets/images/project5-screenshot1.png"></div>
-                    <div class="slide"><img src="assets/images/project5-screenshot2.png"></div>
-                    <div class="slide"><img src="assets/images/project5-screenshot3.png"></div>
-                </div>
-
-                <div class="slide-indicators">
-                    <div class="indicator" data-slide="video"></div>
-                    <div class="indicator" data-slide="0"></div>
-                    <div class="indicator" data-slide="1"></div>
-                    <div class="indicator" data-slide="2"></div>
-                </div>
-
-                <div class="slideshow-controls">
-                    <button class="prev">◄ PREV</button>
-                    <button class="next">NEXT ►</button>
-                </div>
-            </div>
-
-            <p>
-                Grembox is a simple fan-game for a virtual youtuber called, Gigi Murin of Hololive English 4th Gen "Justice". 
-                The game is a simple sandbox game where the main goal is to gather as many Gremurins (fan mascot of Gigi Murin).
-            </p>
-        </div>
-
     </section>
 
     <!-- CONTACT SECTION -->
