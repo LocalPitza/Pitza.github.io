@@ -1237,7 +1237,7 @@ function initializeDropdowns() {
 
 function initializeProjectShowcase() {
     const showcase = document.querySelector('.project-showcase');
-    if (!showcase) return;
+    if (!showcase || showcase.dataset.initialized === 'true') return;
 
     const projects = [
         {
@@ -1302,6 +1302,8 @@ function initializeProjectShowcase() {
         return;
     }
 
+    showcase.dataset.initialized = 'true';
+
     let currentIndex = 0;
     let isAnimating = false;
     let trackIndex = projects.length;
@@ -1316,17 +1318,24 @@ function initializeProjectShowcase() {
     }
 
     function updateTrackPosition(offset) {
-        gsap.set(track, { x: offset });
+        if (typeof gsap !== 'undefined') {
+            gsap.set(track, { x: offset });
+        } else {
+            track.style.transform = `translate3d(${offset}px, 0, 0)`;
+        }
     }
 
     function triggerLaneMotion(direction, onComplete) {
+        const targetIndex = direction === 'next' ? trackIndex + 1 : trackIndex - 1;
+        const targetProjectIndex = ((targetIndex % projects.length) + projects.length) % projects.length;
+
         if (typeof gsap === 'undefined') {
+            currentIndex = targetProjectIndex;
+            trackIndex = projects.length + currentIndex;
+            renderProject();
             if (typeof onComplete === 'function') onComplete();
             return;
         }
-
-        const targetIndex = direction === 'next' ? trackIndex + 1 : trackIndex - 1;
-        const targetProjectIndex = ((targetIndex % projects.length) + projects.length) % projects.length;
 
         const currentSlideshow = projectSlideshows.find(({ slide }) => slide === track.children[trackIndex]);
         if (currentSlideshow && currentSlideshow.slideshow.hasVideo) {
@@ -1483,6 +1492,57 @@ function initializeProjectShowcase() {
     renderProject();
 }
 
+function initializePortfolioViews() {
+    const views = Array.from(document.querySelectorAll('[data-portfolio-view]'));
+    const viewButtons = document.querySelectorAll('[data-view-target]');
+    const homeButtons = document.querySelectorAll('[data-home-button]');
+    if (!views.length) return;
+
+    function showView(viewName, updateHistory = true) {
+        const targetView = views.find((view) => view.dataset.portfolioView === viewName) || views[0];
+        const activeName = targetView.dataset.portfolioView;
+
+        views.forEach((view) => {
+            const isActive = view === targetView;
+            view.hidden = !isActive;
+            view.classList.toggle('is-active', isActive);
+        });
+
+        viewButtons.forEach((button) => {
+            const isActive = button.dataset.viewTarget === activeName;
+            button.setAttribute('aria-pressed', String(isActive));
+        });
+
+        if (updateHistory) {
+            const nextHash = activeName === 'home' ? '' : `#${activeName}`;
+            if (window.location.hash !== nextHash) {
+                window.history.pushState({ view: activeName }, '', `${window.location.pathname}${window.location.search}${nextHash}`);
+            }
+        }
+
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+
+        if (activeName === 'projects') {
+            window.requestAnimationFrame(initializeProjectShowcase);
+        }
+    }
+
+    viewButtons.forEach((button) => {
+        button.addEventListener('click', () => showView(button.dataset.viewTarget));
+    });
+
+    homeButtons.forEach((button) => {
+        button.addEventListener('click', () => showView('home'));
+    });
+
+    window.addEventListener('popstate', () => {
+        showView(window.location.hash.slice(1) || 'home', false);
+    });
+
+    showView(window.location.hash.slice(1) || 'home', false);
+}
+
 /* ==============================
    UPDATED INITIALIZATION
 ================================ */
@@ -1496,6 +1556,9 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initialize theme toggle
     initializeThemeToggle();
+
+    // Initialize the single-page portfolio navigation
+    initializePortfolioViews();
     
     // Initialize click counter (if exists on this page)
     initializeClickCounter();
@@ -1509,9 +1572,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize dropdowns
     initializeDropdowns();
 
-    // Initialize project showcase (if exists on this page)
-    initializeProjectShowcase();
-    
     // Initialize authentication system
     initializeAuthSystem();
     

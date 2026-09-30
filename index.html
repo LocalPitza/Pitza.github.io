@@ -9,178 +9,126 @@
 </head>
 <body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 <script src="audio-system.js"></script>
 <script src="script.js"></script>
 <div class="container">
 
     <!-- ================= HEADER ================= -->
-    <header>
-        <div class="pixel-art">▓▒░ GAME DESIGNER ░▒▓</div>
-        <h1>Janmar Cornejo</h1>
-        <p class="tagline">// Making Games For Everyone! //</p>
-        <!-- <h6 class="tagline">Current Issue : Dropdown may not be visible after scrolling down, reset the website then hover over it.</h6> -->
+    <header class="site-header">
+        <button class="home-mark" type="button" data-home-button aria-label="Return to home">JC</button>
+        <span class="pixel-art">GAME DESIGNER</span>
+        <button id="themeToggle" type="button" aria-label="Toggle color theme">☀ / ☾</button>
     </header>
 
-    <!-- ================= NAV ================= -->
-    <nav>
-    <a href="index.html">[ ABOUT ]</a>
-    
-    <a href="projects.html">[ PROJECTS ]</a>
-    
-    <a href="resume.html">[ RESUME ]</a>
-    <a href="#contact">[ CONTACT ]</a>
-    <button id="themeToggle">☀ / ☾</button>
-</nav>
-
     <!-- ================= ABOUT ================= -->
-    <section id="about">
-        <h2>▸ ABOUT ME</h2>
+    <section id="about" class="portfolio-view home-view" data-portfolio-view="home">
+        <p class="eyebrow">GAME DESIGNER · DEVELOPER</p>
+        <h1>Janmar Cornejo</h1>
+        <p class="home-tagline">Making games for everyone.</p>
 
-        <p>
-            <span class="blinking">►</span>
-            Welcome to my corner of the web! I'm a passionate game developer
-            specializing in Game Design, Level Design, and Game Programming.
-        </p>
+        <div class="intro-copy">
+            <p>I'm a game designer and developer who builds playful, thoughtful experiences, from atmospheric worlds to systems that invite experimentation.</p>
+            <p>My work spans game design, level design, prototyping, and programming. I care about player freedom, clear interaction, and the feeling a game leaves behind.</p>
+        </div>
 
-        <p style="margin-top: 15px;">
-            With a love for creating immersive worlds and engaging gameplay mechanics,
-            I bring stories to life through interactive experiences. My design philosophy
-            focuses on player enjoyment, freedom, and the emotional impact. 
-            I also create game that would be enjoyed by myself and others!
-        </p>
-
-        <p style="margin-top: 15px;">
-            <strong>Skills:</strong>
-            Game Design | Level Design | Unity | C# | C++ |
-            Prototyping | Playtesting | Documentation
-        </p>
+        <div class="home-actions" aria-label="Explore the portfolio">
+            <button type="button" data-view-target="contact" aria-pressed="false"><span>01</span> Contact</button>
+            <button type="button" data-view-target="projects" aria-pressed="false"><span>02</span> Projects</button>
+            <button type="button" data-view-target="resume" aria-pressed="false"><span>03</span> Resume</button>
+        </div>
     </section>
 
-    <!-- ================= FEATURED GAMES ================= -->
-    <section id="featured">
-        <h2>▸ FEATURED GAMES</h2>
-
-        <!-- FEATURE 1 -->
-        <div class="featured-project left">
-            <div class="featured-media media-container">
-
-                <div class="video-slide">
-                    <video muted loop>
-                        <source src="assets/video/project1-preview.mp4" type="video/mp4">
-                    </video>
-                </div>
-
-                <div class="slideshow">
-                    <div class="slide"><img src="assets/images/project1-screenshot1.png"></div>
-                    <div class="slide"><img src="assets/images/project1-screenshot2.png"></div>
-                    <div class="slide"><img src="assets/images/project1-screenshot3.png"></div>
-                </div>
-
-                <div class="slide-indicators">
-                    <div class="indicator" data-slide="video"></div>
-                    <div class="indicator" data-slide="0"></div>
-                    <div class="indicator" data-slide="1"></div>
-                    <div class="indicator" data-slide="2"></div>
-                </div>
-
-                <div class="slideshow-controls">
-                    <button class="prev">◄</button>
-                    <button class="next">►</button>
-                </div>
+    <!-- ================= PROJECTS ================= -->
+    <section id="featured" class="portfolio-view" data-portfolio-view="projects" hidden>
+        <p class="eyebrow">SELECTED WORK</p>
+        <h2>Projects</h2>
+        <div class="project-showcase" aria-label="Project showcase">
+            <div class="project-lane">
+                <button class="project-arrow prev" type="button" aria-label="Previous project">◀</button>
+                <div class="project-track" id="projectTrack" aria-live="polite"></div>
+                <button class="project-arrow next" type="button" aria-label="Next project">▶</button>
             </div>
 
-            <div class="featured-content">
-                <h3>Lost Voices</h3>
-                <p class="featured-meta">Sole Developer • Unity • 2024</p>
-                <p>
-                    An atmospheric sci-fi horror experience inspired by isolation,
-                    sound-based tension, and environmental storytelling.
-                </p>
+            <div class="project-detail-box" aria-live="polite">
+                <h3 id="projectDetailTitle">Lost Voices</h3>
+                <div class="project-meta-grid">
+                    <div class="meta-block">
+                        <span class="meta-label">My Role</span>
+                        <p id="projectDetailRole">Sole Developer</p>
+                    </div>
+                    <div class="meta-block">
+                        <span class="meta-label">Software</span>
+                        <p id="projectDetailSoftware">Unity • C#</p>
+                    </div>
+                    <div class="meta-block">
+                        <span class="meta-label">Date</span>
+                        <p id="projectDetailDate">2024</p>
+                    </div>
+                </div>
+                <div class="project-detail-description">
+                    <p id="projectDetailDescription">Atmospheric sci-fi horror inspired by Alien Isolation, built around sound, tension, and environmental storytelling.</p>
+                </div>
+                <div class="project-detail-link-row">
+                    <a id="projectDetailLink" href="https://pitza.itch.io/lost-voices" target="_blank" rel="noreferrer">View Project</a>
+                </div>
             </div>
         </div>
+    </section>
 
-        <!-- FEATURE 2 -->
-        <div class="featured-project right">
-            <div class="featured-media media-container">
-
-                <div class="video-slide">
-                    <video muted loop>
-                        <source src="assets/video/project2-preview.mp4" type="video/mp4">
-                    </video>
-                </div>
-
-                <div class="slideshow">
-                    <div class="slide"><img src="assets/images/project2-screenshot1.jpg"></div>
-                    <div class="slide"><img src="assets/images/project2-screenshot2.jpg"></div>
-                    <div class="slide"><img src="assets/images/project2-screenshot3.jpg"></div>
-                </div>
-
-                <div class="slide-indicators">
-                    <div class="indicator" data-slide="video"></div>
-                    <div class="indicator" data-slide="0"></div>
-                    <div class="indicator" data-slide="1"></div>
-                    <div class="indicator" data-slide="2"></div>
-                </div>
-
-                <div class="slideshow-controls">
-                    <button class="prev">◄</button>
-                    <button class="next">►</button>
-                </div>
-            </div>
-
-            <div class="featured-content">
-                <h3>Mistake</h3>
-                <p class="featured-meta">Game Designer • Unity • 2023</p>
-                <p>
-                    A short narrative-driven experience focused on ethical choice
-                    and consequence, where a single decision defines the ending.
-                </p>
+    <section class="portfolio-view resume-view" data-portfolio-view="resume" hidden>
+        <p class="eyebrow">EXPERIENCE & EDUCATION</p>
+        <h2>Resume</h2>
+        <div class="resume-download">
+            <a href="assets/Cornejo_Resume.pdf" download class="download-btn">Download PDF resume</a>
+        </div>
+        <div class="resume-header">
+            <h3>Janmar Cornejo</h3>
+            <p class="resume-title">GAME DESIGNER | DEVELOPER</p>
+            <div class="contact-info">
+                <p><strong>Email:</strong> <a href="mailto:janmarfabilanecornejo@gmail.com">janmarfabilanecornejo@gmail.com</a></p>
+                <p><strong>Location:</strong> Caloocan City, Metro Manila, Philippines</p>
             </div>
         </div>
-
-        <!-- FEATURE 3 -->
-        <div class="featured-project left">
-            <div class="featured-media media-container">
-
-                <div class="video-slide">
-                    <video muted loop>
-                        <source src="assets/video/project3-preview.mp4" type="video/mp4">
-                    </video>
-                </div>
-
-                <div class="slideshow">
-                    <div class="slide"><img src="assets/images/project3-screenshot1.png"></div>
-                    <div class="slide"><img src="assets/images/project3-screenshot2.png"></div>
-                    <div class="slide"><img src="assets/images/project3-screenshot3.jpg"></div>
-                </div>
-
-                <div class="slide-indicators">
-                    <div class="indicator" data-slide="video"></div>
-                    <div class="indicator" data-slide="0"></div>
-                    <div class="indicator" data-slide="1"></div>
-                    <div class="indicator" data-slide="2"></div>
-                </div>
-
-                <div class="slideshow-controls">
-                    <button class="prev">◄</button>
-                    <button class="next">►</button>
-                </div>
+        <div class="resume-section">
+            <h3>Profile</h3>
+            <p>Game designer and developer focused on gameplay-first experiences. Experienced designing and managing projects in Unity and Godot, collaborating with teams, and refining ideas through hands-on iteration.</p>
+        </div>
+        <div class="resume-section">
+            <h3>Skills</h3>
+            <p>Game Design · Level Design · Prototyping · Playtesting · Project Management · Unity · Godot · C# · C++ · TypeScript</p>
+        </div>
+        <div class="resume-section">
+            <h3>Experience</h3>
+            <div class="experience-item">
+                <h4>Taktyl Studios</h4>
+                <p class="experience-meta">Game Developer · TypeScript · 2026</p>
+                <p>Created prototypes and working games, collaborating with developers on client projects.</p>
             </div>
-
-            <div class="featured-content">
-                <h3>Kitty Kultivation</h3>
-                <p class="featured-meta">Game and Level Designer • 2023</p>
-                <p>
-                    A cozy yet thoughtful project exploring urban gardening,
-                    sustainability, and community through interactive systems.
-                </p>
+            <div class="experience-item">
+                <h4>Katnip Kultivation · Capstone Project</h4>
+                <p class="experience-meta">Game Design, Level Design & Programming · Unity · 2024–2025</p>
+                <p>Contributed level and mechanic design, art direction, and C# programming in a three-person team.</p>
+            </div>
+            <div class="experience-item">
+                <h4>Game Jam Manila · Phytologist</h4>
+                <p class="experience-meta">Game Programmer & Designer · Unity · 2023</p>
+                <p>Designed the gameplay loop, handled lighting and visual design, and helped implement movement and gameplay scripts.</p>
+            </div>
+        </div>
+        <div class="resume-section">
+            <h3>Education</h3>
+            <div class="education-item">
+                <h4>CIIT College of Arts and Technology</h4>
+                <p class="education-meta">BSEMC, Game Development · 2021–2026</p>
             </div>
         </div>
     </section>
 
     <!-- ================= CONTACT ================= -->
-    <section id="contact">
-        <h2>▸ GET IN TOUCH</h2>
+    <section id="contact" class="portfolio-view contact-view" data-portfolio-view="contact" hidden>
+        <p class="eyebrow">LET'S MAKE SOMETHING</p>
+        <h2>Get in touch</h2>
 
         <div class="contact-info">
             <p><strong>Email:</strong>
