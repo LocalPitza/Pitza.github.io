@@ -970,12 +970,17 @@ class ProjectSlideshow {
     }
 
     init() {
-        // Start with first image
-        this.showSlide(0);
-        
         // Hide video if not available
         if (!this.hasVideo && this.videoSlide) {
             this.videoSlide.style.display = 'none';
+        }
+
+        // Video is the first slide when one is available.
+        if (this.hasVideo && this.container.dataset.autoplay !== 'false') {
+            this.currentIndex = -1;
+            this.showVideo();
+        } else {
+            this.showSlide(0);
         }
         
         // Setup video if available
@@ -1300,6 +1305,7 @@ function initializeProjectShowcase() {
     let currentIndex = 0;
     let isAnimating = false;
     let trackIndex = projects.length;
+    const projectSlideshows = [];
 
     function getTrackOffset(index) {
         const slide = track.children[index];
@@ -1321,6 +1327,12 @@ function initializeProjectShowcase() {
 
         const targetIndex = direction === 'next' ? trackIndex + 1 : trackIndex - 1;
         const targetProjectIndex = ((targetIndex % projects.length) + projects.length) % projects.length;
+
+        const currentSlideshow = projectSlideshows.find(({ slide }) => slide === track.children[trackIndex]);
+        if (currentSlideshow && currentSlideshow.slideshow.hasVideo) {
+            currentSlideshow.slideshow.hideVideo();
+            currentSlideshow.slideshow.showSlide(0);
+        }
 
         Array.from(track.children).forEach((slide, index) => {
             slide.classList.toggle('is-active', index === targetIndex);
@@ -1367,8 +1379,44 @@ function initializeProjectShowcase() {
                     const slide = document.createElement('article');
                     slide.className = 'project-slide';
                     slide.dataset.index = index;
-                    slide.innerHTML = `<img src="${item.image}" alt="${item.title} preview image"><span>${item.title}</span>`;
+                    const screenshotPaths = [
+                        `assets/images/project${index + 1}-screenshot1.${index === 1 ? 'jpg' : index === 2 ? 'png' : index === 3 ? 'PNG' : index === 4 ? 'png' : 'png'}`,
+                        `assets/images/project${index + 1}-screenshot2.${index === 1 ? 'jpg' : index === 2 ? 'png' : index === 3 ? 'PNG' : index === 4 ? 'png' : 'png'}`,
+                        `assets/images/project${index + 1}-screenshot3.${index === 1 || index === 2 ? 'jpg' : 'png'}`
+                    ];
+                    const hasPreviewVideo = index === 1;
+                    slide.innerHTML = `
+                        <div class="media-container project-media" data-autoplay="false">
+                            ${hasPreviewVideo ? `
+                                <div class="video-slide">
+                                    <video muted loop>
+                                        <source src="assets/video/project2-preview.mp4" type="video/mp4">
+                                    </video>
+                                </div>
+                            ` : ''}
+                            <div class="slideshow">
+                                ${screenshotPaths.map((path, screenshotIndex) => `
+                                    <div class="slide ${screenshotIndex === 0 ? 'active' : ''}">
+                                        <img src="${path}" alt="${item.title} screenshot ${screenshotIndex + 1}">
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <div class="slide-indicators">
+                                ${hasPreviewVideo ? '<div class="indicator active" data-slide="video"></div>' : ''}
+                                ${screenshotPaths.map((_, screenshotIndex) => `
+                                    <div class="indicator ${!hasPreviewVideo && screenshotIndex === 0 ? 'active' : ''}" data-slide="${screenshotIndex}"></div>
+                                `).join('')}
+                            </div>
+                            <div class="slideshow-controls">
+                                <button class="prev" type="button" aria-label="Previous screenshot">◄</button>
+                                <button class="next" type="button" aria-label="Next screenshot">►</button>
+                            </div>
+                        </div>
+                        <span>${item.title}</span>
+                    `;
                     track.appendChild(slide);
+                    const projectSlideshow = new ProjectSlideshow(slide.querySelector('.project-media'));
+                    projectSlideshows.push({ slide, slideshow: projectSlideshow });
                 });
             }
         }
@@ -1376,6 +1424,17 @@ function initializeProjectShowcase() {
         Array.from(track.children).forEach((slide, index) => {
             slide.classList.toggle('is-active', Number(slide.dataset.index) === currentIndex && index === trackIndex);
         });
+
+        projectSlideshows.forEach(({ slide, slideshow }) => {
+            const isCentered = slide === track.children[trackIndex];
+            if (isCentered && slideshow.hasVideo) {
+                slideshow.showVideo();
+            } else if (slideshow.hasVideo) {
+                slideshow.hideVideo();
+                slideshow.showSlide(0);
+            }
+        });
+
         updateTrackPosition(getTrackOffset(trackIndex));
 
         detailTitle.textContent = project.title;

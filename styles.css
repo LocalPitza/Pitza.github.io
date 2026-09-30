@@ -56,6 +56,11 @@ body {
     overflow-x: hidden;
 }
 
+body.projects-page {
+    background: linear-gradient(180deg, var(--bg-main) 0%, #000000 100%);
+    background-attachment: fixed;
+}
+
 /* ==============================
    LINKS - FIXED
 ================================ */
@@ -718,6 +723,21 @@ h2:hover {
     height: 100%;
     object-fit: cover;
     transition: opacity 0.14s ease-out, filter 0.14s ease-out;
+}
+
+.project-media {
+    height: 100%;
+    min-height: 0;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    transform: none;
+}
+
+.project-media:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: transparent;
 }
 
 .project-slide:not(.is-active) img {
