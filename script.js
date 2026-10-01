@@ -747,7 +747,7 @@ function loadThemeFromJSON() {
     const jsonPath = basePath ? `${basePath}/themes.json` : 'themes.json';
     console.log("Loading theme from:", jsonPath);
     
-    fetch(jsonPath)
+    fetch(jsonPath, { cache: 'no-store' })
         .then(res => {
             console.log("Theme fetch status:", res.status);
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -800,24 +800,24 @@ function useFallbackThemes() {
     // Hardcoded fallback themes (same as JSON structure)
     window.themes = {
         light: {
-            'bgMain': '#f4efe9',
-            'bgSecondary': '#e9e2d8',
-            'bgCard': '#ded6cb',
-            'accentMain': '#d08c60',
-            'accentSoft': '#e0b089',
-            'accentStrong': '#b36a3c',
-            'textMain': '#2e2420',
-            'textMuted': '#6b5c55'
+            'bgMain': '#f3f4ed',
+            'bgSecondary': '#ffffff',
+            'bgCard': '#e5eee8',
+            'accentMain': '#167e73',
+            'accentSoft': '#a66b13',
+            'accentStrong': '#c84c42',
+            'textMain': '#1e302d',
+            'textMuted': '#526662'
         },
         dark: {
-            'bgMain': '#1c1c1c',
-            'bgSecondary': '#242424',
-            'bgCard': '#2a2a2a',
-            'accentMain': '#f4b183',
-            'accentSoft': '#f6c7a1',
-            'accentStrong': '#ffb070',
-            'textMain': '#e6e6e6',
-            'textMuted': '#b5b5b5'
+            'bgMain': '#141b1d',
+            'bgSecondary': '#202b2d',
+            'bgCard': '#29383a',
+            'accentMain': '#79d6c4',
+            'accentSoft': '#ffd166',
+            'accentStrong': '#ff8066',
+            'textMain': '#f2f4ec',
+            'textMuted': '#adbfba'
         }
     };
     
@@ -1235,6 +1235,269 @@ function initializeDropdowns() {
     });
 }
 
+function initializeFeaturedProjectPicker() {
+    const projectButtons = document.querySelectorAll('.featured-project-card');
+    const projectView = document.querySelector('[data-portfolio-view="projects"]');
+    const layout = document.querySelector('.featured-project-layout');
+    const picker = document.querySelector('.featured-project-picker');
+    const prompt = document.querySelector('.project-picker-prompt');
+    const spotlight = document.querySelector('.project-spotlight');
+    const mediaPicker = document.getElementById('projectMediaPicker');
+    const detailImage = document.getElementById('projectDetailImage');
+    const detailVideo = document.getElementById('projectDetailVideo');
+    if (!projectButtons.length || !projectView || !layout || !picker || !spotlight || !mediaPicker || !detailImage || !detailVideo) return;
+
+    const projects = {
+        'lost-voices': {
+            index: '01',
+            title: 'Lost Voices',
+            images: [
+                'assets/images/project1-screenshot1.png',
+                'assets/images/project1-screenshot2.png',
+                'assets/images/project1-screenshot3.png'
+            ],
+            meta: 'SOLO DEVELOPER · UNITY · 2024',
+            role: 'Sole Developer',
+            software: 'Unity · C#',
+            description: 'Atmospheric sci-fi horror inspired by Alien Isolation, built around sound, tension, and environmental storytelling.',
+            link: 'https://pitza.itch.io/lost-voices'
+        },
+        mistake: {
+            index: '02',
+            title: 'MISTAKE',
+            images: [
+                'assets/images/project2-screenshot1.jpg',
+                'assets/images/project2-screenshot2.jpg',
+                'assets/images/project2-screenshot3.jpg'
+            ],
+            video: 'assets/video/project2-preview.mp4',
+            meta: 'GAME DESIGNER & PROGRAMMER · UNITY · 2024',
+            role: 'Game Designer & Programmer',
+            software: 'Unity · C#',
+            description: 'A short first-person story experience about ethical choice, consequence, and the weight of a single decision.',
+            link: 'https://pitza.itch.io/mistake'
+        },
+        'kitty-kultivation': {
+            index: '03',
+            title: 'Kitty Kultivation',
+            images: [
+                'assets/images/project3-screenshot1.png',
+                'assets/images/project3-screenshot2.png',
+                'assets/images/project3-screenshot3.jpg'
+            ],
+            meta: 'GAME DESIGN · LEVEL DESIGN · UNITY · 2025',
+            role: 'Game Designer · Level Designer · Programmer',
+            software: 'Unity · C#',
+            description: 'A capstone project exploring urban gardening, sustainability, and the quiet joy of growing something in a polluted world.',
+            link: 'https://pitza.itch.io/kitty-kultivation'
+        }
+    };
+
+    const detailIndex = document.getElementById('projectDetailIndex');
+    const detailMeta = document.getElementById('projectDetailMeta');
+    const detailTitle = document.getElementById('projectDetailTitle');
+    const detailRole = document.getElementById('projectDetailRole');
+    const detailSoftware = document.getElementById('projectDetailSoftware');
+    const detailDescription = document.getElementById('projectDetailDescription');
+    const detailLink = document.getElementById('projectDetailLink');
+    let hasSelectedProject = false;
+
+    function reserveExpandedStage() {
+        if (projectView.hidden) return;
+
+        const previousMinHeight = layout.style.minHeight;
+        const wasSelected = layout.classList.contains('has-selection');
+        const wasMeasuring = layout.classList.contains('is-measuring');
+        const spotlightWasHidden = spotlight.hidden;
+        const promptWasDismissed = prompt?.classList.contains('is-dismissed') || false;
+        const promptAriaHidden = prompt?.getAttribute('aria-hidden');
+        const compactHeight = layout.getBoundingClientRect().height;
+
+        layout.style.minHeight = '';
+        layout.classList.add('is-measuring', 'has-selection');
+        prompt?.classList.add('is-dismissed');
+        prompt?.setAttribute('aria-hidden', 'true');
+        spotlight.hidden = false;
+        void layout.offsetHeight;
+        const expandedHeight = layout.getBoundingClientRect().height;
+
+        spotlight.hidden = spotlightWasHidden;
+        layout.classList.toggle('has-selection', wasSelected);
+        layout.classList.toggle('is-measuring', wasMeasuring);
+        prompt?.classList.toggle('is-dismissed', promptWasDismissed);
+        if (prompt && promptAriaHidden === null) {
+            prompt.removeAttribute('aria-hidden');
+        } else if (prompt && promptAriaHidden !== null) {
+            prompt.setAttribute('aria-hidden', promptAriaHidden);
+        }
+
+        layout.style.minHeight = `${Math.ceil(Math.max(compactHeight, expandedHeight) + 24)}px`;
+        if (previousMinHeight && Number.parseFloat(previousMinHeight) > expandedHeight) {
+            layout.style.minHeight = previousMinHeight;
+        }
+    }
+
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        window.clearTimeout(resizeTimer);
+        resizeTimer = window.setTimeout(reserveExpandedStage, 120);
+    });
+    document.addEventListener('portfolio:viewchange', (event) => {
+        if (event.detail?.view === 'projects') {
+            requestAnimationFrame(reserveExpandedStage);
+        }
+    });
+    if (!projectView.hidden) requestAnimationFrame(reserveExpandedStage);
+
+    function showMedia(project, media) {
+        mediaPicker.querySelectorAll('.project-media-thumb').forEach((button) => {
+            const isSelected = button.dataset.mediaType === media.type && button.dataset.mediaSrc === media.src;
+            button.classList.toggle('is-selected', isSelected);
+            button.setAttribute('aria-pressed', String(isSelected));
+        });
+
+        if (media.type === 'video' && project.video) {
+            detailImage.hidden = true;
+            detailVideo.hidden = false;
+            detailVideo.src = project.video;
+            detailVideo.currentTime = 0;
+            detailVideo.play().catch(() => {});
+            return;
+        }
+
+        detailVideo.pause();
+        detailVideo.hidden = true;
+        detailImage.hidden = false;
+        detailImage.src = media.src;
+        detailImage.alt = `${project.title} screenshot ${media.index + 1}`;
+    }
+
+    function buildMediaPicker(project) {
+        mediaPicker.replaceChildren();
+        const mediaItems = project.images.map((src, index) => ({
+            type: 'image',
+            src,
+            index,
+            label: `Screenshot ${index + 1}`
+        }));
+
+        if (project.video) {
+            mediaItems.push({
+                type: 'video',
+                src: project.video,
+                index: -1,
+                label: 'Play video'
+            });
+        }
+
+        mediaItems.forEach((media) => {
+            const button = document.createElement('button');
+            button.className = 'project-media-thumb';
+            button.type = 'button';
+            button.dataset.mediaType = media.type;
+            button.dataset.mediaSrc = media.src;
+            button.setAttribute('aria-label', `${project.title}: ${media.label}`);
+            button.setAttribute('aria-pressed', 'false');
+
+            const image = document.createElement('img');
+            image.src = media.type === 'video' ? project.images[0] : media.src;
+            image.alt = '';
+            image.loading = 'lazy';
+            button.appendChild(image);
+
+            if (media.type === 'video') {
+                const playMark = document.createElement('span');
+                playMark.className = 'media-video-mark';
+                playMark.setAttribute('aria-hidden', 'true');
+                playMark.textContent = '▶';
+                button.appendChild(playMark);
+            }
+
+            const label = document.createElement('span');
+            label.className = 'project-media-label';
+            label.textContent = media.label;
+            button.appendChild(label);
+
+            button.addEventListener('click', () => showMedia(project, media));
+            mediaPicker.appendChild(button);
+        });
+
+        showMedia(project, mediaItems[0]);
+    }
+
+    function animatePickerIntoRail() {
+        const cards = Array.from(projectButtons);
+        const initialRects = cards.map((card) => card.getBoundingClientRect());
+        layout.classList.add('has-selection');
+        const finalRects = cards.map((card) => card.getBoundingClientRect());
+
+        cards.forEach((card, index) => {
+            const initialRect = initialRects[index];
+            const finalRect = finalRects[index];
+            const translateX = initialRect.left - finalRect.left;
+            const translateY = initialRect.top - finalRect.top;
+            const scaleX = initialRect.width / finalRect.width;
+            const scaleY = initialRect.height / finalRect.height;
+            card.style.transition = 'none';
+            card.style.transformOrigin = 'top left';
+            card.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scaleX}, ${scaleY})`;
+        });
+
+        void picker.offsetWidth;
+        requestAnimationFrame(() => {
+            cards.forEach((card) => {
+                card.style.transition = '';
+                card.style.transform = '';
+            });
+
+            const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            const revealSpotlight = () => {
+                spotlight.hidden = false;
+                requestAnimationFrame(() => spotlight.classList.add('is-revealed'));
+            };
+
+            if (reducedMotion) {
+                revealSpotlight();
+                return;
+            }
+
+            window.setTimeout(revealSpotlight, 850);
+        });
+    }
+
+    function selectProject(button) {
+        const project = projects[button.dataset.featuredProject];
+        if (!project) return;
+
+        projectButtons.forEach((item) => {
+            const isSelected = item === button;
+            item.classList.toggle('is-selected', isSelected);
+            item.setAttribute('aria-pressed', String(isSelected));
+        });
+
+        detailIndex.textContent = project.index;
+        detailMeta.textContent = project.meta;
+        detailTitle.textContent = project.title;
+        detailRole.textContent = project.role;
+        detailSoftware.textContent = project.software;
+        detailDescription.textContent = project.description;
+        detailLink.href = project.link;
+        detailVideo.pause();
+        buildMediaPicker(project);
+
+        if (!hasSelectedProject) {
+            hasSelectedProject = true;
+            if (prompt) {
+                prompt.classList.add('is-dismissed');
+                prompt.setAttribute('aria-hidden', 'true');
+            }
+            animatePickerIntoRail();
+        }
+    }
+
+    projectButtons.forEach((button) => button.addEventListener('click', () => selectProject(button)));
+}
+
 function initializeProjectShowcase() {
     const showcase = document.querySelector('.project-showcase');
     if (!showcase || showcase.dataset.initialized === 'true') return;
@@ -1266,24 +1529,6 @@ function initializeProjectShowcase() {
             image: 'assets/images/project3-screenshot1.png',
             link: 'https://pitza.itch.io/kitty-kultivation',
             description: 'A capstone project exploring urban gardening, sustainability, and the quiet joy of growing something in a polluted world.'
-        },
-        {
-            title: 'CUBOIDS REVOLT',
-            role: 'Sole Developer',
-            software: 'Unity • C#',
-            date: '2023',
-            image: 'assets/images/project4-screenshot1.PNG',
-            link: 'https://pitza.itch.io/cuboids-revolt',
-            description: 'A top-down survival shooter where the player protects small cubes while fighting off waves of enemies in a simple, chaotic arcade loop.'
-        },
-        {
-            title: 'GremBox',
-            role: 'Sole Developer',
-            software: 'Unity • C#',
-            date: '2025',
-            image: 'assets/images/project5-screenshot1.png',
-            link: 'https://pitza.itch.io/grembox',
-            description: 'A playful sandbox project centered on gathering mascots, exploration, and a lighthearted fan-game approach built around a personal favorite character.'
         }
     ];
 
@@ -1492,21 +1737,105 @@ function initializeProjectShowcase() {
     renderProject();
 }
 
+function initializeMoreGamesLibrary() {
+    const gameButtons = document.querySelectorAll('.library-game');
+    if (!gameButtons.length) return;
+
+    const games = {
+        cuboids: {
+            title: 'Cuboids Revolt',
+            image: 'assets/images/project4-screenshot1.PNG',
+            meta: 'SOLO DEVELOPER · UNITY · 2023',
+            role: 'Sole Developer',
+            description: 'A top-down survival shooter about protecting small cubes through escalating waves of enemies.',
+            link: 'https://pitza.itch.io/cuboids-revolt'
+        },
+        grembox: {
+            title: 'GremBox',
+            image: 'assets/images/project5-screenshot1.png',
+            meta: 'SOLO DEVELOPER · UNITY · 2025',
+            role: 'Sole Developer',
+            description: 'A playful sandbox project centered on gathering mascots, exploration, and lighthearted discovery.',
+            link: 'https://pitza.itch.io/grembox'
+        }
+    };
+
+    const detailImage = document.getElementById('moreGameImage');
+    const detailMeta = document.getElementById('moreGameMeta');
+    const detailTitle = document.getElementById('moreGameTitle');
+    const detailRole = document.getElementById('moreGameRole');
+    const detailDescription = document.getElementById('moreGameDescription');
+    const detailLink = document.getElementById('moreGameLink');
+
+    gameButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+            const game = games[button.dataset.libraryGame];
+            if (!game) return;
+
+            gameButtons.forEach((item) => {
+                const isSelected = item === button;
+                item.classList.toggle('is-selected', isSelected);
+                item.setAttribute('aria-pressed', String(isSelected));
+            });
+
+            detailImage.src = game.image;
+            detailImage.alt = `${game.title} gameplay screenshot`;
+            detailMeta.textContent = game.meta;
+            detailTitle.textContent = game.title;
+            detailRole.textContent = game.role;
+            detailDescription.textContent = game.description;
+            detailLink.href = game.link;
+        });
+    });
+}
+
 function initializePortfolioViews() {
     const views = Array.from(document.querySelectorAll('[data-portfolio-view]'));
     const viewButtons = document.querySelectorAll('[data-view-target]');
     const homeButtons = document.querySelectorAll('[data-home-button]');
     if (!views.length) return;
 
-    function showView(viewName, updateHistory = true) {
+    let activeView = views.find((view) => !view.hidden) || views[0];
+    let isTransitioning = false;
+    let queuedView = null;
+
+    views.forEach((view) => {
+        const isActive = view === activeView;
+        view.hidden = !isActive;
+        view.classList.toggle('is-active', isActive);
+    });
+
+    async function animateView(element, keyframes, options) {
+        if (typeof element.animate !== 'function') return;
+
+        const animation = element.animate(keyframes, options);
+        try {
+            await animation.finished;
+        } catch {
+            return;
+        }
+        animation.cancel();
+    }
+
+    async function showView(viewName, updateHistory = true) {
         const targetView = views.find((view) => view.dataset.portfolioView === viewName) || views[0];
         const activeName = targetView.dataset.portfolioView;
+        if (isTransitioning) {
+            queuedView = { viewName: activeName, updateHistory };
+            return;
+        }
 
-        views.forEach((view) => {
-            const isActive = view === targetView;
-            view.hidden = !isActive;
-            view.classList.toggle('is-active', isActive);
-        });
+        if (targetView === activeView) {
+            document.dispatchEvent(new CustomEvent('portfolio:viewchange', { detail: { view: activeName } }));
+            return;
+        }
+
+        isTransitioning = true;
+        const outgoingView = activeView;
+        const returningHome = activeName === 'home';
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        activeView = targetView;
 
         viewButtons.forEach((button) => {
             const isActive = button.dataset.viewTarget === activeName;
@@ -1520,11 +1849,40 @@ function initializePortfolioViews() {
             }
         }
 
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         window.scrollTo({ top: 0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
 
-        if (activeName === 'projects') {
-            window.requestAnimationFrame(initializeProjectShowcase);
+        if (activeName !== 'projects') {
+            document.getElementById('projectDetailVideo')?.pause();
+        }
+
+        if (!prefersReducedMotion) {
+            const exitX = returningHome ? 24 : -24;
+            await animateView(outgoingView, [
+                { opacity: 1, transform: 'translate3d(0, 0, 0) scale(1)', filter: 'blur(0)' },
+                { opacity: 0, transform: `translate3d(${exitX}px, 0, 0) scale(0.99)`, filter: 'blur(2px)' }
+            ], { duration: 190, easing: 'cubic-bezier(0.4, 0, 1, 1)', fill: 'forwards' });
+        }
+
+        outgoingView.hidden = true;
+        outgoingView.classList.remove('is-active');
+        targetView.hidden = false;
+        targetView.classList.add('is-active');
+        window.scrollTo({ top: 0, behavior: 'auto' });
+        document.dispatchEvent(new CustomEvent('portfolio:viewchange', { detail: { view: activeName } }));
+
+        if (!prefersReducedMotion) {
+            const enterX = returningHome ? -28 : 28;
+            await animateView(targetView, [
+                { opacity: 0, transform: `translate3d(${enterX}px, 0, 0) scale(0.99)`, filter: 'blur(2px)' },
+                { opacity: 1, transform: 'translate3d(0, 0, 0) scale(1)', filter: 'blur(0)' }
+            ], { duration: 360, easing: 'cubic-bezier(0.2, 0.75, 0.25, 1)', fill: 'forwards' });
+        }
+
+        isTransitioning = false;
+        if (queuedView) {
+            const nextView = queuedView;
+            queuedView = null;
+            showView(nextView.viewName, nextView.updateHistory);
         }
     }
 
@@ -1559,6 +1917,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize the single-page portfolio navigation
     initializePortfolioViews();
+    initializeFeaturedProjectPicker();
+    initializeMoreGamesLibrary();
     
     // Initialize click counter (if exists on this page)
     initializeClickCounter();

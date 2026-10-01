@@ -9,7 +9,6 @@
 </head>
 <body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 <script src="audio-system.js"></script>
 <script src="script.js"></script>
 <div class="container">
@@ -41,37 +40,92 @@
 
     <!-- ================= PROJECTS ================= -->
     <section id="featured" class="portfolio-view" data-portfolio-view="projects" hidden>
-        <p class="eyebrow">SELECTED WORK</p>
-        <h2>Projects</h2>
-        <div class="project-showcase" aria-label="Project showcase">
-            <div class="project-lane">
-                <button class="project-arrow prev" type="button" aria-label="Previous project">◀</button>
-                <div class="project-track" id="projectTrack" aria-live="polite"></div>
-                <button class="project-arrow next" type="button" aria-label="Next project">▶</button>
+        <p class="eyebrow">SELECTED WORK / 01—03</p>
+        <h2>Featured projects</h2>
+        <p class="project-picker-prompt">Choose a project to take a closer look.</p>
+        <div class="featured-project-layout">
+            <div class="featured-project-picker" aria-label="Choose a featured project">
+            <button class="featured-project-card" type="button" data-featured-project="lost-voices" aria-pressed="false">
+                    <img src="assets/images/project1-screenshot1.png" alt="Lost Voices gameplay" loading="lazy">
+                    <span class="project-card-number">01</span>
+                    <span class="project-card-copy"><strong>Lost Voices</strong><small>Solo Developer · 2024</small></span>
+                </button>
+                <button class="featured-project-card" type="button" data-featured-project="mistake" aria-pressed="false">
+                    <img src="assets/images/project2-screenshot1.jpg" alt="MISTAKE gameplay" loading="lazy">
+                    <span class="project-card-number">02</span>
+                    <span class="project-card-copy"><strong>MISTAKE</strong><small>Game Designer · 2024</small></span>
+                </button>
+                <button class="featured-project-card" type="button" data-featured-project="kitty-kultivation" aria-pressed="false">
+                    <img src="assets/images/project3-screenshot1.png" alt="Kitty Kultivation gameplay" loading="lazy">
+                    <span class="project-card-number">03</span>
+                    <span class="project-card-copy"><strong>Kitty Kultivation</strong><small>Design & Programming · 2025</small></span>
+                </button>
             </div>
 
-            <div class="project-detail-box" aria-live="polite">
-                <h3 id="projectDetailTitle">Lost Voices</h3>
-                <div class="project-meta-grid">
-                    <div class="meta-block">
-                        <span class="meta-label">My Role</span>
-                        <p id="projectDetailRole">Sole Developer</p>
-                    </div>
-                    <div class="meta-block">
-                        <span class="meta-label">Software</span>
-                        <p id="projectDetailSoftware">Unity • C#</p>
-                    </div>
-                    <div class="meta-block">
-                        <span class="meta-label">Date</span>
-                        <p id="projectDetailDate">2024</p>
-                    </div>
+            <article class="project-spotlight" aria-live="polite" hidden>
+                <div class="project-spotlight-media">
+                    <img id="projectDetailImage" src="assets/images/project1-screenshot1.png" alt="Lost Voices gameplay screenshot">
+                    <video id="projectDetailVideo" muted loop playsinline controls hidden poster="assets/images/project2-screenshot1.jpg">
+                        <source src="assets/video/project2-preview.mp4" type="video/mp4">
+                    </video>
+                    <span class="spotlight-index">FEATURED / <span id="projectDetailIndex">01</span></span>
                 </div>
-                <div class="project-detail-description">
+                <div class="project-media-picker" id="projectMediaPicker" aria-label="Project screenshots and video"></div>
+                <div class="project-spotlight-copy">
+                    <p class="eyebrow" id="projectDetailMeta">SOLO DEVELOPER · UNITY · 2024</p>
+                    <h3 id="projectDetailTitle">Lost Voices</h3>
                     <p id="projectDetailDescription">Atmospheric sci-fi horror inspired by Alien Isolation, built around sound, tension, and environmental storytelling.</p>
+                    <div class="project-spotlight-footer">
+                        <span id="projectDetailRole">Sole Developer</span>
+                        <span id="projectDetailSoftware">Unity · C#</span>
+                        <a id="projectDetailLink" href="https://pitza.itch.io/lost-voices" target="_blank" rel="noreferrer">View project ↗</a>
+                    </div>
                 </div>
-                <div class="project-detail-link-row">
-                    <a id="projectDetailLink" href="https://pitza.itch.io/lost-voices" target="_blank" rel="noreferrer">View Project</a>
+            </article>
+        </div>
+
+        <div class="more-games-launcher">
+            <p>There’s more in the library.</p>
+            <button id="openMoreGames" type="button" data-view-target="more-games" aria-pressed="false">
+                <span class="folder-icon" aria-hidden="true"></span>
+                Browse more games
+            </button>
+        </div>
+    </section>
+
+    <section class="portfolio-view more-games-view" data-portfolio-view="more-games" hidden>
+        <button class="section-back" type="button" data-view-target="projects">← Featured projects</button>
+        <p class="eyebrow">GAME LIBRARY / 04—05</p>
+        <h2>More games</h2>
+        <div class="library-feature" aria-live="polite">
+            <div class="library-feature-media">
+                <img id="moreGameImage" src="assets/images/project4-screenshot1.PNG" alt="Cuboids Revolt gameplay screenshot">
+            </div>
+            <div class="library-feature-copy">
+                <p class="eyebrow" id="moreGameMeta">SOLO DEVELOPER · UNITY · 2023</p>
+                <h3 id="moreGameTitle">Cuboids Revolt</h3>
+                <p id="moreGameDescription">A top-down survival shooter about protecting small cubes through escalating waves of enemies.</p>
+                <div class="library-feature-footer">
+                    <span id="moreGameRole">Sole Developer</span>
+                    <a id="moreGameLink" href="https://pitza.itch.io/cuboids-revolt" target="_blank" rel="noreferrer">View on itch.io ↗</a>
                 </div>
+            </div>
+        </div>
+
+        <div class="game-library">
+            <div class="library-heading">
+                <h3>Solo projects</h3>
+                <span>2 games</span>
+            </div>
+            <div class="library-picker" aria-label="Choose a game">
+                <button class="library-game is-selected" type="button" data-library-game="cuboids" aria-pressed="true">
+                    <img src="assets/images/project4-screenshot1.PNG" alt="Cuboids Revolt gameplay" loading="lazy">
+                    <span><strong>Cuboids Revolt</strong><small>Arcade survival · 2023</small></span>
+                </button>
+                <button class="library-game" type="button" data-library-game="grembox" aria-pressed="false">
+                    <img src="assets/images/project5-screenshot1.png" alt="GremBox gameplay" loading="lazy">
+                    <span><strong>GremBox</strong><small>Sandbox · 2025</small></span>
+                </button>
             </div>
         </div>
     </section>
@@ -165,7 +219,7 @@
     <!-- ================= FOOTER ================= -->
     <footer>
         <p>▓▒░ Site best viewed in any browser that supports CSS ░▒▓</p>
-        <p>© 2026 JANMAR CORNEJO | PEACE and LOVE ♥</p>
+        <p>© 2026 JANMAR CORNEJO</p>
     </footer>
 
 </div>

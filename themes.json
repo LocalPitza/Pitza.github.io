@@ -1,22 +1,22 @@
 {
   "light": {
-    "bgMain": "#f4efe9",
-    "bgSecondary": "#e9e2d8",
-    "bgCard": "#ded6cb",
-    "accentMain": "#d08c60",
-    "accentSoft": "#e0b089",
-    "accentStrong": "#b36a3c",
-    "textMain": "#2e2420",
-    "textMuted": "#6b5c55"
+    "bgMain": "#f3f4ed",
+    "bgSecondary": "#ffffff",
+    "bgCard": "#e5eee8",
+    "accentMain": "#167e73",
+    "accentSoft": "#a66b13",
+    "accentStrong": "#c84c42",
+    "textMain": "#1e302d",
+    "textMuted": "#526662"
   },
   "dark": {
-    "bgMain": "#1c1c1c",
-    "bgSecondary": "#242424",
-    "bgCard": "#2a2a2a",
-    "accentMain": "#f4b183",
-    "accentSoft": "#f6c7a1",
-    "accentStrong": "#ffb070",
-    "textMain": "#e6e6e6",
-    "textMuted": "#b5b5b5"
+    "bgMain": "#141b1d",
+    "bgSecondary": "#202b2d",
+    "bgCard": "#29383a",
+    "accentMain": "#79d6c4",
+    "accentSoft": "#ffd166",
+    "accentStrong": "#ff8066",
+    "textMain": "#f2f4ec",
+    "textMuted": "#adbfba"
   }
 }
